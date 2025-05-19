@@ -1,5 +1,6 @@
 package su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -14,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -145,6 +147,206 @@ public class CogWheelBlock extends AbstractShaftBlock implements ITE<CogWheelTil
 
         if (shaft != null && mask.intersectsWith(shaft)) list.add(shaft);
         if (cog != null && mask.intersectsWith(cog)) list.add(cog);
+    }
+
+    public List<AxisAlignedBB> getSelectedBoundingBoxesList(World worldIn, int x, int y, int z) {
+        List<AxisAlignedBB> list = new ArrayList<AxisAlignedBB>();
+
+        int meta = worldIn.getBlockMetadata(x, y, z);
+        double shaft1MinX = 0;
+        double shaft1MinY = 0;
+        double shaft1MinZ = 0;
+        double shaft1MaxX = 1;
+        double shaft1MaxY = 1;
+        double shaft1MaxZ = 1;
+        double shaft2MinX = 0;
+        double shaft2MinY = 0;
+        double shaft2MinZ = 0;
+        double shaft2MaxX = 1;
+        double shaft2MaxY = 1;
+        double shaft2MaxZ = 1;
+        double cogMinX = 0;
+        double cogMinY = 0;
+        double cogMinZ = 0;
+        double cogMaxX = 1;
+        double cogMaxY = 1;
+        double cogMaxZ = 1;
+        double d = 1d / 16d;
+        double minThickness = 6 * d;
+        double maxThickness = 1D - 6 * d;
+        double minDiameter = isSmallCog() ? 2 * d : 0D;
+        double maxDiameter = isSmallCog() ? 1d - 2 * d : 1D;
+        switch (meta) {
+            default:
+            case 0:
+                shaft1MinX = shaft1MinZ = shaft2MinX = shaft2MinZ = 5 * d;
+                shaft1MaxX = shaft1MaxZ = shaft2MaxX = shaft2MaxZ = 1 - 5 * d;
+                cogMinX = cogMinZ = minDiameter;
+                cogMaxX = cogMaxZ = maxDiameter;
+                cogMinY = shaft1MaxY = minThickness;
+                cogMaxY = shaft2MinY = maxThickness;
+                break;
+            case 1:
+                shaft1MinY = shaft1MinZ = shaft2MinY = shaft2MinZ = 5 * d;
+                shaft1MaxY = shaft1MaxZ = shaft2MaxY = shaft2MaxZ = 1 - 5 * d;
+                cogMinY = cogMinZ = minDiameter;
+                cogMaxY = cogMaxZ = maxDiameter;
+                cogMinX = shaft1MaxX = minThickness;
+                cogMaxX = shaft2MinX = maxThickness;
+                break;
+            case 2:
+                shaft1MinX = shaft1MinY = shaft2MinX = shaft2MinY = 5 * d;
+                shaft1MaxX = shaft1MaxY = shaft2MaxX = shaft2MaxY = 1 - 5 * d;
+                cogMinX = cogMinY = minDiameter;
+                cogMaxX = cogMaxY = maxDiameter;
+                cogMinZ = shaft1MaxZ = minThickness;
+                cogMaxZ = shaft2MinZ = maxThickness;
+                break;
+        }
+        AxisAlignedBB cog = AxisAlignedBB
+            .getBoundingBox(x + cogMinX, y + cogMinY, z + cogMinZ, x + cogMaxX, y + cogMaxY, z + cogMaxZ);
+        AxisAlignedBB shaft1 = AxisAlignedBB.getBoundingBox(
+            x + shaft1MinX,
+            y + shaft1MinY,
+            z + shaft1MinZ,
+            x + shaft1MaxX,
+            y + shaft1MaxY,
+            z + shaft1MaxZ);
+        AxisAlignedBB shaft2 = AxisAlignedBB.getBoundingBox(
+            x + shaft2MinX,
+            y + shaft2MinY,
+            z + shaft2MinZ,
+            x + shaft2MaxX,
+            y + shaft2MaxY,
+            z + shaft2MaxZ);
+
+        list.add(cog);
+        list.add(shaft1);
+        list.add(shaft2);
+        return list;
+    }
+
+    @Override
+    public MovingObjectPosition collisionRayTrace(World worldIn, int x, int y, int z, Vec3 startVec, Vec3 endVec) {
+        this.setBlockBoundsBasedOnState(worldIn, x, y, z);
+        startVec = startVec.addVector((double) (-x), (double) (-y), (double) (-z));
+        endVec = endVec.addVector((double) (-x), (double) (-y), (double) (-z));
+        List<AxisAlignedBB> collisionList = new ArrayList<AxisAlignedBB>();
+        this.addCollisionBoxesToList(
+            worldIn,
+            0,
+            0,
+            0,
+            AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, 1),
+            collisionList,
+            null);
+        for (AxisAlignedBB aabb : collisionList) {
+            Vec3 minXVec = startVec.getIntermediateWithXValue(endVec, aabb.minX);
+            Vec3 maxXVec = startVec.getIntermediateWithXValue(endVec, aabb.maxX);
+            Vec3 minYVec = startVec.getIntermediateWithYValue(endVec, aabb.minY);
+            Vec3 maxYVec = startVec.getIntermediateWithYValue(endVec, aabb.maxY);
+            Vec3 minZVec = startVec.getIntermediateWithZValue(endVec, aabb.minZ);
+            Vec3 maxZVec = startVec.getIntermediateWithZValue(endVec, aabb.maxZ);
+
+            if (minXVec != null && !(minXVec.yCoord >= aabb.minY && minXVec.yCoord <= aabb.maxY
+                && minXVec.zCoord >= aabb.minZ
+                && minXVec.zCoord <= aabb.maxZ)) {
+                minXVec = null;
+            }
+
+            if (maxXVec != null && !(maxXVec.yCoord >= aabb.minY && maxXVec.yCoord <= aabb.maxY
+                && maxXVec.zCoord >= aabb.minZ
+                && maxXVec.zCoord <= aabb.maxZ)) {
+                maxXVec = null;
+            }
+
+            if (minYVec != null && !(minYVec.xCoord >= aabb.minX && minYVec.xCoord <= aabb.maxX
+                && minYVec.zCoord >= aabb.minZ
+                && minYVec.zCoord <= aabb.maxZ)) {
+                minYVec = null;
+            }
+
+            if (maxYVec != null && !(maxYVec.xCoord >= aabb.minX && maxYVec.xCoord <= aabb.maxX
+                && maxYVec.zCoord >= aabb.minZ
+                && maxYVec.zCoord <= aabb.maxZ)) {
+                maxYVec = null;
+            }
+
+            if (minZVec != null && !(minZVec.xCoord >= aabb.minX && minZVec.xCoord <= aabb.maxX
+                && minZVec.yCoord >= aabb.minY
+                && minZVec.yCoord <= aabb.maxY)) {
+                minZVec = null;
+            }
+
+            if (maxZVec != null && !(maxZVec.xCoord >= aabb.minX && maxZVec.xCoord <= aabb.maxX
+                && maxZVec.yCoord >= aabb.minY
+                && maxZVec.yCoord <= aabb.maxY)) {
+                maxZVec = null;
+            }
+
+            Vec3 resultVec = null;
+
+            if (minXVec != null
+                && (resultVec == null || startVec.squareDistanceTo(minXVec) < startVec.squareDistanceTo(resultVec))) {
+                resultVec = minXVec;
+            }
+
+            if (maxXVec != null
+                && (resultVec == null || startVec.squareDistanceTo(maxXVec) < startVec.squareDistanceTo(resultVec))) {
+                resultVec = maxXVec;
+            }
+
+            if (minYVec != null
+                && (resultVec == null || startVec.squareDistanceTo(minYVec) < startVec.squareDistanceTo(resultVec))) {
+                resultVec = minYVec;
+            }
+
+            if (maxYVec != null
+                && (resultVec == null || startVec.squareDistanceTo(maxYVec) < startVec.squareDistanceTo(resultVec))) {
+                resultVec = maxYVec;
+            }
+
+            if (minZVec != null
+                && (resultVec == null || startVec.squareDistanceTo(minZVec) < startVec.squareDistanceTo(resultVec))) {
+                resultVec = minZVec;
+            }
+
+            if (maxZVec != null
+                && (resultVec == null || startVec.squareDistanceTo(maxZVec) < startVec.squareDistanceTo(resultVec))) {
+                resultVec = maxZVec;
+            }
+
+            if (resultVec != null) {
+                byte b0 = -1;
+
+                if (resultVec == minXVec) {
+                    b0 = 4;
+                }
+
+                if (resultVec == maxXVec) {
+                    b0 = 5;
+                }
+
+                if (resultVec == minYVec) {
+                    b0 = 0;
+                }
+
+                if (resultVec == maxYVec) {
+                    b0 = 1;
+                }
+
+                if (resultVec == minZVec) {
+                    b0 = 2;
+                }
+
+                if (resultVec == maxZVec) {
+                    b0 = 3;
+                }
+
+                return new MovingObjectPosition(x, y, z, b0, resultVec.addVector((double) x, (double) y, (double) z));
+            }
+        }
+        return null;
     }
 
     @Override
