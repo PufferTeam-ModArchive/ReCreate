@@ -4,6 +4,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 
 public interface ITriggerable {
 
-	public void trigger(EntityPlayerMP player);
+    public void trigger(EntityPlayerMP player);
 
 }

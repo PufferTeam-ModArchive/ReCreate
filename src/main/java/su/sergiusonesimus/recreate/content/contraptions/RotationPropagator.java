@@ -49,18 +49,8 @@ public class RotationPropagator {
             if (axis.choose(diff.xCoord, diff.yCoord, diff.zCoord) != 0) alignedAxes = false;
 
         boolean connectedByAxis = alignedAxes
-            && definitionFrom.hasShaftTowards(
-                world,
-                from.xCoord,
-                from.yCoord,
-                from.zCoord,
-                direction)
-            && definitionTo.hasShaftTowards(
-                world,
-                to.xCoord,
-                to.yCoord,
-                to.zCoord,
-                direction.getOpposite());
+            && definitionFrom.hasShaftTowards(world, from.xCoord, from.yCoord, from.zCoord, direction)
+            && definitionTo.hasShaftTowards(world, to.xCoord, to.yCoord, to.zCoord, direction.getOpposite());
 
         boolean connectedByGears = ICogWheel.isSmallCog(fromBlock) && ICogWheel.isSmallCog(toBlock);
 

@@ -5,12 +5,12 @@ import java.util.List;
 import net.minecraft.util.IChatComponent;
 
 /*
-* Implement this Interface in the TileEntity class that wants to add info to the screen
-* */
+ * Implement this Interface in the TileEntity class that wants to add info to the screen
+ */
 public interface IHaveHoveringInformation {
 
-	default boolean addToTooltip(List<IChatComponent> tooltip, boolean isPlayerSneaking){
-		return false;
-	}
+    default boolean addToTooltip(List<IChatComponent> tooltip, boolean isPlayerSneaking) {
+        return false;
+    }
 
 }

@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
 import su.sergiusonesimus.recreate.foundation.item.ItemDescription.Palette;
 import su.sergiusonesimus.recreate.util.Direction;
 import su.sergiusonesimus.recreate.util.Rotation;
@@ -87,12 +88,11 @@ public abstract class KineticBlock extends Block implements IRotate {
     public float getParticleInitialRadius() {
         return .75f;
     }
-    
+
     public abstract int rotate(World world, int x, int y, int z, Rotation rot);
 
-	@Override
-    public int getDamageValue(World worldIn, int x, int y, int z)
-    {
+    @Override
+    public int getDamageValue(World worldIn, int x, int y, int z) {
         return 0;
     }
 

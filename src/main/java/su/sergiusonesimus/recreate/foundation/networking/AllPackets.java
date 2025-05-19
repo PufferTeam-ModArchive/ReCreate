@@ -8,6 +8,7 @@ import cpw.mods.fml.relauncher.Side;
 import su.sergiusonesimus.recreate.foundation.tileentity.behaviour.scrollvalue.ScrollValueUpdatePacket;
 
 public class AllPackets {
+
     public static final SimpleNetworkWrapper CHANNEL = NetworkRegistry.INSTANCE.newSimpleChannel("recreate");
     private static int packetId = 0;
 
@@ -16,11 +17,12 @@ public class AllPackets {
         registerPacket(ScrollValueUpdatePacket.Handler.class, ScrollValueUpdatePacket.class, Side.SERVER);
 
         // Server -> Client
-    	//TODO
-        //registerPacket(SymmetryEffectPacket.class, Side.CLIENT);
+        // TODO
+        // registerPacket(SymmetryEffectPacket.class, Side.CLIENT);
     }
 
-    private static <T extends IMessage> void registerPacket(Class<? extends IMessageHandler<T, IMessage>> handler, Class<T> type, Side side) {
+    private static <T extends IMessage> void registerPacket(Class<? extends IMessageHandler<T, IMessage>> handler,
+        Class<T> type, Side side) {
         CHANNEL.registerMessage(handler, type, packetId++, side);
     }
 }

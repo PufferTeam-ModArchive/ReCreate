@@ -116,16 +116,17 @@ public interface IRotate extends IWrenchable {
         // return level.withStyle(color);
         // }
     }
-    
-	/**
-	 * Checks if a block on given coordinates has a shaft towards given direction.
-	 * @param world
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param face
-	 * @return
-	 */
+
+    /**
+     * Checks if a block on given coordinates has a shaft towards given direction.
+     * 
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @param face
+     * @return
+     */
     public boolean hasShaftTowards(IBlockAccess world, int x, int y, int z, Direction face);
 
     public default SpeedLevel getMinimumRequiredSpeedLevel() {

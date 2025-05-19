@@ -3,6 +3,7 @@ package su.sergiusonesimus.recreate.util;
 import su.sergiusonesimus.recreate.util.Direction.Axis;
 
 public enum Rotation {
+
     NONE("none", 0),
     CLOCKWISE_90("clockwise_90", 1),
     CLOCKWISE_180("180", 2),

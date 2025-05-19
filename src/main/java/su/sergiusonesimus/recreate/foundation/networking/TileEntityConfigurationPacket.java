@@ -1,12 +1,13 @@
 package su.sergiusonesimus.recreate.foundation.networking;
 
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import su.sergiusonesimus.recreate.foundation.tileentity.SyncedTileEntity;
 
 public abstract class TileEntityConfigurationPacket<TE extends SyncedTileEntity> implements IMessage {
@@ -38,6 +39,7 @@ public abstract class TileEntityConfigurationPacket<TE extends SyncedTileEntity>
     }
 
     public static class Handler<T extends TileEntityConfigurationPacket<?>> implements IMessageHandler<T, IMessage> {
+
         @Override
         public IMessage onMessage(T message, MessageContext ctx) {
             EntityPlayerMP player = ctx.getServerHandler().playerEntity;

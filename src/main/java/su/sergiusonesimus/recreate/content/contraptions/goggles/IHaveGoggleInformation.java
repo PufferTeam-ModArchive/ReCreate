@@ -14,105 +14,126 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
+
 import su.sergiusonesimus.recreate.foundation.utility.Lang;
 import su.sergiusonesimus.recreate.util.TextHelper;
 
 /*
-* Implement this Interface in the TileEntity class that wants to add info to the screen
-* */
+ * Implement this Interface in the TileEntity class that wants to add info to the screen
+ */
 public interface IHaveGoggleInformation {
 
-	Format numberFormat = new Format();
-	String spacing = "    ";
-	IChatComponent componentSpacing = new ChatComponentText(spacing);
+    Format numberFormat = new Format();
+    String spacing = "    ";
+    IChatComponent componentSpacing = new ChatComponentText(spacing);
 
-	/**
-	 * this method will be called when looking at a TileEntity that implemented this
-	 * interface
-	 *
-	 * @return {@code true} if the tooltip creation was successful and should be displayed,
-	 * or {@code false} if the overlay should not be displayed
-	* */
-	default boolean addToGoggleTooltip(List<IChatComponent> tooltip, boolean isPlayerSneaking){
-		return false;
-	}
+    /**
+     * this method will be called when looking at a TileEntity that implemented this
+     * interface
+     *
+     * @return {@code true} if the tooltip creation was successful and should be displayed,
+     *         or {@code false} if the overlay should not be displayed
+     */
+    default boolean addToGoggleTooltip(List<IChatComponent> tooltip, boolean isPlayerSneaking) {
+        return false;
+    }
 
-	static String format(double d) {
-		return numberFormat.get()
-			.format(d).replace("\u00A0", " ");
-	}
+    static String format(double d) {
+        return numberFormat.get()
+            .format(d)
+            .replace("\u00A0", " ");
+    }
 
-	default boolean containedFluidTooltip(List<IChatComponent> tooltip, boolean isPlayerSneaking, LazyOptional<IFluidHandler> handler) {
-		tooltip.add(TextHelper.plainCopy(componentSpacing).appendSibling(Lang.translate("gui.goggles.fluid_container")));
-		ChatComponentTranslation mb = Lang.translate("generic.unit.millibuckets");
-		Optional<IFluidHandler> resolve = handler.resolve();
-		if (!resolve.isPresent())
-			return false;
+    default boolean containedFluidTooltip(List<IChatComponent> tooltip, boolean isPlayerSneaking,
+        LazyOptional<IFluidHandler> handler) {
+        tooltip.add(
+            TextHelper.plainCopy(componentSpacing)
+                .appendSibling(Lang.translate("gui.goggles.fluid_container")));
+        ChatComponentTranslation mb = Lang.translate("generic.unit.millibuckets");
+        Optional<IFluidHandler> resolve = handler.resolve();
+        if (!resolve.isPresent()) return false;
 
-		IFluidHandler tank = resolve.get();
-		int tanksAmount = tank.getTankInfo(ForgeDirection.UNKNOWN).length;
-		if (tanksAmount == 0)
-			return false;
+        IFluidHandler tank = resolve.get();
+        int tanksAmount = tank.getTankInfo(ForgeDirection.UNKNOWN).length;
+        if (tanksAmount == 0) return false;
 
-		IChatComponent indent = new ChatComponentText(spacing + " ");
+        IChatComponent indent = new ChatComponentText(spacing + " ");
 
-		boolean isEmpty = true;
-		for (int i = 0; i < tanksAmount; i++) {
-			FluidStack fluidStack = tank.getTankInfo(ForgeDirection.UNKNOWN)[i].fluid;
-			if (fluidStack.amount == 0) continue;
+        boolean isEmpty = true;
+        for (int i = 0; i < tanksAmount; i++) {
+            FluidStack fluidStack = tank.getTankInfo(ForgeDirection.UNKNOWN)[i].fluid;
+            if (fluidStack.amount == 0) continue;
 
-			IChatComponent fluidName = new ChatComponentText(fluidStack.getLocalizedName());
-			fluidName.getChatStyle().setColor(EnumChatFormatting.GRAY);
-			IChatComponent contained = new ChatComponentText(format(fluidStack.amount)).appendSibling(mb);
-			contained.getChatStyle().setColor(EnumChatFormatting.GOLD);
-			IChatComponent slash = new ChatComponentText(" / ");
-			slash.getChatStyle().setColor(EnumChatFormatting.GRAY);
-			IChatComponent capacity = new ChatComponentText(format(tank.getTankInfo(ForgeDirection.UNKNOWN)[i].capacity)).appendSibling(mb);
-			capacity.getChatStyle().setColor(EnumChatFormatting.DARK_GRAY);
+            IChatComponent fluidName = new ChatComponentText(fluidStack.getLocalizedName());
+            fluidName.getChatStyle()
+                .setColor(EnumChatFormatting.GRAY);
+            IChatComponent contained = new ChatComponentText(format(fluidStack.amount)).appendSibling(mb);
+            contained.getChatStyle()
+                .setColor(EnumChatFormatting.GOLD);
+            IChatComponent slash = new ChatComponentText(" / ");
+            slash.getChatStyle()
+                .setColor(EnumChatFormatting.GRAY);
+            IChatComponent capacity = new ChatComponentText(
+                format(tank.getTankInfo(ForgeDirection.UNKNOWN)[i].capacity)).appendSibling(mb);
+            capacity.getChatStyle()
+                .setColor(EnumChatFormatting.DARK_GRAY);
 
-			tooltip.add(TextHelper.plainCopy(indent).appendSibling(fluidName));
-			tooltip.add(TextHelper.plainCopy(indent).appendSibling(contained).appendSibling(slash).appendSibling(capacity));
+            tooltip.add(
+                TextHelper.plainCopy(indent)
+                    .appendSibling(fluidName));
+            tooltip.add(
+                TextHelper.plainCopy(indent)
+                    .appendSibling(contained)
+                    .appendSibling(slash)
+                    .appendSibling(capacity));
 
-			isEmpty = false;
-		}
+            isEmpty = false;
+        }
 
-		if (tanksAmount > 1) {
-			if (isEmpty)
-				tooltip.remove(tooltip.size() - 1);
-			return true;
-		}
-		
-		if (!isEmpty)
-			return true;
+        if (tanksAmount > 1) {
+            if (isEmpty) tooltip.remove(tooltip.size() - 1);
+            return true;
+        }
 
-		IChatComponent capacity = Lang.translate("gui.goggles.fluid_container.capacity");
-		capacity.getChatStyle().setColor(EnumChatFormatting.GRAY);
-		IChatComponent amount = new ChatComponentText(format(tank.getTankInfo(ForgeDirection.UNKNOWN)[0].capacity))
-				.appendSibling(mb);
-		amount.getChatStyle().setColor(EnumChatFormatting.GOLD);
+        if (!isEmpty) return true;
 
-		tooltip.add(TextHelper.plainCopy(indent).appendSibling(capacity).appendSibling(amount));
-		return true;
-	}
+        IChatComponent capacity = Lang.translate("gui.goggles.fluid_container.capacity");
+        capacity.getChatStyle()
+            .setColor(EnumChatFormatting.GRAY);
+        IChatComponent amount = new ChatComponentText(format(tank.getTankInfo(ForgeDirection.UNKNOWN)[0].capacity))
+            .appendSibling(mb);
+        amount.getChatStyle()
+            .setColor(EnumChatFormatting.GOLD);
 
-	class Format {
+        tooltip.add(
+            TextHelper.plainCopy(indent)
+                .appendSibling(capacity)
+                .appendSibling(amount));
+        return true;
+    }
 
-		private NumberFormat format = NumberFormat.getNumberInstance(Locale.ROOT);
+    class Format {
 
-		private Format() {}
+        private NumberFormat format = NumberFormat.getNumberInstance(Locale.ROOT);
 
-		public NumberFormat get() {
-			return format;
-		}
+        private Format() {}
 
-		public void update() {
-			format = NumberFormat.getInstance(TextHelper.getLocaleFromLanguageCode(
-					Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode()));
-			format.setMaximumFractionDigits(2);
-			format.setMinimumFractionDigits(0);
-			format.setGroupingUsed(true);
-		}
+        public NumberFormat get() {
+            return format;
+        }
 
-	}
+        public void update() {
+            format = NumberFormat.getInstance(
+                TextHelper.getLocaleFromLanguageCode(
+                    Minecraft.getMinecraft()
+                        .getLanguageManager()
+                        .getCurrentLanguage()
+                        .getLanguageCode()));
+            format.setMaximumFractionDigits(2);
+            format.setMinimumFractionDigits(0);
+            format.setGroupingUsed(true);
+        }
+
+    }
 
 }

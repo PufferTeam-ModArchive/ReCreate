@@ -5,7 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public interface ScreenElement {
 
-	@SideOnly(Side.CLIENT)
-	void render(int x, int y);
+    @SideOnly(Side.CLIENT)
+    void render(int x, int y);
 
 }

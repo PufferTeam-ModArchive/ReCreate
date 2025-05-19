@@ -3,6 +3,7 @@ package su.sergiusonesimus.recreate.foundation.utility.animation;
 import java.util.ArrayList;
 
 import net.minecraft.util.MathHelper;
+
 import su.sergiusonesimus.recreate.util.ReCreateMath;
 
 public class PhysicalFloat {
@@ -44,8 +45,8 @@ public class PhysicalFloat {
     }
 
     public PhysicalFloat withLimit(float limit) {
-    	this.limit = limit;
-    	return this;
+        this.limit = limit;
+        return this;
     }
 
     public void tick() {
@@ -53,15 +54,14 @@ public class PhysicalFloat {
         previousValue = value;
 
         float totalImpulse = 0;
-        for (Force force : forces)
-            totalImpulse += force.get(mass, value, speed) / mass;
+        for (Force force : forces) totalImpulse += force.get(mass, value, speed) / mass;
 
         speed += totalImpulse;
 
         forces.removeIf(Force::finished);
 
         if (Float.isFinite(limit)) {
-        	speed = MathHelper.clamp_float(speed, -limit, limit);
+            speed = MathHelper.clamp_float(speed, -limit, limit);
         }
 
         value += speed;

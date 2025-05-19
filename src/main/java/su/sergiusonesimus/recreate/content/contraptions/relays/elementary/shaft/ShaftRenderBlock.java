@@ -6,13 +6,12 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.IBlockAccess;
-import su.sergiusonesimus.recreate.AllBlocks;
-import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftBlock;
-import su.sergiusonesimus.recreate.util.Direction.Axis;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftBlock;
+import su.sergiusonesimus.recreate.util.Direction.Axis;
 
 public class ShaftRenderBlock implements ISimpleBlockRenderingHandler {
 
@@ -27,10 +26,10 @@ public class ShaftRenderBlock implements ISimpleBlockRenderingHandler {
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
         GL11.glTranslatef(0.25F, 0.25F, 0.25F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        
+
         model.setAxis(Axis.Y);
         model.render();
-        
+
         GL11.glTranslatef(-0.25F, -0.25F, -0.25F);
 
         block.setBlockBoundsForItemRender();
@@ -38,18 +37,19 @@ public class ShaftRenderBlock implements ISimpleBlockRenderingHandler {
 
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
-            RenderBlocks renderer) {
-    	if(world == null || world.getTileEntity(x, y, z) != null) return false;
-    	MovingObjectPosition mop = Minecraft.getMinecraft().objectMouseOver;
-    	if(mop == null || mop.typeOfHit != MovingObjectType.BLOCK || !(world.getBlock(mop.blockX, mop.blockY, mop.blockZ) instanceof AbstractShaftBlock)) return false;
-    	
-		model.setAxis(((AbstractShaftBlock)block).getAxis(world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ)));
-		
+        RenderBlocks renderer) {
+        if (world == null || world.getTileEntity(x, y, z) != null) return false;
+        MovingObjectPosition mop = Minecraft.getMinecraft().objectMouseOver;
+        if (mop == null || mop.typeOfHit != MovingObjectType.BLOCK
+            || !(world.getBlock(mop.blockX, mop.blockY, mop.blockZ) instanceof AbstractShaftBlock)) return false;
+
+        model.setAxis(((AbstractShaftBlock) block).getAxis(world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ)));
+
         GL11.glPushMatrix();
-        GL11.glTranslatef((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F);
-        
+        GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
+
         model.render();
-        
+
         GL11.glPopMatrix();
         return true;
     }

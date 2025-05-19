@@ -39,7 +39,7 @@ public class AnimationTickHolder {
         return (mc.isGamePaused() ? mc.timer.renderPartialTicks : mc.timer.elapsedPartialTicks);
     }
 
-    //TODO
+    // TODO
     // public static int getTicks(IBlockAccess world) {
     // if (world instanceof WrappedClientWorld)
     // return getTicks(((WrappedClientWorld) world).getWrappedWorld());

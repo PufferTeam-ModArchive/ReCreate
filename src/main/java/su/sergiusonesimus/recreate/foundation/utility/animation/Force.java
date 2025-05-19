@@ -7,6 +7,7 @@ public interface Force {
     boolean finished();
 
     class Drag implements Force {
+
         final float dragFactor;
 
         public Drag(float dragFactor) {
@@ -25,6 +26,7 @@ public interface Force {
     }
 
     class Zeroing implements Force {
+
         final float g;
 
         public Zeroing(float g) {
@@ -62,6 +64,7 @@ public interface Force {
     }
 
     class OverTime implements Force {
+
         int timeRemaining;
         float f;
 
@@ -83,6 +86,7 @@ public interface Force {
     }
 
     class Static implements Force {
+
         float force;
 
         public Static(float force) {

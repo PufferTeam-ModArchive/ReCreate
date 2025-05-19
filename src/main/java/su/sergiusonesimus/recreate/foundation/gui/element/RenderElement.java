@@ -2,86 +2,87 @@ package su.sergiusonesimus.recreate.foundation.gui.element;
 
 public abstract class RenderElement implements ScreenElement {
 
-	public static final RenderElement EMPTY = new RenderElement() {
-		@Override
-		public void render() {
-		}
-	};
+    public static final RenderElement EMPTY = new RenderElement() {
 
-	public static RenderElement of(ScreenElement renderable) {
-		return new SimpleRenderElement(renderable);
-	}
+        @Override
+        public void render() {}
+    };
 
-	protected int width = 16, height = 16;
-	protected float x = 0, y = 0, z = 0;
-	protected float alpha = 1f;
+    public static RenderElement of(ScreenElement renderable) {
+        return new SimpleRenderElement(renderable);
+    }
 
-	public <T extends RenderElement> T at(float x, float y) {
-		this.x = x;
-		this.y = y;
-		//noinspection unchecked
-		return (T) this;
-	}
+    protected int width = 16, height = 16;
+    protected float x = 0, y = 0, z = 0;
+    protected float alpha = 1f;
 
-	public <T extends RenderElement> T at(float x, float y, float z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		//noinspection unchecked
-		return (T) this;
-	}
+    public <T extends RenderElement> T at(float x, float y) {
+        this.x = x;
+        this.y = y;
+        // noinspection unchecked
+        return (T) this;
+    }
 
-	public <T extends RenderElement> T withBounds(int width, int height) {
-		this.width = width;
-		this.height = height;
-		//noinspection unchecked
-		return (T) this;
-	}
+    public <T extends RenderElement> T at(float x, float y, float z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        // noinspection unchecked
+        return (T) this;
+    }
 
-	public <T extends RenderElement> T withAlpha(float alpha) {
-		this.alpha = alpha;
-		//noinspection unchecked
-		return (T) this;
-	}
+    public <T extends RenderElement> T withBounds(int width, int height) {
+        this.width = width;
+        this.height = height;
+        // noinspection unchecked
+        return (T) this;
+    }
 
-	public int getWidth() {
-		return width;
-	}
+    public <T extends RenderElement> T withAlpha(float alpha) {
+        this.alpha = alpha;
+        // noinspection unchecked
+        return (T) this;
+    }
 
-	public int getHeight() {
-		return height;
-	}
+    public int getWidth() {
+        return width;
+    }
 
-	public float getX() {
-		return x;
-	}
+    public int getHeight() {
+        return height;
+    }
 
-	public float getY() {
-		return y;
-	}
+    public float getX() {
+        return x;
+    }
 
-	public float getZ() {
-		return z;
-	}
+    public float getY() {
+        return y;
+    }
 
-	public abstract void render();
+    public float getZ() {
+        return z;
+    }
 
-	@Override
-	public void render(int x, int y) {
-		this.at(x, y).render();
-	}
+    public abstract void render();
 
-	public static class SimpleRenderElement extends RenderElement {
+    @Override
+    public void render(int x, int y) {
+        this.at(x, y)
+            .render();
+    }
 
-		private ScreenElement renderable;
+    public static class SimpleRenderElement extends RenderElement {
 
-		public SimpleRenderElement(ScreenElement renderable) {
-			this.renderable = renderable;
-		}
+        private ScreenElement renderable;
 
-		@Override
-		public void render() {
-			renderable.render((int) x, (int) y);
-		}
-	}
+        public SimpleRenderElement(ScreenElement renderable) {
+            this.renderable = renderable;
+        }
+
+        @Override
+        public void render() {
+            renderable.render((int) x, (int) y);
+        }
+    }
 }

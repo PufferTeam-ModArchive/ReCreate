@@ -12,13 +12,13 @@ public class AllConfigs {
 
     public static void init(File configFile) {
         Configuration config = new Configuration(configFile);
-        
+
         CClient.init(config);
         CCommon.init(config);
         CServer.init(config);
-        
+
         if (config.hasChanged()) {
-        	config.save();
+            config.save();
         }
     }
 

@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public final class LazyOptional<T> {
+
     private Supplier<T> supplier;
     private T cachedValue;
     private boolean resolved = false;
@@ -23,7 +24,7 @@ public final class LazyOptional<T> {
     public static <T> LazyOptional<T> empty() {
         return new LazyOptional<>(() -> null);
     }
-    
+
     public Optional<T> resolve() {
         return Optional.ofNullable(get());
     }

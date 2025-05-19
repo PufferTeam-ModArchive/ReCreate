@@ -47,24 +47,24 @@ public enum Direction {
         this.axisDirection = axisDirection;
         this.normal = normal;
     }
-    
+
     public ForgeDirection toForgeDirection() {
-    	switch(this) {
-    	default:
-    		return ForgeDirection.UNKNOWN;
-    	case DOWN:
-    		return ForgeDirection.DOWN;
-    	case UP:
-    		return ForgeDirection.UP;
-    	case NORTH:
-    		return ForgeDirection.EAST;
-    	case EAST:
-    		return ForgeDirection.SOUTH;
-    	case SOUTH:
-    		return ForgeDirection.WEST;
-    	case WEST:
-    		return ForgeDirection.NORTH;
-    	}
+        switch (this) {
+            default:
+                return ForgeDirection.UNKNOWN;
+            case DOWN:
+                return ForgeDirection.DOWN;
+            case UP:
+                return ForgeDirection.UP;
+            case NORTH:
+                return ForgeDirection.EAST;
+            case EAST:
+                return ForgeDirection.SOUTH;
+            case SOUTH:
+                return ForgeDirection.WEST;
+            case WEST:
+                return ForgeDirection.NORTH;
+        }
     }
 
     public static Direction from3DDataValue(int value) {
@@ -75,17 +75,17 @@ public enum Direction {
         return BY_2D_DATA[Math.abs(value % BY_2D_DATA.length)];
     }
 
-	public static Direction get(AxisDirection axisDirection, Axis axis) {
-		switch(axis) {
-			default:
-			case X:
-				return axisDirection == AxisDirection.POSITIVE? EAST : WEST;
-			case Y:
-				return axisDirection == AxisDirection.POSITIVE? UP : DOWN;
-			case Z:
-				return axisDirection == AxisDirection.POSITIVE? SOUTH : NORTH; 
-		}
-	}
+    public static Direction get(AxisDirection axisDirection, Axis axis) {
+        switch (axis) {
+            default:
+            case X:
+                return axisDirection == AxisDirection.POSITIVE ? EAST : WEST;
+            case Y:
+                return axisDirection == AxisDirection.POSITIVE ? UP : DOWN;
+            case Z:
+                return axisDirection == AxisDirection.POSITIVE ? SOUTH : NORTH;
+        }
+    }
 
     public static Direction getNearest(double x, double y, double z) {
         return getNearest((float) x, (float) y, (float) z);
@@ -103,15 +103,13 @@ public enum Direction {
         }
         return direction;
     }
+
     public static Direction getNearestLookingDirection(EntityLivingBase entity) {
         Vec3 lookVec = entity.getLookVec();
-        
-        Direction closest = Direction.getNearest(
-            (float)lookVec.xCoord,
-            (float)lookVec.yCoord,
-            (float)lookVec.zCoord
-        );
-        
+
+        Direction closest = Direction
+            .getNearest((float) lookVec.xCoord, (float) lookVec.yCoord, (float) lookVec.zCoord);
+
         return closest;
     }
 
@@ -120,18 +118,18 @@ public enum Direction {
     }
 
     public Direction getClockWise() {
-    	switch(this) {
-    	default:
-    		return this;
-    	case NORTH:
-    		return EAST;
-    	case EAST:
-    		return SOUTH;
-    	case SOUTH:
-    		return WEST;
-    	case WEST:
-    		return NORTH;
-    	}
+        switch (this) {
+            default:
+                return this;
+            case NORTH:
+                return EAST;
+            case EAST:
+                return SOUTH;
+            case SOUTH:
+                return WEST;
+            case WEST:
+                return NORTH;
+        }
     }
 
     public Direction getClockWise(Axis axis) {
@@ -148,71 +146,73 @@ public enum Direction {
     }
 
     public Direction getCounterClockWise() {
-    	if(this.ordinal() < 2) return this;
-        return this.getClockWise().getOpposite();
+        if (this.ordinal() < 2) return this;
+        return this.getClockWise()
+            .getOpposite();
     }
 
     public Direction getCounterClockWise(Axis axis) {
-        return this.getClockWise(axis).getOpposite();
+        return this.getClockWise(axis)
+            .getOpposite();
     }
 
-	public Direction rotateAround(Axis axis) {
-		switch (axis) {
-		case X:
-			if (this != WEST && this != EAST) {
-				return this.rotateX();
-			}
+    public Direction rotateAround(Axis axis) {
+        switch (axis) {
+            case X:
+                if (this != WEST && this != EAST) {
+                    return this.rotateX();
+                }
 
-			return this;
-		case Y:
-			if (this != UP && this != DOWN) {
-				return this.getClockWise();
-			}
+                return this;
+            case Y:
+                if (this != UP && this != DOWN) {
+                    return this.getClockWise();
+                }
 
-			return this;
-		case Z:
-			if (this != NORTH && this != SOUTH) {
-				return this.rotateZ();
-			}
+                return this;
+            case Z:
+                if (this != NORTH && this != SOUTH) {
+                    return this.rotateZ();
+                }
 
-			return this;
-		default:
-			throw new IllegalStateException("Unable to get CW facing for axis " + axis);
-		}
-	}
+                return this;
+            default:
+                throw new IllegalStateException("Unable to get CW facing for axis " + axis);
+        }
+    }
 
-	public Direction rotateX() {
-		switch (this) {
-		case NORTH:
-			return DOWN;
-		case EAST:
-		case WEST:
-		default:
-			throw new IllegalStateException("Unable to get X-rotated facing of " + this);
-		case SOUTH:
-			return UP;
-		case UP:
-			return NORTH;
-		case DOWN:
-			return SOUTH;
-		}
-	}
+    public Direction rotateX() {
+        switch (this) {
+            case NORTH:
+                return DOWN;
+            case EAST:
+            case WEST:
+            default:
+                throw new IllegalStateException("Unable to get X-rotated facing of " + this);
+            case SOUTH:
+                return UP;
+            case UP:
+                return NORTH;
+            case DOWN:
+                return SOUTH;
+        }
+    }
 
-	public Direction rotateZ() {
-		switch (this) {
-		case EAST:
-			return DOWN;
-		case SOUTH:
-		default:
-			throw new IllegalStateException("Unable to get Z-rotated facing of " + this);
-		case WEST:
-			return UP;
-		case UP:
-			return EAST;
-		case DOWN:
-			return WEST;
-		}
-	}
+    public Direction rotateZ() {
+        switch (this) {
+            case EAST:
+                return DOWN;
+            case SOUTH:
+            default:
+                throw new IllegalStateException("Unable to get Z-rotated facing of " + this);
+            case WEST:
+                return UP;
+            case UP:
+                return EAST;
+            case DOWN:
+                return WEST;
+        }
+    }
 
     public int get3DDataValue() {
         return this.data3d;
@@ -356,9 +356,9 @@ public enum Direction {
          * 
          * @return Positive direction perpendicular to this horizontal axis
          */
-    	public Direction getPositivePerpendicular() {
-    		return this == Axis.X ? SOUTH : EAST;
-    	}
+        public Direction getPositivePerpendicular() {
+            return this == Axis.X ? SOUTH : EAST;
+        }
     }
 
 }

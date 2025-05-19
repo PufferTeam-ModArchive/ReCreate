@@ -103,10 +103,9 @@ public class KineticTileEntity extends SmartTileEntity implements IHaveGoggleInf
             networkDirty = false;
         }
     }
-	
-	@Override
-    public void updateContainingBlockInfo()
-    {
+
+    @Override
+    public void updateContainingBlockInfo() {
         // We are not erasing containing block type
     }
 
@@ -384,63 +383,82 @@ public class KineticTileEntity extends SmartTileEntity implements IHaveGoggleInf
     public void addBehaviours(List<TileEntityBehaviour> behaviours) {}
 
     @SuppressWarnings("static-access")
-	@Override
-     public boolean addToTooltip(List<IChatComponent> tooltip, boolean isPlayerSneaking) {
-	     boolean notFastEnough = !isSpeedRequirementFulfilled() && getSpeed() != 0;
-	    
-	     if (overStressed && AllConfigs.CLIENT.enableOverstressedTooltip) {
-			 IChatComponent addition = TextHelper.plainCopy(componentSpacing)
-				 .appendSibling(Lang.translate("gui.stressometer.overstressed"));
-			 addition.getChatStyle().setColor(EnumChatFormatting.GOLD);
-		     tooltip.add(addition);
-		     IChatComponent hint = Lang.translate("gui.contraptions.network_overstressed");
-		     List<IChatComponent> cutString = TooltipHelper.cutTextComponent(hint, EnumChatFormatting.GRAY, EnumChatFormatting.WHITE);
-		     for (int i = 0; i < cutString.size(); i++)
-		     tooltip.add(TextHelper.plainCopy(componentSpacing).appendSibling(cutString.get(i)));
-		     return true;
-	     }
-	    
-	     if (notFastEnough) {
-	    	 IChatComponent speedRequirement = Lang.translate("tooltip.speedRequirement");
-	    	 speedRequirement.getChatStyle().setColor(EnumChatFormatting.GOLD);
-		     tooltip.add(TextHelper.plainCopy(componentSpacing).appendSibling(speedRequirement));
-		     IChatComponent hint = Lang.translate("gui.contraptions.not_fast_enough", StatCollector.translateToLocal(this.blockType.getLocalizedName()));
-		     List<IChatComponent> cutString = TooltipHelper.cutTextComponent(hint, EnumChatFormatting.GRAY, EnumChatFormatting.WHITE);
-		     for (int i = 0; i < cutString.size(); i++)
-		     tooltip.add(TextHelper.plainCopy(componentSpacing)
-		     .appendSibling(cutString.get(i)));
-		     return true;
-	     }
-	    
-	     return false;
-     }
-    
-     @Override
-     public boolean addToGoggleTooltip(List<IChatComponent> tooltip, boolean isPlayerSneaking) {
-	     boolean added = false;
-	     float stressAtBase = calculateStressApplied();
-	    
-	     if (calculateStressApplied() != 0 && StressImpact.isEnabled()) {
-		     tooltip.add(TextHelper.plainCopy(componentSpacing).appendSibling(Lang.translate("gui.goggles.kinetic_stats")));
-		     IChatComponent stressImpact = Lang.translate("tooltip.stressImpact");
-		     stressImpact.getChatStyle().setColor(EnumChatFormatting.GRAY);
-		     tooltip.add(TextHelper.plainCopy(componentSpacing).appendSibling(stressImpact));
-		    
-		     float stressTotal = stressAtBase * Math.abs(getTheoreticalSpeed());
-		    
-		     IChatComponent stressComponent = new ChatComponentText(" " + IHaveGoggleInformation.format(stressTotal))
-			     .appendSibling(Lang.translate("generic.unit.stress")).appendText(" ");
-		     stressComponent.getChatStyle().setColor(EnumChatFormatting.AQUA);
-		     IChatComponent gogglesAtCurrentSpeed = Lang.translate("gui.goggles.at_current_speed");
-		     gogglesAtCurrentSpeed.getChatStyle().setColor(EnumChatFormatting.DARK_GRAY);
-		     tooltip.add(TextHelper.plainCopy(componentSpacing).appendSibling(stressComponent)
-	    		 .appendSibling(gogglesAtCurrentSpeed));
-		    
-		     added = true;
-	     }
-    
-	     return added;
-     }
+    @Override
+    public boolean addToTooltip(List<IChatComponent> tooltip, boolean isPlayerSneaking) {
+        boolean notFastEnough = !isSpeedRequirementFulfilled() && getSpeed() != 0;
+
+        if (overStressed && AllConfigs.CLIENT.enableOverstressedTooltip) {
+            IChatComponent addition = TextHelper.plainCopy(componentSpacing)
+                .appendSibling(Lang.translate("gui.stressometer.overstressed"));
+            addition.getChatStyle()
+                .setColor(EnumChatFormatting.GOLD);
+            tooltip.add(addition);
+            IChatComponent hint = Lang.translate("gui.contraptions.network_overstressed");
+            List<IChatComponent> cutString = TooltipHelper
+                .cutTextComponent(hint, EnumChatFormatting.GRAY, EnumChatFormatting.WHITE);
+            for (int i = 0; i < cutString.size(); i++) tooltip.add(
+                TextHelper.plainCopy(componentSpacing)
+                    .appendSibling(cutString.get(i)));
+            return true;
+        }
+
+        if (notFastEnough) {
+            IChatComponent speedRequirement = Lang.translate("tooltip.speedRequirement");
+            speedRequirement.getChatStyle()
+                .setColor(EnumChatFormatting.GOLD);
+            tooltip.add(
+                TextHelper.plainCopy(componentSpacing)
+                    .appendSibling(speedRequirement));
+            IChatComponent hint = Lang.translate(
+                "gui.contraptions.not_fast_enough",
+                StatCollector.translateToLocal(this.blockType.getLocalizedName()));
+            List<IChatComponent> cutString = TooltipHelper
+                .cutTextComponent(hint, EnumChatFormatting.GRAY, EnumChatFormatting.WHITE);
+            for (int i = 0; i < cutString.size(); i++) tooltip.add(
+                TextHelper.plainCopy(componentSpacing)
+                    .appendSibling(cutString.get(i)));
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean addToGoggleTooltip(List<IChatComponent> tooltip, boolean isPlayerSneaking) {
+        boolean added = false;
+        float stressAtBase = calculateStressApplied();
+
+        if (calculateStressApplied() != 0 && StressImpact.isEnabled()) {
+            tooltip.add(
+                TextHelper.plainCopy(componentSpacing)
+                    .appendSibling(Lang.translate("gui.goggles.kinetic_stats")));
+            IChatComponent stressImpact = Lang.translate("tooltip.stressImpact");
+            stressImpact.getChatStyle()
+                .setColor(EnumChatFormatting.GRAY);
+            tooltip.add(
+                TextHelper.plainCopy(componentSpacing)
+                    .appendSibling(stressImpact));
+
+            float stressTotal = stressAtBase * Math.abs(getTheoreticalSpeed());
+
+            IChatComponent stressComponent = new ChatComponentText(" " + IHaveGoggleInformation.format(stressTotal))
+                .appendSibling(Lang.translate("generic.unit.stress"))
+                .appendText(" ");
+            stressComponent.getChatStyle()
+                .setColor(EnumChatFormatting.AQUA);
+            IChatComponent gogglesAtCurrentSpeed = Lang.translate("gui.goggles.at_current_speed");
+            gogglesAtCurrentSpeed.getChatStyle()
+                .setColor(EnumChatFormatting.DARK_GRAY);
+            tooltip.add(
+                TextHelper.plainCopy(componentSpacing)
+                    .appendSibling(stressComponent)
+                    .appendSibling(gogglesAtCurrentSpeed));
+
+            added = true;
+        }
+
+        return added;
+    }
 
     public void clearKineticInformation() {
         speed = 0;

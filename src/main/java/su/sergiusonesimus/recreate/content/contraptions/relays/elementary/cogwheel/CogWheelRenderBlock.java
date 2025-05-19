@@ -6,13 +6,13 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.IBlockAccess;
-import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftBlock;
-import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftModel;
-import su.sergiusonesimus.recreate.util.Direction.Axis;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftBlock;
+import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftModel;
+import su.sergiusonesimus.recreate.util.Direction.Axis;
 
 public class CogWheelRenderBlock implements ISimpleBlockRenderingHandler {
 
@@ -32,13 +32,13 @@ public class CogWheelRenderBlock implements ISimpleBlockRenderingHandler {
         Axis axis = Axis.Y;
         shaft.setAxis(axis);
         shaft.render();
-        if(!((CogWheelBlock)block).isLarge) {
+        if (!((CogWheelBlock) block).isLarge) {
             cogwheel.setAxis(axis);
             cogwheel.render();
         } else {
-        	
+
         }
-        
+
         GL11.glTranslatef(-0.25F, -0.25F, -0.25F);
 
         block.setBlockBoundsForItemRender();
@@ -46,29 +46,30 @@ public class CogWheelRenderBlock implements ISimpleBlockRenderingHandler {
 
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
-            RenderBlocks renderer) {
-    	if(world == null || world.getTileEntity(x, y, z) != null) return false;
-    	MovingObjectPosition mop = Minecraft.getMinecraft().objectMouseOver;
-    	if(mop == null || mop.typeOfHit != MovingObjectType.BLOCK || !(world.getBlock(mop.blockX, mop.blockY, mop.blockZ) instanceof AbstractShaftBlock)) return false;
-    	
-    	Axis axis = ((AbstractShaftBlock)block).getAxis(world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ));
-		shaft.setAxis(axis);
-        if(!((CogWheelBlock)block).isLarge) {
-    		cogwheel.setAxis(axis);
+        RenderBlocks renderer) {
+        if (world == null || world.getTileEntity(x, y, z) != null) return false;
+        MovingObjectPosition mop = Minecraft.getMinecraft().objectMouseOver;
+        if (mop == null || mop.typeOfHit != MovingObjectType.BLOCK
+            || !(world.getBlock(mop.blockX, mop.blockY, mop.blockZ) instanceof AbstractShaftBlock)) return false;
+
+        Axis axis = ((AbstractShaftBlock) block).getAxis(world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ));
+        shaft.setAxis(axis);
+        if (!((CogWheelBlock) block).isLarge) {
+            cogwheel.setAxis(axis);
         } else {
-        	
+
         }
-		
+
         GL11.glPushMatrix();
-        GL11.glTranslatef((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F);
+        GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 
         shaft.render();
-        if(!((CogWheelBlock)block).isLarge) {
+        if (!((CogWheelBlock) block).isLarge) {
             cogwheel.render();
         } else {
-        	
+
         }
-        
+
         GL11.glPopMatrix();
         return true;
     }

@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import su.sergiusonesimus.recreate.util.Direction.Axis;
 
 public class VecHelper {
@@ -226,27 +227,28 @@ public class VecHelper {
          */
         EntityLivingBase renderViewEntity = Minecraft.getMinecraft().renderViewEntity;
         Vec3 camera_pos = Vec3.createVectorHelper(renderViewEntity.posX, renderViewEntity.posY, renderViewEntity.posZ);
-        
-        float yaw = renderViewEntity.prevRotationYaw + (renderViewEntity.rotationYaw - renderViewEntity.prevRotationYaw) * partialTicks;
-        float pitch = renderViewEntity.prevRotationPitch + (renderViewEntity.rotationPitch - renderViewEntity.prevRotationPitch) * partialTicks;
-        
+
+        float yaw = renderViewEntity.prevRotationYaw
+            + (renderViewEntity.rotationYaw - renderViewEntity.prevRotationYaw) * partialTicks;
+        float pitch = renderViewEntity.prevRotationPitch
+            + (renderViewEntity.rotationPitch - renderViewEntity.prevRotationPitch) * partialTicks;
+
         Vec3 result = Vec3.createVectorHelper(
             camera_pos.xCoord - target.xCoord,
             camera_pos.yCoord - target.yCoord,
-            camera_pos.zCoord - target.zCoord
-        );
-        
-        float yawRad = (float)Math.toRadians(yaw);
-        float cosYaw = (float)Math.cos(yawRad);
-        float sinYaw = (float)Math.sin(yawRad);
+            camera_pos.zCoord - target.zCoord);
+
+        float yawRad = (float) Math.toRadians(yaw);
+        float cosYaw = (float) Math.cos(yawRad);
+        float sinYaw = (float) Math.sin(yawRad);
         double newX = result.xCoord * cosYaw - result.zCoord * sinYaw;
         double newZ = result.zCoord * cosYaw + result.xCoord * sinYaw;
         result.xCoord = newX;
         result.zCoord = newZ;
-        
-        float pitchRad = (float)Math.toRadians(pitch);
-        float cosPitch = (float)Math.cos(pitchRad);
-        float sinPitch = (float)Math.sin(pitchRad);
+
+        float pitchRad = (float) Math.toRadians(pitch);
+        float cosPitch = (float) Math.cos(pitchRad);
+        float sinPitch = (float) Math.sin(pitchRad);
         double newY = result.yCoord * cosPitch + result.zCoord * sinPitch;
         newZ = result.zCoord * cosPitch - result.yCoord * sinPitch;
         result.yCoord = newY;
@@ -257,17 +259,18 @@ public class VecHelper {
         if (mc.gameSettings.viewBobbing && renderViewEntity instanceof EntityPlayer) {
             EntityPlayer playerentity = (EntityPlayer) renderViewEntity;
             float distwalked_modified = playerentity.distanceWalkedModified;
-            
+
             float f = distwalked_modified - playerentity.prevDistanceWalkedModified;
             float f1 = -(distwalked_modified + f * partialTicks);
-            float f2 = playerentity.prevCameraYaw + (playerentity.cameraYaw - playerentity.prevCameraYaw) * partialTicks;
-            
+            float f2 = playerentity.prevCameraYaw
+                + (playerentity.cameraYaw - playerentity.prevCameraYaw) * partialTicks;
+
             float xBobFactor = Math.abs(MathHelper.cos(f1 * (float) Math.PI - 0.2F) * f2) * 5.0F;
             result.yCoord += xBobFactor;
-            
+
             float zBobFactor = MathHelper.sin(f1 * (float) Math.PI) * f2 * 3.0F;
             result.xCoord += zBobFactor;
-            
+
             double bobX = MathHelper.sin(f1 * (float) Math.PI) * f2 * 0.5F;
             double bobY = -Math.abs(MathHelper.cos(f1 * (float) Math.PI) * f2);
             result.xCoord += bobX;
@@ -278,13 +281,12 @@ public class VecHelper {
         float fov = mc.gameSettings.fovSetting;
         ScaledResolution res = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
         float half_height = res.getScaledHeight() / 2f;
-        float scale_factor = half_height / ((float)result.zCoord * (float)Math.tan(Math.toRadians(fov / 2)));
-        
+        float scale_factor = half_height / ((float) result.zCoord * (float) Math.tan(Math.toRadians(fov / 2)));
+
         return Vec3.createVectorHelper(
-            -(float)result.xCoord * scale_factor,
-            (float)result.yCoord * scale_factor,
-            (float)result.zCoord
-        );
+            -(float) result.xCoord * scale_factor,
+            (float) result.yCoord * scale_factor,
+            (float) result.zCoord);
     }
 
 }
