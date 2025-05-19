@@ -33,4 +33,8 @@ public class CommonProxy {
 	public int getCreativeMotorBlockRenderID() {
 		return 0;
 	}
+
+	public int getCogWheelBlockRenderID() {
+		return 0;
+	}
 }

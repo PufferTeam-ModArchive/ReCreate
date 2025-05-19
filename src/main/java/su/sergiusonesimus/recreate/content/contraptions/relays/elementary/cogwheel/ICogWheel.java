@@ -1,4 +1,4 @@
-package su.sergiusonesimus.recreate.content.contraptions.relays.elementary;
+package su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;

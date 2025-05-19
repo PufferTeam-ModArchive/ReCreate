@@ -7,6 +7,8 @@ public enum AllModelTextures {
 
 	SHAFT("axis.png"),
 	CREATIVE_MOTOR("creative_motor.png"),
+	COGWHEEL("cogwheel.png"),
+	LARGE_COGWHEEL("large_cogwheel.png"),
 
 	;
 

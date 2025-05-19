@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 
 import su.sergiusonesimus.recreate.content.contraptions.base.IRotate;
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntity;
-import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.ICogWheel;
+import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.ICogWheel;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
 import su.sergiusonesimus.recreate.foundation.utility.Iterate;
 import su.sergiusonesimus.recreate.util.Direction;

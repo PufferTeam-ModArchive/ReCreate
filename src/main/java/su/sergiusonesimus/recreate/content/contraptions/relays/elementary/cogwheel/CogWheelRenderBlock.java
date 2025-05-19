@@ -1,4 +1,4 @@
-package su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft;
+package su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -6,20 +6,21 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.IBlockAccess;
-import su.sergiusonesimus.recreate.AllBlocks;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftBlock;
+import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftModel;
 import su.sergiusonesimus.recreate.util.Direction.Axis;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
-public class ShaftRenderBlock implements ISimpleBlockRenderingHandler {
+public class CogWheelRenderBlock implements ISimpleBlockRenderingHandler {
 
     final int renderID;
-    private final ShaftModel model = new ShaftModel();
+    private final ShaftModel shaft = new ShaftModel();
+    private final CogWheelModel cogwheel = new CogWheelModel();
 
-    public ShaftRenderBlock(int blockComplexRenderID) {
+    public CogWheelRenderBlock(int blockComplexRenderID) {
         this.renderID = blockComplexRenderID;
     }
 
@@ -27,9 +28,16 @@ public class ShaftRenderBlock implements ISimpleBlockRenderingHandler {
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
         GL11.glTranslatef(0.25F, 0.25F, 0.25F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        
-        model.setAxis(Axis.Y);
-        model.render();
+
+        Axis axis = Axis.Y;
+        shaft.setAxis(axis);
+        shaft.render();
+        if(!((CogWheelBlock)block).isLarge) {
+            cogwheel.setAxis(axis);
+            cogwheel.render();
+        } else {
+        	
+        }
         
         GL11.glTranslatef(-0.25F, -0.25F, -0.25F);
 
@@ -43,12 +51,23 @@ public class ShaftRenderBlock implements ISimpleBlockRenderingHandler {
     	MovingObjectPosition mop = Minecraft.getMinecraft().objectMouseOver;
     	if(mop == null || mop.typeOfHit != MovingObjectType.BLOCK || !(world.getBlock(mop.blockX, mop.blockY, mop.blockZ) instanceof AbstractShaftBlock)) return false;
     	
-		model.setAxis(((AbstractShaftBlock)block).getAxis(world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ)));
+    	Axis axis = ((AbstractShaftBlock)block).getAxis(world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ));
+		shaft.setAxis(axis);
+        if(!((CogWheelBlock)block).isLarge) {
+    		cogwheel.setAxis(axis);
+        } else {
+        	
+        }
 		
         GL11.glPushMatrix();
         GL11.glTranslatef((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F);
-        
-        model.render();
+
+        shaft.render();
+        if(!((CogWheelBlock)block).isLarge) {
+            cogwheel.render();
+        } else {
+        	
+        }
         
         GL11.glPopMatrix();
         return true;

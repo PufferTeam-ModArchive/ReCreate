@@ -13,6 +13,9 @@ import su.sergiusonesimus.metaworlds.EventHookContainer;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorRenderBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorTileEntityRenderer;
+import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelRenderBlock;
+import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelTileEntityRenderer;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftRenderBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftTileEntityRenderer;
@@ -25,6 +28,7 @@ public class ClientProxy extends CommonProxy {
 
     int shaftRenderID;
     int creativeMotorRenderID;
+    int cogwheelRenderID;
 	
 	//TODO
 	public static final Outliner OUTLINER = new Outliner();
@@ -47,12 +51,15 @@ public class ClientProxy extends CommonProxy {
     	// tile entities
         ClientRegistry.bindTileEntitySpecialRenderer(ShaftTileEntity.class, new ShaftTileEntityRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(CreativeMotorTileEntity.class, new CreativeMotorTileEntityRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(CogWheelTileEntity.class, new CogWheelTileEntityRenderer());
         
         // block render ids
         shaftRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new ShaftRenderBlock(shaftRenderID));
         creativeMotorRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new CreativeMotorRenderBlock(creativeMotorRenderID));
+        cogwheelRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new CogWheelRenderBlock(cogwheelRenderID));
 	}
 
 	public int getShaftBlockRenderID() {
@@ -61,6 +68,10 @@ public class ClientProxy extends CommonProxy {
 
 	public int getCreativeMotorBlockRenderID() {
 		return creativeMotorRenderID;
+	}
+
+	public int getCogWheelBlockRenderID() {
+		return cogwheelRenderID;
 	}
 
 	//TODO

@@ -19,13 +19,14 @@ import net.minecraft.world.World;
 import su.sergiusonesimus.recreate.AllBlocks;
 import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftBlock;
+import su.sergiusonesimus.recreate.foundation.block.ITE;
 import su.sergiusonesimus.recreate.foundation.utility.Pair;
 import su.sergiusonesimus.recreate.foundation.utility.placement.IPlacementHelper;
 import su.sergiusonesimus.recreate.foundation.utility.placement.PlacementHelpers;
 import su.sergiusonesimus.recreate.foundation.utility.placement.util.PoleHelper;
 import su.sergiusonesimus.recreate.util.Direction.Axis;
 
-public class ShaftBlock extends AbstractShaftBlock {
+public class ShaftBlock extends AbstractShaftBlock implements ITE<ShaftTileEntity> {
 
     public static IIcon shaftTop;
     public static IIcon shaftSide;
@@ -179,17 +180,6 @@ public class ShaftBlock extends AbstractShaftBlock {
     }
 
     @Override
-    public boolean isOpaqueCube() {
-        return false;
-    }
-
-    @Override
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
-    @Override
     public int getRenderType() {
         return ReCreate.proxy.getShaftBlockRenderID();
     }
@@ -205,6 +195,11 @@ public class ShaftBlock extends AbstractShaftBlock {
     	ShaftBlock.shaftTop = iconRegister.registerIcon(ReCreate.ID + ":axis_top");
     	ShaftBlock.shaftSide = iconRegister.registerIcon(ReCreate.ID + ":axis");
     }
+
+	@Override
+	public Class<ShaftTileEntity> getTileEntityClass() {
+		return ShaftTileEntity.class;
+	}
 
 	private static class PlacementHelper extends PoleHelper<Axis> {
 		//used for extending a shaft in its axis, like the piston poles. works with shafts and cogs

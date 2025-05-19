@@ -32,7 +32,7 @@ public abstract class KineticBlock extends Block implements IRotate {
             kineticTileEntity.preventSpeedUpdate = 0;
             int meta = worldIn.getBlockMetadata(x, y, z);
 
-            if (tileEntity.blockType != this || tileEntity.blockMetadata != meta) return;
+            if (tileEntity.getBlockType() != this || tileEntity.getBlockMetadata() != meta) return;
             if (this.hasTileEntity() != tileEntity.blockType.hasTileEntity()) return;
             if (!areStatesKineticallyEquivalent(tileEntity.blockType, tileEntity.blockMetadata, this, meta)) return;
 

@@ -18,6 +18,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import su.sergiusonesimus.recreate.content.contraptions.TorquePropagator;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftTileEntity;
 import su.sergiusonesimus.recreate.events.ClientEvents;
 import su.sergiusonesimus.recreate.events.CommonEvents;
@@ -93,6 +94,7 @@ public class ReCreate {
     private void registerTileEntities() {
     	GameRegistry.registerTileEntity(ShaftTileEntity.class, "Shaft");
     	GameRegistry.registerTileEntity(CreativeMotorTileEntity.class, "Creative Motor");
+    	GameRegistry.registerTileEntity(CogWheelTileEntity.class, "Cogwheel");
     }
 
 	public static ResourceLocation asResource(String path) {

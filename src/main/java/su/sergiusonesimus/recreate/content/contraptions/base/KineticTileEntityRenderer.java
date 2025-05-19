@@ -1,7 +1,7 @@
 package su.sergiusonesimus.recreate.content.contraptions.base;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.ICogWheel;
+import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.ICogWheel;
 import su.sergiusonesimus.recreate.foundation.utility.Color;
 import su.sergiusonesimus.recreate.util.AnimationTickHolder;
 import su.sergiusonesimus.recreate.util.Direction.Axis;

@@ -11,14 +11,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import su.sergiusonesimus.recreate.content.contraptions.base.RotatedPillarKineticBlock;
-import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.wrench.IWrenchableWithBracket;
-import su.sergiusonesimus.recreate.foundation.block.ITE;
 import su.sergiusonesimus.recreate.foundation.tileentity.TileEntityBehaviour;
 import su.sergiusonesimus.recreate.util.Direction;
 
-public abstract class AbstractShaftBlock extends RotatedPillarKineticBlock
-	implements ITE<ShaftTileEntity>, IWrenchableWithBracket {
+public abstract class AbstractShaftBlock extends RotatedPillarKineticBlock implements IWrenchableWithBracket {
 
 	public AbstractShaftBlock(Material materialIn) {
 		super(materialIn);
@@ -39,6 +36,17 @@ public abstract class AbstractShaftBlock extends RotatedPillarKineticBlock
 		super.onBlockPreDestroy(worldIn, x, y, z, meta);
     }
 
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    @Override
+    public boolean renderAsNormalBlock()
+    {
+        return false;
+    }
+
 	// IRotate:
 
 	@Override
@@ -57,11 +65,6 @@ public abstract class AbstractShaftBlock extends RotatedPillarKineticBlock
 		if (bracket == Blocks.air)
 			return Optional.empty();
 		return Optional.of(new ItemStack(bracket, 1, bracketMeta));
-	}
-
-	@Override
-	public Class<ShaftTileEntity> getTileEntityClass() {
-		return ShaftTileEntity.class;
 	}
 
 }

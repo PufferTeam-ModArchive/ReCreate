@@ -83,7 +83,6 @@ public abstract class PoleHelper<T extends Comparable<T>> implements IPlacementH
 
 			if (newBlock.getMaterial().isReplaceable())
 				return PlacementOffset.success(new ChunkCoordinates(newX, newY, newZ), bPair -> {
-					bPair.setFirst(block);
 					bPair.setSecond(meta);
 					return bPair;
 				});

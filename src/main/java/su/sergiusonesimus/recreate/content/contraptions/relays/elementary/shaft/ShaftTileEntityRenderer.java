@@ -16,9 +16,6 @@ public class ShaftTileEntityRenderer extends KineticTileEntityRenderer {
 	public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z,
 			float partialTicks) {
 		Axis axis = ((ShaftBlock)tileEntity.getBlockType()).getAxis(tileEntity.getBlockMetadata());
-		if(axis == Axis.X) {
-			int a = 0;
-		}
 		model.setAxis(axis);
 		model.setRotation(getAngleForTe((KineticTileEntity) tileEntity, tileEntity.xCoord, tileEntity.yCoord,
 			tileEntity.zCoord, axis));

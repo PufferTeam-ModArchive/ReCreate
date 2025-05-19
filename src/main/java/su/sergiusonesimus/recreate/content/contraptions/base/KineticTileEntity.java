@@ -25,7 +25,7 @@ import su.sergiusonesimus.recreate.content.contraptions.base.IRotate.SpeedLevel;
 import su.sergiusonesimus.recreate.content.contraptions.base.IRotate.StressImpact;
 import su.sergiusonesimus.recreate.content.contraptions.goggles.IHaveGoggleInformation;
 import su.sergiusonesimus.recreate.content.contraptions.goggles.IHaveHoveringInformation;
-import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.ICogWheel;
+import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.ICogWheel;
 import su.sergiusonesimus.recreate.foundation.block.BlockStressValues;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
 import su.sergiusonesimus.recreate.foundation.item.TooltipHelper;
@@ -102,6 +102,12 @@ public class KineticTileEntity extends SmartTileEntity implements IHaveGoggleInf
             if (hasNetwork()) getOrCreateNetwork().updateNetwork();
             networkDirty = false;
         }
+    }
+	
+	@Override
+    public void updateContainingBlockInfo()
+    {
+        // We are not erasing containing block type
     }
 
     private void validateKinetics() {
@@ -222,6 +228,8 @@ public class KineticTileEntity extends SmartTileEntity implements IHaveGoggleInf
         }
 
         speed = compound.getFloat("Speed");
+
+        if (compound.hasKey("NeedsSpeedUpdate")) this.updateSpeed = true;
 
         if (compound.hasKey("Source")) {
             NBTTagCompound networkTag = compound.getCompoundTag("Source");
@@ -506,8 +514,8 @@ public class KineticTileEntity extends SmartTileEntity implements IHaveGoggleInf
 
         Axis axis = block.getAxis(meta);
         for (int x = -1; x <= 1; x++) {
-            for (int y = -1; x <= 1; y++) {
-                for (int z = -1; x <= 1; z++) {
+            for (int y = -1; y <= 1; y++) {
+                for (int z = -1; z <= 1; z++) {
                     if (axis.choose(x, y, z) != 0) continue;
                     if (Vec3.createVectorHelper(x, y, z)
                         .squareDistanceTo(0, 0, 0)
