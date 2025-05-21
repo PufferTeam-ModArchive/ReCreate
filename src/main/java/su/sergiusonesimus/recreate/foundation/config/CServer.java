@@ -6,10 +6,10 @@ public class CServer {
 
     public static CRecipes recipes;
     public static CKinetics kinetics;
-    // public static CFluids fluids;
-    // public static CLogistics logistics;
+    public static CFluids fluids;
+    public static CLogistics logistics;
     // public static CSchematics schematics;
-    // public static CCuriosities curiosities;
+    public static CCuriosities curiosities;
 
     public static void init(Configuration config) {
         // infrastructure
@@ -25,42 +25,45 @@ public class CServer {
 
         // recipes
         config.setCategoryComment(Categories.recipes, Comments.recipes);
-        CRecipes.init(config);
+        CRecipes.init(Categories.recipes, config);
 
         // kinetics
         config.setCategoryComment(Categories.kinetics, Comments.kinetics);
-        CKinetics.init(config);
+        CKinetics.init(Categories.kinetics, config);
 
         // fluids
         config.setCategoryComment(Categories.fluids, Comments.fluids);
+        CFluids.init(Categories.fluids, config);
 
         // logistics
         config.setCategoryComment(Categories.logistics, Comments.logistics);
+        CLogistics.init(Categories.logistics, config);
 
         // schematics
-        config.setCategoryComment(Categories.schematics, Comments.schematics);
+        // config.setCategoryComment(Categories.schematics, Comments.schematics);
 
         // curiosities
         config.setCategoryComment(Categories.curiosities, Comments.curiosities);
+        CCuriosities.init(Categories.curiosities, config);
     }
 
     public static int tickrateSyncTimer;
 
-    public static class Categories {
+    private static class Categories {
 
         static String infrastructure = "infrastructure";
         static String recipes = "recipes";
         static String kinetics = "kinetics";
         static String fluids = "fluids";
         static String logistics = "logistics";
-        static String schematics = "schematics";
+        // static String schematics = "schematics";
         static String curiosities = "curiosities";
     }
 
     private static class Comments {
 
         static String recipes = "Packmakers' control panel for internal recipe compat";
-        static String schematics = "Everything related to Schematic tools";
+        // static String schematics = "Everything related to Schematic tools";
         static String kinetics = "Parameters and abilities of Create's kinetic mechanisms";
         static String fluids = "Create's liquid manipulation tools";
         static String logistics = "Tweaks for logistical components";

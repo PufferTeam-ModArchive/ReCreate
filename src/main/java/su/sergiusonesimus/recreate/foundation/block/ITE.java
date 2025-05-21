@@ -34,10 +34,8 @@ public interface ITE<T extends TileEntity> extends ITileEntityProvider {
             TileEntity te = getTileEntityClass().newInstance();
             return te;
         } catch (InstantiationException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;

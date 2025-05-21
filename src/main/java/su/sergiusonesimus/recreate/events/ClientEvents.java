@@ -4,13 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
@@ -20,6 +25,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import su.sergiusonesimus.recreate.ClientProxy;
 import su.sergiusonesimus.recreate.ReCreate;
+import su.sergiusonesimus.recreate.content.contraptions.KineticDebugger;
 import su.sergiusonesimus.recreate.content.contraptions.base.IRotate;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
 import su.sergiusonesimus.recreate.foundation.item.ItemDescription;
@@ -72,7 +78,7 @@ public class ClientEvents {
         // WorldshaperRenderHandler.tick();
         // CouplingHandlerClient.tick();
         // CouplingRenderer.tickDebugModeRenders();
-        // KineticDebugger.tick();
+        KineticDebugger.tick();
         // ExtendoGripRenderHandler.tick();
         // ArmInteractionPointHandler.tick();
         // EjectorTargetHandler.tick();
@@ -85,26 +91,26 @@ public class ClientEvents {
     }
 
     // TODO
-    // @SubscribeEvent
-    // public static void onJoin(PlayerLoggedInEvent event) {
-    // ClientProxy.checkGraphicsFanciness();
-    // }
+    @SubscribeEvent
+    public void onJoin(EntityJoinWorldEvent event) {
+        if (event.entity instanceof EntityPlayerSP) ClientProxy.checkGraphicsFanciness((EntityPlayer) event.entity);
+    }
 
     // TODO
-    // @SubscribeEvent
-    // public static void onLoadWorld(WorldEvent.Load event) {
-    // World world = event.world;
-    // if (world.isRemote && world instanceof WorldClient && !(world instanceof WrappedClientWorld)) {
-    // ClientProxy.invalidateRenderers();
-    // AnimationTickHolder.reset();
-    // }
-    // }
+    @SubscribeEvent
+    public void onLoadWorld(WorldEvent.Load event) {
+        World world = event.world;
+        if (world.isRemote && world instanceof WorldClient /* TODO && !(world instanceof WrappedClientWorld) */) {
+            ClientProxy.invalidateRenderers();
+            AnimationTickHolder.reset();
+        }
+    }
 
     @SubscribeEvent
     public void onUnloadWorld(WorldEvent.Unload event) {
         if (event.world.isRemote) {
+            ClientProxy.invalidateRenderers();
             // TODO
-            // ClientProxy.invalidateRenderers();
             // ClientProxy.SOUL_PULSE_EFFECT_HANDLER.refresh();
             AnimationTickHolder.reset();
         }
@@ -130,7 +136,7 @@ public class ClientEvents {
 
     // TODO
     // @SubscribeEvent
-    // public static void getItemTooltipColor(RenderTooltipEvent.Color event) {
+    // public void getItemTooltipColor(RenderTooltipEvent.Color event) {
     // PonderTooltipHandler.handleTooltipColor(event);
     // }
 
@@ -175,7 +181,7 @@ public class ClientEvents {
 
     // TODO
     // @SubscribeEvent
-    // public static void onRenderTick(RenderTickEvent event) {
+    // public void onRenderTick(RenderTickEvent event) {
     // if (!isGameActive())
     // return;
     // TurntableHandler.gameRenderTick();
@@ -187,7 +193,7 @@ public class ClientEvents {
 
     // TODO
     // @SubscribeEvent
-    // public static void getFogDensity(EntityViewRenderEvent.FogDensity event) {
+    // public void getFogDensity(EntityViewRenderEvent.FogDensity event) {
     // Camera info = event.getInfo();
     // World level = Minecraft.getMinecraft().level;
     // BlockPos blockPos = info.getBlockPosition();
@@ -219,7 +225,7 @@ public class ClientEvents {
 
     // TODO
     // @SubscribeEvent
-    // public static void getFogColor(EntityViewRenderEvent.FogColors event) {
+    // public void getFogColor(EntityViewRenderEvent.FogColors event) {
     // Camera info = event.getInfo();
     // World level = Minecraft.getMinecraft().theWorld;
     // BlockPos blockPos = info.getBlockPosition();
@@ -244,7 +250,7 @@ public class ClientEvents {
 
     // TODO
     // @SubscribeEvent
-    // public static void leftClickEmpty(PlayerInteractEvent event) {
+    // public void leftClickEmpty(PlayerInteractEvent event) {
     // if(event.action != Action.LEFT_CLICK_BLOCK) return;
     // ItemStack stack = event.entityPlayer.getHeldItem();
     // if (stack.getItem() instanceof ZapperItem) {

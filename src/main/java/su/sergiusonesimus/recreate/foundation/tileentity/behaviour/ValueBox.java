@@ -20,7 +20,6 @@ import su.sergiusonesimus.recreate.foundation.utility.outliner.ChasingAABBOutlin
 
 public class ValueBox extends ChasingAABBOutline {
 
-    // TODO
     protected IChatComponent label;
     protected IChatComponent sublabel = new ChatComponentText("");
     protected IChatComponent scrollTooltip = new ChatComponentText("");
@@ -155,6 +154,7 @@ public class ValueBox extends ChasingAABBOutline {
             float scale = 1.5f;
             GL11.glTranslatef(-fontRenderer.getStringWidth(countString.getUnformattedText()), 0, 0);
 
+            // TODO
             /*
              * if (isFilter)
              * GL11.translate(3, 8, 7.25f);

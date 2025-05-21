@@ -2,8 +2,6 @@ package su.sergiusonesimus.recreate.foundation.config;
 
 import net.minecraftforge.common.config.Configuration;
 
-import su.sergiusonesimus.recreate.foundation.config.CServer.Categories;
-
 public class CRecipes {
 
     public static boolean bulkPressing;
@@ -19,40 +17,28 @@ public class CRecipes {
     public static boolean enableRefinedRadianceRecipe;
     public static boolean enableShadowSteelRecipe;
 
-    public static void init(Configuration config) {
-        bulkPressing = config.getBoolean("bulkPressing", Categories.recipes, false, Comments.bulkPressing);
-        bulkCutting = config.getBoolean("bulkCutting", Categories.recipes, false, Comments.bulkCutting);
+    public static void init(String category, Configuration config) {
+        bulkPressing = config.getBoolean("bulkPressing", category, false, Comments.bulkPressing);
+        bulkCutting = config.getBoolean("bulkCutting", category, false, Comments.bulkCutting);
         allowShapelessInMixer = config
-            .getBoolean("allowShapelessInMixer", Categories.recipes, true, Comments.allowShapelessInMixer);
+            .getBoolean("allowShapelessInMixer", category, true, Comments.allowShapelessInMixer);
         allowShapedSquareInPress = config
-            .getBoolean("allowShapedSquareInPress", Categories.recipes, true, Comments.allowShapedSquareInPress);
-        allowRegularCraftingInCrafter = config.getBoolean(
-            "allowRegularCraftingInCrafter",
-            Categories.recipes,
-            true,
-            Comments.allowRegularCraftingInCrafter);
-        allowBiggerFireworksInCrafter = config.getBoolean(
-            "allowBiggerFireworksInCrafter",
-            Categories.recipes,
-            false,
-            Comments.allowBiggerFireworksInCrafter);
+            .getBoolean("allowShapedSquareInPress", category, true, Comments.allowShapedSquareInPress);
+        allowRegularCraftingInCrafter = config
+            .getBoolean("allowRegularCraftingInCrafter", category, true, Comments.allowRegularCraftingInCrafter);
+        allowBiggerFireworksInCrafter = config
+            .getBoolean("allowBiggerFireworksInCrafter", category, false, Comments.allowBiggerFireworksInCrafter);
         allowStonecuttingOnSaw = config
-            .getBoolean("allowStonecuttingOnSaw", Categories.recipes, true, Comments.allowStonecuttingOnSaw);
+            .getBoolean("allowStonecuttingOnSaw", category, true, Comments.allowStonecuttingOnSaw);
         allowWoodcuttingOnSaw = config
-            .getBoolean("allowWoodcuttingOnSaw", Categories.recipes, true, Comments.allowWoodcuttingOnSaw);
-        allowCastingBySpout = config
-            .getBoolean("allowCastingBySpout", Categories.recipes, true, Comments.allowCastingBySpout);
-        lightSourceCountForRefinedRadiance = config.getInt(
-            "lightSourceCountForRefinedRadiance",
-            Categories.recipes,
-            10,
-            1,
-            Integer.MAX_VALUE,
-            Comments.refinedRadiance);
+            .getBoolean("allowWoodcuttingOnSaw", category, true, Comments.allowWoodcuttingOnSaw);
+        allowCastingBySpout = config.getBoolean("allowCastingBySpout", category, true, Comments.allowCastingBySpout);
+        lightSourceCountForRefinedRadiance = config
+            .getInt("lightSourceCountForRefinedRadiance", category, 10, 1, Integer.MAX_VALUE, Comments.refinedRadiance);
         enableRefinedRadianceRecipe = config
-            .getBoolean("enableRefinedRadianceRecipe", Categories.recipes, true, Comments.refinedRadianceRecipe);
+            .getBoolean("enableRefinedRadianceRecipe", category, true, Comments.refinedRadianceRecipe);
         enableShadowSteelRecipe = config
-            .getBoolean("enableShadowSteelRecipe", Categories.recipes, true, Comments.shadowSteelRecipe);
+            .getBoolean("enableShadowSteelRecipe", category, true, Comments.shadowSteelRecipe);
     }
 
     private static class Comments {

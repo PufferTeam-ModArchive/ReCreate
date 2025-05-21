@@ -2,6 +2,7 @@ package su.sergiusonesimus.recreate.content.contraptions.base;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 
+import su.sergiusonesimus.recreate.content.contraptions.KineticDebugger;
 import su.sergiusonesimus.recreate.foundation.utility.Color;
 import su.sergiusonesimus.recreate.util.AnimationTickHolder;
 import su.sergiusonesimus.recreate.util.Direction.Axis;
@@ -30,17 +31,16 @@ public abstract class KineticTileEntityRenderer extends TileEntitySpecialRendere
 
     public static Color getColor(KineticTileEntity te) {
         Color result = Color.WHITE;
-        // TODO
-        // if (KineticDebugger.isActive()) {
-        // rainbowMode = true;
-        // result = te.hasNetwork() ? Color.generateFromLong(te.network) : Color.WHITE;
-        // } else {
-        float overStressedEffect = te.effects.overStressedEffect;
-        if (overStressedEffect != 0) {
-            if (overStressedEffect > 0) result = Color.WHITE.mixWith(Color.RED, overStressedEffect);
-            else result = Color.WHITE.mixWith(Color.SPRING_GREEN, -overStressedEffect);
+        if (KineticDebugger.isActive()) {
+            rainbowMode = true;
+            result = te.hasNetwork() ? Color.generateFromLong(te.network) : Color.WHITE;
+        } else {
+            float overStressedEffect = te.effects.overStressedEffect;
+            if (overStressedEffect != 0) {
+                if (overStressedEffect > 0) result = Color.WHITE.mixWith(Color.RED, overStressedEffect);
+                else result = Color.WHITE.mixWith(Color.SPRING_GREEN, -overStressedEffect);
+            }
         }
-        // }
         return result;
     }
 

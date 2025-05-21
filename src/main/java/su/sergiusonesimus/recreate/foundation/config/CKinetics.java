@@ -2,7 +2,6 @@ package su.sergiusonesimus.recreate.foundation.config;
 
 import net.minecraftforge.common.config.Configuration;
 
-import su.sergiusonesimus.recreate.foundation.config.CServer.Categories;
 import su.sergiusonesimus.recreate.foundation.config.ui.ConfigAnnotations;
 
 public class CKinetics {
@@ -44,6 +43,7 @@ public class CKinetics {
     public static boolean harvesterReplants;
 
     // stress
+    // TODO
     // public static CStress stressValues = nested(1, CStress::new, Comments.stress);
 
     // Stats
@@ -54,19 +54,17 @@ public class CKinetics {
     public static float mediumCapacity;
     public static float highCapacity;
 
-    public static void init(Configuration config) {
+    public static void init(String category, Configuration config) {
         // kinetics
-        disableStress = config.getBoolean("disableStress", CServer.Categories.kinetics, false, Comments.disableStress);
+        disableStress = config.getBoolean("disableStress", category, false, Comments.disableStress);
 
-        maxBeltLength = config
-            .getInt("maxBeltLength", CServer.Categories.kinetics, 20, 5, Integer.MAX_VALUE, Comments.maxBeltLength);
+        maxBeltLength = config.getInt("maxBeltLength", category, 20, 5, Integer.MAX_VALUE, Comments.maxBeltLength);
 
-        crushingDamage = config
-            .getInt("crushingDamage", CServer.Categories.kinetics, 4, 0, Integer.MAX_VALUE, Comments.crushingDamage);
+        crushingDamage = config.getInt("crushingDamage", category, 4, 0, Integer.MAX_VALUE, Comments.crushingDamage);
 
         maxMotorSpeed = config.getInt(
             "maxMotorSpeed",
-            CServer.Categories.kinetics,
+            category,
             256,
             64,
             Integer.MAX_VALUE,
@@ -74,7 +72,7 @@ public class CKinetics {
 
         waterWheelBaseSpeed = config.getInt(
             "waterWheelBaseSpeed",
-            CServer.Categories.kinetics,
+            category,
             4,
             1,
             Integer.MAX_VALUE,
@@ -82,7 +80,7 @@ public class CKinetics {
 
         waterWheelFlowSpeed = config.getInt(
             "waterWheelFlowSpeed",
-            CServer.Categories.kinetics,
+            category,
             4,
             1,
             Integer.MAX_VALUE,
@@ -90,7 +88,7 @@ public class CKinetics {
 
         furnaceEngineSpeed = config.getInt(
             "furnaceEngineSpeed",
-            CServer.Categories.kinetics,
+            category,
             16,
             1,
             Integer.MAX_VALUE,
@@ -98,17 +96,14 @@ public class CKinetics {
 
         maxRotationSpeed = config.getInt(
             "maxRotationSpeed",
-            CServer.Categories.kinetics,
+            category,
             256,
             64,
             Integer.MAX_VALUE,
             Comments.rpm + "\n" + Comments.maxRotationSpeed);
 
-        String ignoreDeployerString = config.getString(
-            "ignoreDeployerAttacks",
-            CServer.Categories.kinetics,
-            "CREEPERS",
-            Comments.ignoreDeployerAttacks);
+        String ignoreDeployerString = config
+            .getString("ignoreDeployerAttacks", category, "CREEPERS", Comments.ignoreDeployerAttacks);
         switch (ignoreDeployerString) {
             case "ALL":
                 ignoreDeployerAttacks = DeployerAggroSetting.ALL;
@@ -124,51 +119,26 @@ public class CKinetics {
 
         kineticValidationFrequency = config.getInt(
             "kineticValidationFrequency",
-            CServer.Categories.kinetics,
+            category,
             60,
             5,
             Integer.MAX_VALUE,
             Comments.kineticValidationFrequency);
 
-        crankHungerMultiplier = config.getFloat(
-            "crankHungerMultiplier",
-            CServer.Categories.kinetics,
-            0.01f,
-            0.0f,
-            1.0f,
-            Comments.crankHungerMultiplier);
+        crankHungerMultiplier = config
+            .getFloat("crankHungerMultiplier", category, 0.01f, 0.0f, 1.0f, Comments.crankHungerMultiplier);
 
-        minimumWindmillSails = config.getInt(
-            "minimumWindmillSails",
-            CServer.Categories.kinetics,
-            8,
-            0,
-            Integer.MAX_VALUE,
-            Comments.minimumWindmillSails);
+        minimumWindmillSails = config
+            .getInt("minimumWindmillSails", category, 8, 0, Integer.MAX_VALUE, Comments.minimumWindmillSails);
 
-        windmillSailsPerRPM = config.getInt(
-            "windmillSailsPerRPM",
-            CServer.Categories.kinetics,
-            8,
-            1,
-            Integer.MAX_VALUE,
-            Comments.windmillSailsPerRPM);
+        windmillSailsPerRPM = config
+            .getInt("windmillSailsPerRPM", category, 8, 1, Integer.MAX_VALUE, Comments.windmillSailsPerRPM);
 
-        maxEjectorDistance = config.getInt(
-            "maxEjectorDistance",
-            CServer.Categories.kinetics,
-            32,
-            0,
-            Integer.MAX_VALUE,
-            Comments.maxEjectorDistance);
+        maxEjectorDistance = config
+            .getInt("maxEjectorDistance", category, 32, 0, Integer.MAX_VALUE, Comments.maxEjectorDistance);
 
-        ejectorScanInterval = config.getInt(
-            "ejectorScanInterval",
-            CServer.Categories.kinetics,
-            120,
-            10,
-            Integer.MAX_VALUE,
-            Comments.ejectorScanInterval);
+        ejectorScanInterval = config
+            .getInt("ejectorScanInterval", category, 120, 10, Integer.MAX_VALUE, Comments.ejectorScanInterval);
 
         // Encased Fan
         config.addCustomCategoryComment(Categories.encasedFan, "Encased Fan");

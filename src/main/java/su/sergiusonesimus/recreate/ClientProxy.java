@@ -1,5 +1,6 @@
 package su.sergiusonesimus.recreate;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -70,35 +71,33 @@ public class ClientProxy extends CommonProxy {
         return cogwheelRenderID;
     }
 
-    // TODO
-    // public static void invalidateRenderers() {
-    // BUFFER_CACHE.invalidate();
-    //
-    // ContraptionRenderDispatcher.reset();
-    // }
+    public static void invalidateRenderers() {
+        // TODO
+        // BUFFER_CACHE.invalidate();
+        //
+        // ContraptionRenderDispatcher.reset();
+    }
 
-    // TODO
-    // public static void checkGraphicsFanciness() {
-    // Minecraft mc = Minecraft.getMinecraft();
-    // if (mc.thePlayer == null)
-    // return;
-    //
-    // if (mc.options.graphicsMode != GraphicsStatus.FABULOUS)
-    // return;
-    //
-    // if (AllConfigs.CLIENT.ignoreFabulousWarning)
-    // return;
-    //
-    // IChatComponent text = ComponentUtils.wrapInSquareBrackets(new ChatComponentText("WARN"))
-    // .withStyle(EnumChatFormatting.GOLD)
-    // .append(new ChatComponentText(
-    // " Some of Create's visual features will not be available while Fabulous graphics are enabled!"))
-    // .withStyle(style -> style
-    // .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/create dismissFabulousWarning"))
-    // .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-    // new ChatComponentText("Click here to disable this warning"))));
-    //
-    // mc.gui.handleChat(ChatType.CHAT, text, mc.thePlayer.getUniqueID());
-    // }
+    public static void checkGraphicsFanciness(EntityPlayer player) {
+        // TODO This method is probably useless, since there're no fabulous settings on 1.7.10
+        // if (!Minecraft.isFancyGraphicsEnabled()) return;
+        //
+        // if (AllConfigs.CLIENT.ignoreFabulousWarning) return;
+        //
+        // IChatComponent text = new ChatComponentText("[WARN]");
+        // text.getChatStyle()
+        // .setColor(EnumChatFormatting.GOLD);
+        // text.appendSibling(
+        // new ChatComponentText(
+        // " Some of Create's visual features will not be available while Fabulous graphics are enabled!"));
+        // text.getChatStyle()
+        // .setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/create dismissFabulousWarning"))
+        // .setChatHoverEvent(
+        // new HoverEvent(
+        // HoverEvent.Action.SHOW_TEXT,
+        // new ChatComponentText("Click here to disable this warning")));
+        //
+        // player.addChatMessage(text);
+    }
 
 }

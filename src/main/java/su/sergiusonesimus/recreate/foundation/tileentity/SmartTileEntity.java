@@ -233,7 +233,6 @@ public abstract class SmartTileEntity extends SyncedTileEntity implements IParti
         try {
             buffer.writeNBTTagCompoundToBuffer(this.getUpdateTag());
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

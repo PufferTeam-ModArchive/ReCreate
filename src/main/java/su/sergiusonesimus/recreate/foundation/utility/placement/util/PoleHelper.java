@@ -10,6 +10,7 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
+import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
 import su.sergiusonesimus.recreate.foundation.utility.Pair;
 import su.sergiusonesimus.recreate.foundation.utility.placement.IPlacementHelper;
 import su.sergiusonesimus.recreate.foundation.utility.placement.PlacementOffset;
@@ -63,16 +64,15 @@ public abstract class PoleHelper<T extends Comparable<T>> implements IPlacementH
         List<Direction> directions = IPlacementHelper
             .orderedByDistance(x, y, z, ray.hitVec, dir -> dir.getAxis() == axisFunction.apply(Pair.of(block, meta)));
         for (Direction dir : directions) {
+            int range = AllConfigs.SERVER.curiosities.placementAssistRange;
             // TODO
-            // int range = AllConfigs.SERVER.curiosities.placementAssistRange;
             // if (player != null) {
             // AttributeInstance reach = player.getAttribute(ForgeMod.REACH_DISTANCE.get());
             // if (reach != null && reach.hasModifier(ExtendoGripItem.singleRangeAttributeModifier))
             // range += 4;
             // }
             int poles = attachedPoles(world, x, y, z, dir);
-            // if (poles >= range)
-            // continue;
+            if (poles >= range) continue;
 
             ChunkCoordinates dirNormal = dir.getNormal();
             int newX = x + dirNormal.posX * (poles + 1);
