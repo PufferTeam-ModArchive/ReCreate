@@ -19,6 +19,7 @@ public class CogWheelRenderBlock implements ISimpleBlockRenderingHandler {
     final int renderID;
     private final ShaftModel shaft = new ShaftModel();
     private final CogWheelModel cogwheel = new CogWheelModel();
+    private final LargeCogWheelModel largeCogwheel = new LargeCogWheelModel();
 
     public CogWheelRenderBlock(int blockComplexRenderID) {
         this.renderID = blockComplexRenderID;
@@ -36,7 +37,8 @@ public class CogWheelRenderBlock implements ISimpleBlockRenderingHandler {
             cogwheel.setAxis(axis);
             cogwheel.render();
         } else {
-
+            largeCogwheel.setAxis(axis);
+            largeCogwheel.render();
         }
 
         GL11.glTranslatef(-0.25F, -0.25F, -0.25F);
@@ -53,11 +55,23 @@ public class CogWheelRenderBlock implements ISimpleBlockRenderingHandler {
             || !(world.getBlock(mop.blockX, mop.blockY, mop.blockZ) instanceof AbstractShaftBlock)) return false;
 
         Axis axis = ((AbstractShaftBlock) block).getAxis(world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ));
+        if (ICogWheel.isLargeCog(block) && ICogWheel.isLargeCog(world.getBlock(mop.blockX, mop.blockY, mop.blockZ)))
+            switch (axis) {
+            case X:
+            axis = mop.blockY == y ? Axis.Z : Axis.Y;
+            break;
+            case Y:
+            axis = mop.blockZ == z ? Axis.X : Axis.Z;
+            break;
+            case Z:
+            axis = mop.blockX == x ? Axis.Y : Axis.X;
+            break;
+            }
         shaft.setAxis(axis);
         if (!((CogWheelBlock) block).isLarge) {
             cogwheel.setAxis(axis);
         } else {
-
+            largeCogwheel.setAxis(axis);
         }
 
         GL11.glPushMatrix();
@@ -67,7 +81,7 @@ public class CogWheelRenderBlock implements ISimpleBlockRenderingHandler {
         if (!((CogWheelBlock) block).isLarge) {
             cogwheel.render();
         } else {
-
+            largeCogwheel.render();
         }
 
         GL11.glPopMatrix();

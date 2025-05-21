@@ -7,11 +7,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MovingObjectPosition;
@@ -27,6 +24,7 @@ import su.sergiusonesimus.recreate.foundation.block.ITE;
 import su.sergiusonesimus.recreate.foundation.utility.Iterate;
 import su.sergiusonesimus.recreate.util.Direction;
 import su.sergiusonesimus.recreate.util.Direction.Axis;
+import su.sergiusonesimus.recreate.util.Raytracer;
 
 @ParametersAreNonnullByDefault
 public class CogWheelBlock extends AbstractShaftBlock implements ITE<CogWheelTileEntity>, ICogWheel {
@@ -38,7 +36,7 @@ public class CogWheelBlock extends AbstractShaftBlock implements ITE<CogWheelTil
         this.setHardness(2.0F);
         this.setResistance(5.0F);
         this.setStepSound(soundTypeWood);
-        this.setBlockTextureName("planks_spruce");
+        this.setBlockTextureName("planks_oak");
         isLarge = large;
     }
 
@@ -172,8 +170,8 @@ public class CogWheelBlock extends AbstractShaftBlock implements ITE<CogWheelTil
         double cogMaxY = 1;
         double cogMaxZ = 1;
         double d = 1d / 16d;
-        double minThickness = 6 * d;
-        double maxThickness = 1D - 6 * d;
+        double minThickness = isSmallCog() ? 6 * d : 5.5d * d;
+        double maxThickness = isSmallCog() ? 1D - 6 * d : 1D - 5.5d * d;
         double minDiameter = isSmallCog() ? 2 * d : 0D;
         double maxDiameter = isSmallCog() ? 1d - 2 * d : 1D;
         switch (meta) {
@@ -412,6 +410,9 @@ public class CogWheelBlock extends AbstractShaftBlock implements ITE<CogWheelTil
             ChunkCoordinates facingNormal = facing.getNormal();
             Block block = worldIn.getBlock(x + facingNormal.posX, y + facingNormal.posY, z + facingNormal.posZ);
             int meta = worldIn.getBlockMetadata(x + facingNormal.posX, y + facingNormal.posY, z + facingNormal.posZ);
+            // if(large && !block.isReplaceable(worldIn, x + facingNormal.posX, y + facingNormal.posY, z +
+            // facingNormal.posZ))
+            // return false;
             if (block instanceof RotatedPillarKineticBlock
                 && facing.getAxis() == ((RotatedPillarKineticBlock) block).getAxis(meta)) continue;
 
@@ -420,25 +421,7 @@ public class CogWheelBlock extends AbstractShaftBlock implements ITE<CogWheelTil
         return true;
     }
 
-    @Override
-    public int onBlockPlaced(World worldIn, int x, int y, int z, int side, float subX, float subY, float subZ,
-        int meta) {
-        int localMeta = this.getMetaFromDirection(Direction.from3DDataValue(side));
-        worldIn.setBlockMetadataWithNotify(x, y, z, localMeta, 24);
-        return localMeta;
-    }
-
-    @Override
-    public void onBlockPlacedBy(World worldIn, int x, int y, int z, EntityLivingBase placer, ItemStack itemIn) {
-        Axis preferredAxis = getAxisForPlacement(worldIn, x, y, z);
-        int meta = worldIn.getBlockMetadata(x, y, z);
-        if (preferredAxis != null && (placer == null || !placer.isSneaking())) {
-            meta = this.getMetaFromAxis(preferredAxis);
-        }
-        worldIn.setBlockMetadataWithNotify(x, y, z, meta, 2);
-    }
-
-    protected Axis getAxisForPlacement(World worldIn, int x, int y, int z) {
+    protected Axis getAxisForPlacement(World worldIn, int x, int y, int z, EntityPlayer placer) {
         // TODO
         // Block blockBelow = worldIn.getBlock(x, y - 1, z);
         // int metaBelow = worldIn.getBlockMetadata(x, y - 1, z);
@@ -446,7 +429,8 @@ public class CogWheelBlock extends AbstractShaftBlock implements ITE<CogWheelTil
         // if (AllBlocks.ROTATION_SPEED_CONTROLLER.has(blockBelow) && isLargeCog())
         // return blockBelow.getValue(SpeedControllerBlock.HORIZONTAL_AXIS) == Axis.X ? Axis.Z : Axis.X;
 
-        MovingObjectPosition mop = Minecraft.getMinecraft().objectMouseOver;
+        MovingObjectPosition mop = Raytracer.raytracePlayerView(placer);
+        if (mop == null) return null;
         Direction sideNormal = Direction.from3DDataValue(mop.sideHit);
         ChunkCoordinates normalAgainst = sideNormal.getOpposite()
             .getNormal();

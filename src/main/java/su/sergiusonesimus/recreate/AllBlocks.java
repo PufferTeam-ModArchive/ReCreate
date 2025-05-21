@@ -8,6 +8,7 @@ import net.minecraft.item.ItemBlock;
 import cpw.mods.fml.common.registry.GameRegistry;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelBlock;
+import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelItemBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftBlock;
 
 public class AllBlocks {
@@ -27,8 +28,8 @@ public class AllBlocks {
 
         registerMyBlock(shaft);
         registerMyBlock(creativeMotor);
-        registerMyBlock(cogwheel);
-        registerMyBlock(largeCogwheel);
+        registerMyBlock(cogwheel, CogWheelItemBlock.class);
+        registerMyBlock(largeCogwheel, CogWheelItemBlock.class);
     }
 
     private static void registerMyBlock(Block block, Class<? extends ItemBlock> pickup, BlockSlab singleSlab,

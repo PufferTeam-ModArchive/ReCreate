@@ -9,10 +9,7 @@ public class CogWheelModel extends AbstractShaftModel {
 
     ModelRenderer hub;
     ModelRenderer disk;
-    ModelRenderer cog1;
-    ModelRenderer cog2;
-    ModelRenderer cog3;
-    ModelRenderer cog4;
+    ModelRenderer[] cogs = new ModelRenderer[4];
 
     public CogWheelModel() {
         super(AllModelTextures.COGWHEEL, 48, 32);
@@ -27,40 +24,16 @@ public class CogWheelModel extends AbstractShaftModel {
         disk.setRotationPoint(0F, 0F, 0F);
         core.addChild(disk);
 
-        int cogOffsetU = 0;
-        int cogOffsetV = 1;
         int cogWidth = 3;
         int cogHeight = 18;
-        float cogRPX = 0F;
-        float cogRPY = 0F;
-        float cogRPZ = 0F;
-        float rotX = (float) (Math.PI / 2F);
-        cog1 = new ModelRenderer(this, cogOffsetU, cogOffsetV).setTextureSize(textureWidth, textureHeight);
-        cog1.addBox(-cogWidth / 2F, -cogHeight / 2F, -cogWidth / 2F, cogWidth, cogHeight, cogWidth, 0F);
-        cog1.setRotationPoint(cogRPX, cogRPY, cogRPZ);
-        cog1.rotateAngleX = rotX;
-        core.addChild(cog1);
-
-        cog2 = new ModelRenderer(this, cogOffsetU, cogOffsetV).setTextureSize(textureWidth, textureHeight);
-        cog2.addBox(-cogWidth / 2F, -cogHeight / 2F, -cogWidth / 2F, cogWidth, cogHeight, cogWidth, 0F);
-        cog2.setRotationPoint(cogRPX, cogRPY, cogRPZ);
-        cog2.rotateAngleX = rotX;
-        cog2.rotateAngleY = (float) (Math.PI / 4F);
-        core.addChild(cog2);
-
-        cog3 = new ModelRenderer(this, cogOffsetU, cogOffsetV).setTextureSize(textureWidth, textureHeight);
-        cog3.addBox(-cogWidth / 2F, -cogHeight / 2F, -cogWidth / 2F, cogWidth, cogHeight, cogWidth, 0F);
-        cog3.setRotationPoint(cogRPX, cogRPY, cogRPZ);
-        cog3.rotateAngleX = rotX;
-        cog3.rotateAngleY = (float) (Math.PI / 2F);
-        core.addChild(cog3);
-
-        cog4 = new ModelRenderer(this, cogOffsetU, cogOffsetV).setTextureSize(textureWidth, textureHeight);
-        cog4.addBox(-cogWidth / 2F, -cogHeight / 2F, -cogWidth / 2F, cogWidth, cogHeight, cogWidth, 0F);
-        cog4.setRotationPoint(cogRPX, cogRPY, cogRPZ);
-        cog4.rotateAngleX = rotX;
-        cog4.rotateAngleY = (float) (Math.PI * 3F / 4F);
-        core.addChild(cog4);
+        for (int i = 0; i < cogs.length; i++) {
+            cogs[i] = new ModelRenderer(this, 0, 1).setTextureSize(textureWidth, textureHeight);
+            cogs[i].addBox(-cogWidth / 2F, -cogHeight / 2F, -cogWidth / 2F, cogWidth, cogHeight, cogWidth, 0F);
+            cogs[i].setRotationPoint(0F, 0F, 0F);
+            cogs[i].rotateAngleX = (float) (Math.PI / 2F);
+            cogs[i].rotateAngleY = (float) (Math.PI * i / 4F);
+            core.addChild(cogs[i]);
+        }
     }
 
 }

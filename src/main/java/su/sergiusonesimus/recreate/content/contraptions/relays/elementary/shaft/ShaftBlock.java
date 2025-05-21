@@ -216,7 +216,7 @@ public class ShaftBlock extends AbstractShaftBlock implements ITE<ShaftTileEntit
 
         @Override
         public Predicate<Pair<Block, Integer>> getBlockPredicate() {
-            return block -> block.getFirst() instanceof AbstractShaftBlock;
+            return block -> block.getFirst() instanceof ShaftBlock;
         }
     }
 }

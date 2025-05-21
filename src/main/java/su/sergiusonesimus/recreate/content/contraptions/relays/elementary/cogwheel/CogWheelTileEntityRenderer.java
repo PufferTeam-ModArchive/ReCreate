@@ -14,6 +14,7 @@ public class CogWheelTileEntityRenderer extends KineticTileEntityRenderer {
 
     private final ShaftModel shaft = new ShaftModel();
     private final CogWheelModel cogwheel = new CogWheelModel();
+    private final LargeCogWheelModel largeCogwheel = new LargeCogWheelModel();
 
     @Override
     public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partialTicks) {
@@ -31,7 +32,9 @@ public class CogWheelTileEntityRenderer extends KineticTileEntityRenderer {
             cogwheel.setAxis(axis);
             cogwheel.setRotation(angle);
         } else {
-
+            largeCogwheel.setAxis(axis);
+            if (!shouldOffset(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, axis)) angle -= Math.PI / 16F;
+            largeCogwheel.setRotation(angle);
         }
         Color color = getColor((KineticTileEntity) tileEntity);
 
@@ -43,7 +46,7 @@ public class CogWheelTileEntityRenderer extends KineticTileEntityRenderer {
         if (!block.isLarge) {
             cogwheel.render();
         } else {
-
+            largeCogwheel.render();
         }
 
         GL11.glPopMatrix();

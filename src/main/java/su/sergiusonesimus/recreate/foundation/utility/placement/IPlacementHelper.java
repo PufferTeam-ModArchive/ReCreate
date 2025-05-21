@@ -199,6 +199,11 @@ public interface IPlacementHelper {
     }
 
     static List<Direction> orderedByDistance(int x, int y, int z, Vec3 hit, Predicate<Direction> includeDirection) {
+        if (hit.xCoord >= 0 && hit.xCoord <= 1
+            && hit.yCoord >= 0
+            && hit.yCoord <= 1
+            && hit.zCoord >= 0
+            && hit.zCoord <= 1) hit = hit.addVector(x, y, z);
         Vec3 centerToHit = VecHelper.getCenterOf(x, y, z)
             .subtract(hit);
         return Arrays.stream(Iterate.directions)
