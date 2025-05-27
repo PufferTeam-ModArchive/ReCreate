@@ -1,9 +1,16 @@
 package su.sergiusonesimus.recreate.content.contraptions.base;
 
+import java.util.List;
+
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 
 import su.sergiusonesimus.recreate.content.contraptions.KineticNetwork;
 import su.sergiusonesimus.recreate.content.contraptions.base.IRotate.SpeedLevel;
+import su.sergiusonesimus.recreate.content.contraptions.goggles.IHaveGoggleInformation;
+import su.sergiusonesimus.recreate.foundation.utility.Lang;
 
 public abstract class GeneratingKineticTileEntity extends KineticTileEntity {
 
@@ -38,36 +45,48 @@ public abstract class GeneratingKineticTileEntity extends KineticTileEntity {
         }
     }
 
-    // TODO
-    // @Override
-    // public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-    // boolean added = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-    //
-    // float stressBase = calculateAddedStressCapacity();
-    // if (stressBase != 0 && IRotate.StressImpact.isEnabled()) {
-    // tooltip.add(componentSpacing.plainCopy().append(Lang.translate("gui.goggles.generator_stats")));
-    // tooltip.add(componentSpacing.plainCopy().append(Lang.translate("tooltip.capacityProvided").withStyle(ChatFormatting.GRAY)));
-    //
-    // float speed = getTheoreticalSpeed();
-    // if (speed != getGeneratedSpeed() && speed != 0)
-    // stressBase *= getGeneratedSpeed() / speed;
-    //
-    // speed = Math.abs(speed);
-    // float stressTotal = stressBase * speed;
-    //
-    // tooltip.add(
-    // componentSpacing.plainCopy()
-    // .append(new TextComponent(" " + IHaveGoggleInformation.format(stressTotal))
-    // .append(Lang.translate("generic.unit.stress"))
-    // .withStyle(ChatFormatting.AQUA))
-    // .append(" ")
-    // .append(Lang.translate("gui.goggles.at_current_speed").withStyle(ChatFormatting.DARK_GRAY)));
-    //
-    // added = true;
-    // }
-    //
-    // return added;
-    // }
+    @Override
+    public boolean addToGoggleTooltip(List<IChatComponent> tooltip, boolean isPlayerSneaking) {
+        boolean added = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+
+        float stressBase = calculateAddedStressCapacity();
+        if (stressBase != 0 && IRotate.StressImpact.isEnabled()) {
+            tooltip.add(
+                componentSpacing.createCopy()
+                    .appendSibling(Lang.translate("gui.goggles.generator_stats")));
+            IChatComponent capacityProvided = Lang.translate("tooltip.capacityProvided", "");
+            capacityProvided.getChatStyle()
+                .setColor(EnumChatFormatting.GRAY);
+            tooltip.add(
+                componentSpacing.createCopy()
+                    .appendSibling(capacityProvided));
+
+            float speed = getTheoreticalSpeed();
+            if (speed != getGeneratedSpeed() && speed != 0) stressBase *= getGeneratedSpeed() / speed;
+
+            speed = Math.abs(speed);
+            float stressTotal = stressBase * speed;
+
+            IChatComponent stress = new ChatComponentText(" " + IHaveGoggleInformation.format(stressTotal))
+                .appendSibling(Lang.translate("generic.unit.stress"));
+            stress.getChatStyle()
+                .setColor(EnumChatFormatting.AQUA);
+
+            IChatComponent atCurrentSpeed = Lang.translate("gui.goggles.at_current_speed");
+            atCurrentSpeed.getChatStyle()
+                .setColor(EnumChatFormatting.DARK_GRAY);
+
+            tooltip.add(
+                componentSpacing.createCopy()
+                    .appendSibling(stress)
+                    .appendText(" ")
+                    .appendSibling(atCurrentSpeed));
+
+            added = true;
+        }
+
+        return added;
+    }
 
     public void updateGeneratedRotation() {
         float speed = getGeneratedSpeed();

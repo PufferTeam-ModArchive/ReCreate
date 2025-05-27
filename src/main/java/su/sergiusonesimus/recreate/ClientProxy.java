@@ -1,5 +1,6 @@
 package su.sergiusonesimus.recreate;
 
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -10,6 +11,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorRenderBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorTileEntityRenderer;
+import su.sergiusonesimus.recreate.content.contraptions.goggles.GogglesModel;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelRenderBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelTileEntityRenderer;
@@ -25,6 +27,8 @@ public class ClientProxy extends CommonProxy {
     int shaftRenderID;
     int creativeMotorRenderID;
     int cogwheelRenderID;
+
+    ModelBiped gogglesArmorModel;
 
     // TODO
     public static final Outliner OUTLINER = new Outliner();
@@ -57,18 +61,9 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(new CreativeMotorRenderBlock(creativeMotorRenderID));
         cogwheelRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new CogWheelRenderBlock(cogwheelRenderID));
-    }
 
-    public int getShaftBlockRenderID() {
-        return shaftRenderID;
-    }
-
-    public int getCreativeMotorBlockRenderID() {
-        return creativeMotorRenderID;
-    }
-
-    public int getCogWheelBlockRenderID() {
-        return cogwheelRenderID;
+        // armor model
+        gogglesArmorModel = new GogglesModel();
     }
 
     public static void invalidateRenderers() {
@@ -98,6 +93,26 @@ public class ClientProxy extends CommonProxy {
         // new ChatComponentText("Click here to disable this warning")));
         //
         // player.addChatMessage(text);
+    }
+
+    public int getShaftBlockRenderID() {
+        return shaftRenderID;
+    }
+
+    public int getCreativeMotorBlockRenderID() {
+        return creativeMotorRenderID;
+    }
+
+    public int getCogWheelBlockRenderID() {
+        return cogwheelRenderID;
+    }
+
+    public ModelBiped getGogglesArmorModel() {
+        return gogglesArmorModel;
+    }
+
+    public int registerArmorRenderID(String prefix) {
+        return RenderingRegistry.addNewArmourRendererPrefix(prefix);
     }
 
 }

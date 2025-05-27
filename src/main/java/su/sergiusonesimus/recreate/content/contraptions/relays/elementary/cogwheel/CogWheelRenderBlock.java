@@ -27,7 +27,6 @@ public class CogWheelRenderBlock implements ISimpleBlockRenderingHandler {
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
-        GL11.glTranslatef(0.25F, 0.25F, 0.25F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         Axis axis = Axis.Y;
@@ -40,8 +39,6 @@ public class CogWheelRenderBlock implements ISimpleBlockRenderingHandler {
             largeCogwheel.setAxis(axis);
             largeCogwheel.render();
         }
-
-        GL11.glTranslatef(-0.25F, -0.25F, -0.25F);
 
         block.setBlockBoundsForItemRender();
     }

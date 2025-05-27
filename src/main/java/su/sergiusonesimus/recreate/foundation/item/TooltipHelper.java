@@ -22,6 +22,7 @@ import net.minecraft.util.StatCollector;
 
 import com.google.common.base.Strings;
 
+import su.sergiusonesimus.recreate.AllItems;
 import su.sergiusonesimus.recreate.content.AllSections;
 import su.sergiusonesimus.recreate.content.contraptions.goggles.IHaveGoggleInformation;
 import su.sergiusonesimus.recreate.foundation.item.ItemDescription.Palette;
@@ -50,7 +51,7 @@ public class TooltipHelper {
 
     public static void addHint(List<IChatComponent> tooltip, String hintKey, Object... messageParams) {
         IChatComponent spacing = IHaveGoggleInformation.componentSpacing;
-        IChatComponent spacingCopy = TextHelper.plainCopy(spacing)
+        IChatComponent spacingCopy = spacing.createCopy()
             .appendSibling(Lang.translate(hintKey + ".title"));
         spacingCopy.getChatStyle()
             .setColor(EnumChatFormatting.GOLD);
@@ -60,7 +61,7 @@ public class TooltipHelper {
             .cutTextComponent(hint, EnumChatFormatting.GRAY, EnumChatFormatting.WHITE);
         for (IChatComponent component : cutComponent) {
             tooltip.add(
-                TextHelper.plainCopy(spacing)
+                spacing.createCopy()
                     .appendSibling(component));
         }
     }
@@ -193,7 +194,7 @@ public class TooltipHelper {
 
         boolean currentlyHighlighted = false;
         for (String string : lines) {
-            IChatComponent currentComponent = TextHelper.plainCopy(lineStart);
+            IChatComponent currentComponent = lineStart.createCopy();
             String[] split = string.split("_");
             for (String part : split) {
                 IChatComponent partComponent = new ChatComponentText(part);
@@ -223,16 +224,19 @@ public class TooltipHelper {
     public static boolean hasTooltip(ItemStack stack, EntityPlayer player) {
         checkLocale();
 
-        // TODO
-        // boolean hasGlasses = AllItems.GOGGLES.isIn(player.getItemBySlot(EquipmentSlot.HEAD));
-        //
-        // if (hasGlasses != gogglesMode) {
-        // gogglesMode = hasGlasses;
-        // cachedTooltips.clear();
-        // }
+        ItemStack helmet = player.getEquipmentInSlot(4);
+        boolean hasGlasses = helmet != null && helmet.getItem() == AllItems.goggles;
+
+        if (hasGlasses != gogglesMode) {
+            gogglesMode = hasGlasses;
+            cachedTooltips.clear();
+        }
 
         String key = getTooltipTranslationKey(stack);
-        if (cachedTooltips.containsKey(key)) return cachedTooltips.get(key) != ItemDescription.MISSING;
+        if (cachedTooltips.containsKey(key)) {
+            ItemDescription description = cachedTooltips.get(key);
+            return description != ItemDescription.MISSING;
+        }
         return findTooltip(stack);
     }
 

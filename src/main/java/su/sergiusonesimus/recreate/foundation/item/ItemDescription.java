@@ -19,6 +19,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
@@ -26,6 +28,7 @@ import net.minecraft.util.IChatComponent;
 
 import org.lwjgl.input.Keyboard;
 
+import su.sergiusonesimus.recreate.AllItems;
 import su.sergiusonesimus.recreate.content.contraptions.base.IRotate;
 import su.sergiusonesimus.recreate.content.contraptions.base.IRotate.SpeedLevel;
 import su.sergiusonesimus.recreate.content.contraptions.base.IRotate.StressImpact;
@@ -33,7 +36,6 @@ import su.sergiusonesimus.recreate.foundation.block.BlockStressValues;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
 import su.sergiusonesimus.recreate.foundation.config.CKinetics;
 import su.sergiusonesimus.recreate.foundation.utility.Lang;
-import su.sergiusonesimus.recreate.util.TextHelper;
 
 public class ItemDescription {
 
@@ -85,8 +87,8 @@ public class ItemDescription {
         CKinetics config = AllConfigs.SERVER.kinetics;
         IChatComponent rpmUnit = Lang.translate("generic.unit.rpm");
 
-        // TODO
-        // boolean hasGoggles = AllItems.GOGGLES.isIn(Minecraft.getMinecraft().thePlayer.getEquipmentInSlot(0));
+        ItemStack helmet = Minecraft.getMinecraft().thePlayer.getEquipmentInSlot(4);
+        boolean hasGoggles = helmet != null && helmet.getItem() == AllItems.goggles;
 
         SpeedLevel minimumRequiredSpeedLevel;
         boolean showStressImpact;
@@ -111,15 +113,12 @@ public class ItemDescription {
             level.getChatStyle()
                 .setColor(minimumRequiredSpeedLevel.getTextColor());
 
-            // TODO
-            // if (hasGoggles)
-            // level.appendText(String.valueOf(minimumRequiredSpeedLevel.getSpeedValue()))
-            // .appendSibling(rpmUnit)
-            // .appendText("+");
-            // else
-            level.appendSibling(speedLevels.get(index));
+            if (hasGoggles) level.appendText(String.valueOf(minimumRequiredSpeedLevel.getSpeedValue()))
+                .appendSibling(rpmUnit)
+                .appendText("+");
+            else level.appendSibling(speedLevels.get(index));
 
-            IChatComponent speedRequirement = Lang.translate("tooltip.speedRequirement");
+            IChatComponent speedRequirement = Lang.translate("tooltip.speedRequirement", "");
             speedRequirement.getChatStyle()
                 .setColor(GRAY);
             list.add(speedRequirement);
@@ -136,14 +135,11 @@ public class ItemDescription {
             level.getChatStyle()
                 .setColor(impactId.getAbsoluteColor());
 
-            // TODO
-            // if (hasGoggles)
-            // level.appendText(impact + "x ")
-            // .appendSibling(rpmUnit);
-            // else
-            level.appendSibling(stressLevels.get(index));
+            if (hasGoggles) level.appendText(impact + "x ")
+                .appendSibling(rpmUnit);
+            else level.appendSibling(stressLevels.get(index));
 
-            IChatComponent stressImpact = Lang.translate("tooltip.stressImpact");
+            IChatComponent stressImpact = Lang.translate("tooltip.stressImpact", "");
             stressImpact.getChatStyle()
                 .setColor(GRAY);
             list.add(stressImpact);
@@ -161,21 +157,18 @@ public class ItemDescription {
             level.getChatStyle()
                 .setColor(impactId.getAbsoluteColor());
 
-            // TODO
-            // if (hasGoggles)
-            // level.appendText(capacity + "x ")
-            // .appendSibling(rpmUnit);
-            // else
-            level.appendSibling(stressCapacityLevels.get(index));
+            if (hasGoggles) level.appendText(capacity + "x ")
+                .appendSibling(rpmUnit);
+            else level.appendSibling(stressCapacityLevels.get(index));
 
-            IChatComponent capacityProvided = Lang.translate("tooltip.capacityProvided");
+            IChatComponent capacityProvided = Lang.translate("tooltip.capacityProvided", "");
             capacityProvided.getChatStyle()
                 .setColor(GRAY);
             list.add(capacityProvided);
             list.add(level);
 
             IChatComponent genSpeed = generatorSpeed(block, rpmUnit);
-            if (!genSpeed.getFormattedText()
+            if (!genSpeed.getUnformattedText()
                 .isEmpty()) {
                 IChatComponent appendedComponent = new ChatComponentText(" ").appendSibling(genSpeed);
                 appendedComponent.getChatStyle()
@@ -218,10 +211,10 @@ public class ItemDescription {
 
         if (hasDescription || hasControls) {
             String[] holdDesc = Lang.translate("tooltip.holdForDescription", "$")
-                .getFormattedText()
+                .getUnformattedText()
                 .split("\\$");
             String[] holdCtrl = Lang.translate("tooltip.holdForControls", "$")
-                .getFormattedText()
+                .getUnformattedText()
                 .split("\\$");
             IChatComponent keyShift = Lang.translate("tooltip.keyShift");
             IChatComponent keyCtrl = Lang.translate("tooltip.keyCtrl");
@@ -240,7 +233,7 @@ public class ItemDescription {
                     appender.getChatStyle()
                         .setColor(DARK_GRAY);
                     tabBuilder.appendSibling(appender);
-                    appender = TextHelper.plainCopy(keyCtrl);
+                    appender = keyCtrl.createCopy();
                     appender.getChatStyle()
                         .setColor(ctrl ? WHITE : GRAY);
                     tabBuilder.appendSibling(appender);
@@ -257,7 +250,7 @@ public class ItemDescription {
                     appender.getChatStyle()
                         .setColor(DARK_GRAY);
                     tabBuilder.appendSibling(appender);
-                    appender = TextHelper.plainCopy(keyShift);
+                    appender = keyShift.createCopy();
                     appender.getChatStyle()
                         .setColor(ctrl ? WHITE : GRAY);
                     tabBuilder.appendSibling(appender);

@@ -47,7 +47,7 @@ public interface IHaveGoggleInformation {
     default boolean containedFluidTooltip(List<IChatComponent> tooltip, boolean isPlayerSneaking,
         LazyOptional<IFluidHandler> handler) {
         tooltip.add(
-            TextHelper.plainCopy(componentSpacing)
+            componentSpacing.createCopy()
                 .appendSibling(Lang.translate("gui.goggles.fluid_container")));
         ChatComponentTranslation mb = Lang.translate("generic.unit.millibuckets");
         Optional<IFluidHandler> resolve = handler.resolve();
@@ -79,10 +79,10 @@ public interface IHaveGoggleInformation {
                 .setColor(EnumChatFormatting.DARK_GRAY);
 
             tooltip.add(
-                TextHelper.plainCopy(indent)
+                indent.createCopy()
                     .appendSibling(fluidName));
             tooltip.add(
-                TextHelper.plainCopy(indent)
+                indent.createCopy()
                     .appendSibling(contained)
                     .appendSibling(slash)
                     .appendSibling(capacity));
@@ -106,7 +106,7 @@ public interface IHaveGoggleInformation {
             .setColor(EnumChatFormatting.GOLD);
 
         tooltip.add(
-            TextHelper.plainCopy(indent)
+            indent.createCopy()
                 .appendSibling(capacity)
                 .appendSibling(amount));
         return true;

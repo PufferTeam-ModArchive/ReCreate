@@ -36,4 +36,5 @@
 dependencies {
     //implementation "curse.maven:metaworlds-mixins-1235593:6490905"
 	implementation files('libs/metaworlds-1.1.1-main.1+f7be4fc00d-dirty-dev.jar')
+    implementation("com.github.GTNewHorizons:NotEnoughItems:2.7.29-GTNH:dev")
 }

@@ -1,5 +1,7 @@
 package su.sergiusonesimus.recreate;
 
+import net.minecraft.client.model.ModelBiped;
+
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -36,5 +38,13 @@ public class CommonProxy {
 
     public int getCogWheelBlockRenderID() {
         return 0;
+    }
+
+    public int registerArmorRenderID(String prefix) {
+        return 0;
+    }
+
+    public ModelBiped getGogglesArmorModel() {
+        return null;
     }
 }

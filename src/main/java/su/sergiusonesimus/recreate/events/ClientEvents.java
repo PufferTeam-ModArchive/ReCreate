@@ -14,6 +14,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.client.GuiIngameForge;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -23,10 +26,12 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import su.sergiusonesimus.recreate.ClientProxy;
 import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.content.contraptions.KineticDebugger;
 import su.sergiusonesimus.recreate.content.contraptions.base.IRotate;
+import su.sergiusonesimus.recreate.content.contraptions.goggles.GoggleOverlayRenderer;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
 import su.sergiusonesimus.recreate.foundation.item.ItemDescription;
 import su.sergiusonesimus.recreate.foundation.item.TooltipHelper;
@@ -36,9 +41,6 @@ import su.sergiusonesimus.recreate.foundation.utility.placement.PlacementHelpers
 import su.sergiusonesimus.recreate.util.AnimationTickHolder;
 
 public class ClientEvents {
-
-    private static final String ITEM_PREFIX = ReCreate.ID + ":item.";
-    private static final String BLOCK_PREFIX = ReCreate.ID + ":tile.";
 
     @SubscribeEvent
     public void onTick(ClientTickEvent event) {
@@ -146,20 +148,18 @@ public class ClientEvents {
         if (event.entityPlayer == null) return;
 
         ItemStack stack = event.itemStack;
-        String translationKey = stack.getItem()
-            .getUnlocalizedName();
 
-        // if (translationKey.startsWith(ITEM_PREFIX) || translationKey.startsWith(BLOCK_PREFIX))
-        if (TooltipHelper.hasTooltip(stack, event.entityPlayer)) {
-            List<String> itemTooltips = event.toolTip;
-            List<IChatComponent> toolTips = new ArrayList<>();
-            toolTips.add(new ChatComponentText(itemTooltips.remove(0)));
-            TooltipHelper.getTooltip(stack)
-                .addInformation(toolTips);
-            for (IChatComponent tooltip : toolTips) {
-                itemTooltips.add(tooltip.getFormattedText());
+        if (GameRegistry.findUniqueIdentifierFor(stack.getItem()).modId.equals(ReCreate.ID))
+            if (TooltipHelper.hasTooltip(stack, event.entityPlayer)) {
+                List<String> itemTooltips = event.toolTip;
+                List<IChatComponent> toolTips = new ArrayList<>();
+                toolTips.add(new ChatComponentText(itemTooltips.remove(0)));
+                TooltipHelper.getTooltip(stack)
+                    .addInformation(toolTips);
+                for (IChatComponent tooltip : toolTips) {
+                    itemTooltips.add(tooltip.getFormattedText());
+                }
             }
-        }
 
         if (stack.getItem() instanceof ItemBlock) {
             ItemBlock item = (ItemBlock) stack.getItem();
@@ -283,5 +283,29 @@ public class ClientEvents {
     // }
     //
     // }
+
+    @SubscribeEvent
+    public void onRenderOverlay(RenderGameOverlayEvent.Post event) {
+        // TODO
+        GuiIngameForge gui = (GuiIngameForge) Minecraft.getMinecraft().ingameGUI;
+        float partialTicks = event.partialTicks;
+        int width = event.resolution.getScaledWidth();
+        int height = event.resolution.getScaledHeight();
+        if (event.type == ElementType.AIR) {
+            // OverlayRegistry.registerOverlayAbove(ForgeIngameGui.AIR_LEVEL_ELEMENT, "Create's Remaining Air",
+            // CopperBacktankArmorLayer.REMAINING_AIR_OVERLAY);
+        }
+        if (event.type == ElementType.HOTBAR) {
+            // OverlayRegistry.registerOverlayAbove(ForgeIngameGui.HOTBAR_ELEMENT, "Create's Toolboxes",
+            // ToolboxHandlerClient.OVERLAY);
+            GoggleOverlayRenderer.renderOverlay(gui, partialTicks, width, height);
+            // OverlayRegistry.registerOverlayAbove(ForgeIngameGui.HOTBAR_ELEMENT, "Create's Blueprints",
+            // BlueprintOverlayRenderer.OVERLAY);
+            // OverlayRegistry.registerOverlayAbove(ForgeIngameGui.HOTBAR_ELEMENT, "Create's Linked Controller",
+            // LinkedControllerClientHandler.OVERLAY);
+            // OverlayRegistry.registerOverlayAbove(ForgeIngameGui.HOTBAR_ELEMENT, "Create's Schematics",
+            // SCHEMATIC_HANDLER.getOverlayRenderer());
+        }
+    }
 
 }

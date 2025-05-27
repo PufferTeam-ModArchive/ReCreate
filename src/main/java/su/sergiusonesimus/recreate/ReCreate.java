@@ -49,13 +49,18 @@ public class ReCreate {
     // preInit "Run before anything else. Read your config, create blocks, items, etc, and register them with the
     // GameRegistry." (Remove if not needed)
     public void preInit(FMLPreInitializationEvent event) {
-        AllConfigs.init(new File(event.getModConfigurationDirectory(), "ReCreate.cfg"));
         proxy.preInit(event);
 
         AllPackets.registerPackets();
 
         // initialize & register blocks
         AllBlocks.registerBlocks();
+
+        // items
+        AllItems.registerItems();
+
+        // Reading config file after registering blocks, because it needs a generated default stress list
+        AllConfigs.init(new File(event.getModConfigurationDirectory(), "ReCreate.cfg"));
     }
 
     @EventHandler

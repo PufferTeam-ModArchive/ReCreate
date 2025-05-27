@@ -1,10 +1,16 @@
 package su.sergiusonesimus.recreate.content.contraptions.base;
 
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.IBlockAccess;
 
+import su.sergiusonesimus.recreate.content.contraptions.goggles.IHaveGoggleInformation;
 import su.sergiusonesimus.recreate.content.contraptions.wrench.IWrenchable;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
+import su.sergiusonesimus.recreate.foundation.item.ItemDescription;
+import su.sergiusonesimus.recreate.foundation.utility.Lang;
 import su.sergiusonesimus.recreate.util.Direction;
 
 public interface IRotate extends IWrenchable {
@@ -51,26 +57,26 @@ public interface IRotate extends IWrenchable {
             }
         }
 
-        // public static Component getFormattedSpeedText(float speed, boolean overstressed){
-        // SpeedLevel speedLevel = of(speed);
-        //
-        // MutableComponent level = new TextComponent(ItemDescription.makeProgressBar(3, speedLevel.ordinal()));
-        //
-        // if (speedLevel == SpeedLevel.MEDIUM)
-        // level.append(Lang.translate("tooltip.speedRequirement.medium"));
-        // if (speedLevel == SpeedLevel.FAST)
-        // level.append(Lang.translate("tooltip.speedRequirement.high"));
-        //
-        // level.append(" (" +
-        // IHaveGoggleInformation.format(Math.abs(speed))).append(Lang.translate("generic.unit.rpm")).append(") ");
-        //
-        // if (overstressed)
-        // level.withStyle(EnumChatFormatting.DARK_GRAY, EnumChatFormatting.STRIKETHROUGH);
-        // else
-        // level.withStyle(speedLevel.getTextColor());
-        //
-        // return level;
-        // }
+        public static IChatComponent getFormattedSpeedText(float speed, boolean overstressed) {
+            SpeedLevel speedLevel = of(speed);
+
+            IChatComponent level = new ChatComponentText(ItemDescription.makeProgressBar(3, speedLevel.ordinal()));
+
+            if (speedLevel == SpeedLevel.MEDIUM) level.appendSibling(Lang.translate("tooltip.speedRequirement.medium"));
+            if (speedLevel == SpeedLevel.FAST) level.appendSibling(Lang.translate("tooltip.speedRequirement.high"));
+
+            level.appendText(" (" + IHaveGoggleInformation.format(Math.abs(speed)))
+                .appendSibling(Lang.translate("generic.unit.rpm"))
+                .appendText(") ");
+
+            ChatStyle style = level.getChatStyle();
+
+            if (overstressed) style.setColor(EnumChatFormatting.DARK_GRAY)
+                .setStrikethrough(true);
+            else style.setColor(speedLevel.getTextColor());
+
+            return level;
+        }
 
     }
 
@@ -103,18 +109,20 @@ public interface IRotate extends IWrenchable {
             return !AllConfigs.SERVER.kinetics.disableStress;
         }
 
-        // public static Component getFormattedStressText(double stressPercent){
-        // StressImpact stressLevel = of(stressPercent);
-        // EnumChatFormatting color = stressLevel.getRelativeColor();
-        //
-        // MutableComponent level = new TextComponent(ItemDescription.makeProgressBar(3, Math.min(stressLevel.ordinal(),
-        // 2)));
-        // level.append(Lang.translate("tooltip.stressImpact." + Lang.asId(stressLevel.name())));
-        //
-        // level.append(String.format(" (%s%%) ", (int) (stressPercent * 100)));
-        //
-        // return level.withStyle(color);
-        // }
+        public static IChatComponent getFormattedStressText(double stressPercent) {
+            StressImpact stressLevel = of(stressPercent);
+            EnumChatFormatting color = stressLevel.getRelativeColor();
+
+            IChatComponent level = new ChatComponentText(
+                ItemDescription.makeProgressBar(3, Math.min(stressLevel.ordinal(), 2)));
+            level.appendSibling(Lang.translate("tooltip.stressImpact." + Lang.asId(stressLevel.name())));
+
+            level.appendText(String.format(" (%s%%) ", (int) (stressPercent * 100)));
+            level.getChatStyle()
+                .setColor(color);
+
+            return level;
+        }
     }
 
     /**

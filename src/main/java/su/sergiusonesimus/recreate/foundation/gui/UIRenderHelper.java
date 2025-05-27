@@ -208,15 +208,6 @@ public class UIRenderHelper {
     }
 
     private static void breadcrumbArrow(int width, int height, int indent, Color c1, Color c2) {
-        /*
-         * 0,0 x1,y1 ********************* x4,y4 ***** x7,y7
-         * **** ****
-         * **** ****
-         * x0,y0 x2,y2 x5,y5
-         * **** ****
-         * **** ****
-         * x3,y3 ********************* x6,y6 ***** x8,y8
-         */
         float x0 = 0, y0 = height / 2f;
         float x1 = indent, y1 = 0;
         float x2 = indent, y2 = height / 2f;

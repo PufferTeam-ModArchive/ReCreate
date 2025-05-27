@@ -57,14 +57,14 @@ public class CClient {
         overlayOffsetX = config.getInt(
             "overlayOffsetX",
             Categories.overlay,
-            20,
+            30,
             Integer.MIN_VALUE,
             Integer.MAX_VALUE,
             Comments.overlayOffset);
         overlayOffsetY = config.getInt(
             "overlayOffsetY",
             Categories.overlay,
-            0,
+            -16,
             Integer.MIN_VALUE,
             Integer.MAX_VALUE,
             Comments.overlayOffset);

@@ -35,7 +35,6 @@ import su.sergiusonesimus.recreate.foundation.utility.Lang;
 import su.sergiusonesimus.recreate.util.Direction;
 import su.sergiusonesimus.recreate.util.Direction.Axis;
 import su.sergiusonesimus.recreate.util.Direction.AxisDirection;
-import su.sergiusonesimus.recreate.util.TextHelper;
 
 public class KineticTileEntity extends SmartTileEntity implements IHaveGoggleInformation, IHaveHoveringInformation {
 
@@ -388,7 +387,7 @@ public class KineticTileEntity extends SmartTileEntity implements IHaveGoggleInf
         boolean notFastEnough = !isSpeedRequirementFulfilled() && getSpeed() != 0;
 
         if (overStressed && AllConfigs.CLIENT.enableOverstressedTooltip) {
-            IChatComponent addition = TextHelper.plainCopy(componentSpacing)
+            IChatComponent addition = componentSpacing.createCopy()
                 .appendSibling(Lang.translate("gui.stressometer.overstressed"));
             addition.getChatStyle()
                 .setColor(EnumChatFormatting.GOLD);
@@ -397,7 +396,7 @@ public class KineticTileEntity extends SmartTileEntity implements IHaveGoggleInf
             List<IChatComponent> cutString = TooltipHelper
                 .cutTextComponent(hint, EnumChatFormatting.GRAY, EnumChatFormatting.WHITE);
             for (int i = 0; i < cutString.size(); i++) tooltip.add(
-                TextHelper.plainCopy(componentSpacing)
+                componentSpacing.createCopy()
                     .appendSibling(cutString.get(i)));
             return true;
         }
@@ -407,7 +406,7 @@ public class KineticTileEntity extends SmartTileEntity implements IHaveGoggleInf
             speedRequirement.getChatStyle()
                 .setColor(EnumChatFormatting.GOLD);
             tooltip.add(
-                TextHelper.plainCopy(componentSpacing)
+                componentSpacing.createCopy()
                     .appendSibling(speedRequirement));
             IChatComponent hint = Lang.translate(
                 "gui.contraptions.not_fast_enough",
@@ -415,7 +414,7 @@ public class KineticTileEntity extends SmartTileEntity implements IHaveGoggleInf
             List<IChatComponent> cutString = TooltipHelper
                 .cutTextComponent(hint, EnumChatFormatting.GRAY, EnumChatFormatting.WHITE);
             for (int i = 0; i < cutString.size(); i++) tooltip.add(
-                TextHelper.plainCopy(componentSpacing)
+                componentSpacing.createCopy()
                     .appendSibling(cutString.get(i)));
             return true;
         }
@@ -430,13 +429,13 @@ public class KineticTileEntity extends SmartTileEntity implements IHaveGoggleInf
 
         if (calculateStressApplied() != 0 && StressImpact.isEnabled()) {
             tooltip.add(
-                TextHelper.plainCopy(componentSpacing)
+                componentSpacing.createCopy()
                     .appendSibling(Lang.translate("gui.goggles.kinetic_stats")));
             IChatComponent stressImpact = Lang.translate("tooltip.stressImpact");
             stressImpact.getChatStyle()
                 .setColor(EnumChatFormatting.GRAY);
             tooltip.add(
-                TextHelper.plainCopy(componentSpacing)
+                componentSpacing.createCopy()
                     .appendSibling(stressImpact));
 
             float stressTotal = stressAtBase * Math.abs(getTheoreticalSpeed());
@@ -450,7 +449,7 @@ public class KineticTileEntity extends SmartTileEntity implements IHaveGoggleInf
             gogglesAtCurrentSpeed.getChatStyle()
                 .setColor(EnumChatFormatting.DARK_GRAY);
             tooltip.add(
-                TextHelper.plainCopy(componentSpacing)
+                componentSpacing.createCopy()
                     .appendSibling(stressComponent)
                     .appendSibling(gogglesAtCurrentSpeed));
 

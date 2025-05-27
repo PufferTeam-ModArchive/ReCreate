@@ -43,8 +43,7 @@ public class CKinetics {
     public static boolean harvesterReplants;
 
     // stress
-    // TODO
-    // public static CStress stressValues = nested(1, CStress::new, Comments.stress);
+    public static CStress stressValues;
 
     // Stats
     public static float mediumSpeed;
@@ -237,7 +236,8 @@ public class CKinetics {
             .getBoolean("harvesterReplants", Categories.contraptions, true, Comments.harvesterReplants);
 
         // Stress
-        // TODO
+        config.setCategoryComment(Categories.stress, Comments.stress);
+        stressValues.init(Categories.stress, config);
 
         // Stats
         mediumSpeed = config.getFloat(
@@ -288,6 +288,7 @@ public class CKinetics {
 
         static String encasedFan = "encasedFan";
         static String contraptions = "contraptions";
+        static String stress = "stress";
         static String stats = "stats";
     }
 

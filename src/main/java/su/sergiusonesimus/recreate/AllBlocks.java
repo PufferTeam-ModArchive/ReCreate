@@ -7,9 +7,11 @@ import net.minecraft.item.ItemBlock;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorBlock;
+import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorItemBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelItemBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftBlock;
+import su.sergiusonesimus.recreate.foundation.block.BlockStressDefaults;
 
 public class AllBlocks {
 
@@ -19,15 +21,20 @@ public class AllBlocks {
     public static Block largeCogwheel;
 
     public static void registerBlocks() {
-        shaft = new ShaftBlock(Material.rock).setBlockName("shaft");
-        creativeMotor = new CreativeMotorBlock(Material.piston).setBlockName("creative_motor");
+        shaft = new ShaftBlock(Material.rock).setBlockName("shaft")
+            .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
+        creativeMotor = new CreativeMotorBlock(Material.piston).setBlockName("creative_motor")
+            .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
         cogwheel = CogWheelBlock.small(Material.wood)
-            .setBlockName("cogwheel");
+            .setBlockName("cogwheel")
+            .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
         largeCogwheel = CogWheelBlock.large(Material.wood)
-            .setBlockName("large_cogwheel");
+            .setBlockName("large_cogwheel")
+            .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
 
         registerMyBlock(shaft);
-        registerMyBlock(creativeMotor);
+        registerMyBlock(creativeMotor, CreativeMotorItemBlock.class);
+        BlockStressDefaults.setCapacity(creativeMotor, 16384.0);
         registerMyBlock(cogwheel, CogWheelItemBlock.class);
         registerMyBlock(largeCogwheel, CogWheelItemBlock.class);
     }
