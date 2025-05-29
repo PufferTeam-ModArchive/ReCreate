@@ -10,6 +10,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagDouble;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -96,6 +97,10 @@ public class VecHelper {
     public static boolean isVecPointingTowards(Vec3 vec, ForgeDirection direction) {
         return Vec3.createVectorHelper(direction.offsetX, direction.offsetY, direction.offsetZ)
             .dotProduct(vec.normalize()) > 0.125; // slight tolerance to activate perpendicular movement actors
+    }
+
+    public static Vec3 getCenterOf(ChunkCoordinates pos) {
+        return getCenterOf(pos.posX, pos.posY, pos.posZ);
     }
 
     public static Vec3 getCenterOf(int x, int y, int z) {

@@ -12,6 +12,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -29,6 +30,8 @@ import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwhe
 import su.sergiusonesimus.recreate.foundation.block.BlockStressValues;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
 import su.sergiusonesimus.recreate.foundation.item.TooltipHelper;
+import su.sergiusonesimus.recreate.foundation.sound.SoundScapes;
+import su.sergiusonesimus.recreate.foundation.sound.SoundScapes.AmbienceGroup;
 import su.sergiusonesimus.recreate.foundation.tileentity.SmartTileEntity;
 import su.sergiusonesimus.recreate.foundation.tileentity.TileEntityBehaviour;
 import su.sergiusonesimus.recreate.foundation.utility.Lang;
@@ -85,8 +88,7 @@ public class KineticTileEntity extends SmartTileEntity implements IHaveGoggleInf
 
         if (worldObj.isRemote) {
             cachedBoundingBox = null; // cache the bounding box for every frame between ticks
-            // TODO
-            // this.tickAudio();
+            this.tickAudio();
             return;
         }
 
@@ -587,21 +589,18 @@ public class KineticTileEntity extends SmartTileEntity implements IHaveGoggleInf
         return super.getRenderBoundingBox();
     }
 
-    // TODO
-    // @SideOnly(Side.CLIENT)
-    // public void tickAudio() {
-    // float componentSpeed = Math.abs(getSpeed());
-    // if (componentSpeed == 0)
-    // return;
-    // float pitch = MathHelper.clamp_float((componentSpeed / 256f) + .45f, .85f, 1f);
-    //
-    // if (isNoisy())
-    // SoundScapes.play(AmbienceGroup.KINETIC, worldPosition, pitch);
-    //
-    // Block block = this.blockType;
-    // if (ICogWheel.isSmallCog(block) || ICogWheel.isLargeCog(block)/* || block instanceof GearboxBlock*/)
-    // SoundScapes.play(AmbienceGroup.COG, worldPosition, pitch);
-    // }
+    @SideOnly(Side.CLIENT)
+    public void tickAudio() {
+        float componentSpeed = Math.abs(getSpeed());
+        if (componentSpeed == 0) return;
+        float pitch = MathHelper.clamp_float((componentSpeed / 256f) + .45f, .85f, 1f);
+
+        if (isNoisy()) SoundScapes.play(AmbienceGroup.KINETIC, xCoord, yCoord, zCoord, pitch);
+
+        Block block = this.blockType;
+        if (ICogWheel.isSmallCog(block) || ICogWheel.isLargeCog(block)/* || block instanceof GearboxBlock */)
+            SoundScapes.play(AmbienceGroup.COG, xCoord, yCoord, zCoord, pitch);
+    }
 
     protected boolean isNoisy() {
         return true;

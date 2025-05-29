@@ -35,6 +35,7 @@ import su.sergiusonesimus.recreate.content.contraptions.goggles.GoggleOverlayRen
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
 import su.sergiusonesimus.recreate.foundation.item.ItemDescription;
 import su.sergiusonesimus.recreate.foundation.item.TooltipHelper;
+import su.sergiusonesimus.recreate.foundation.sound.SoundScapes;
 import su.sergiusonesimus.recreate.foundation.tileentity.behaviour.scrollvalue.ScrollValueHandler;
 import su.sergiusonesimus.recreate.foundation.tileentity.behaviour.scrollvalue.ScrollValueRenderer;
 import su.sergiusonesimus.recreate.foundation.utility.placement.PlacementHelpers;
@@ -54,7 +55,7 @@ public class ClientEvents {
         // return;
         // }
         //
-        // SoundScapes.tick();
+        SoundScapes.tick();
         AnimationTickHolder.tick();
         ScrollValueHandler.tick();
 

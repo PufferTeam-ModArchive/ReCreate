@@ -1,6 +1,7 @@
 package su.sergiusonesimus.recreate;
 
 import java.io.File;
+import java.util.Random;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -37,6 +38,7 @@ public class ReCreate {
     public static final Logger LOGGER = LogManager.getLogger(Tags.MODID);
 
     public static final TorquePropagator TORQUE_PROPAGATOR = new TorquePropagator();
+    public static final Random RANDOM = new Random();
 
     public static final ReCreateRegistrate REGISTRATE = new ReCreateRegistrate();
 

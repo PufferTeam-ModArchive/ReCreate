@@ -15,7 +15,6 @@ import su.sergiusonesimus.recreate.ReCreate;
 
 public class GogglesItem extends ItemArmor {
 
-    // TODO
     public GogglesItem(ArmorMaterial material, int renderId) {
         super(material, renderId, 0);
         setCreativeTab(AllItems.BASE_CREATIVE_TAB);

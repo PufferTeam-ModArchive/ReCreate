@@ -6,6 +6,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
+import su.sergiusonesimus.recreate.AllSounds;
+import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.content.contraptions.base.DirectionalKineticBlock;
 import su.sergiusonesimus.recreate.content.contraptions.base.GeneratingKineticTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.base.HorizontalAxisKineticBlock;
@@ -45,13 +47,11 @@ public interface IWrenchable {
     }
 
     public default void playRemoveSound(World world, int x, int y, int z) {
-        // TODO
-        // AllSoundEvents.WRENCH_REMOVE.playOnServer(world, pos, 1, Create.RANDOM.nextFloat() * .5f + .5f);
+        AllSounds.WRENCH_REMOVE.playOnServer(world, x, y, z, 1, ReCreate.RANDOM.nextFloat() * .5f + .5f);
     }
 
     public default void playRotateSound(World world, int x, int y, int z) {
-        // TODO
-        // AllSoundEvents.WRENCH_ROTATE.playOnServer(world, pos, 1, Create.RANDOM.nextFloat() + .5f);
+        AllSounds.WRENCH_ROTATE.playOnServer(world, x, y, z, 1, ReCreate.RANDOM.nextFloat() + .5f);
     }
 
     public Axis getAxis(int meta);
