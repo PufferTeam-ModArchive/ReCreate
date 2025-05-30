@@ -2,6 +2,7 @@ package su.sergiusonesimus.recreate;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -18,6 +19,7 @@ import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwhe
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftRenderBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftTileEntityRenderer;
+import su.sergiusonesimus.recreate.content.contraptions.wrench.WrenchRenderItem;
 import su.sergiusonesimus.recreate.events.InputEvents;
 import su.sergiusonesimus.recreate.foundation.utility.ghost.GhostBlocks;
 import su.sergiusonesimus.recreate.foundation.utility.outliner.Outliner;
@@ -47,6 +49,9 @@ public class ClientProxy extends CommonProxy {
             .bus()
             .register(inputEvents);
         MinecraftForge.EVENT_BUS.register(inputEvents);
+
+        // items
+        MinecraftForgeClient.registerItemRenderer(AllItems.wrench, new WrenchRenderItem());
 
         // tile entities
         ClientRegistry.bindTileEntitySpecialRenderer(ShaftTileEntity.class, new ShaftTileEntityRenderer());

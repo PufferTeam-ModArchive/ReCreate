@@ -2,6 +2,7 @@ package su.sergiusonesimus.recreate.foundation.tileentity.behaviour.scrollvalue;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
@@ -9,6 +10,7 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 
+import su.sergiusonesimus.recreate.AllItems;
 import su.sergiusonesimus.recreate.AllKeys;
 import su.sergiusonesimus.recreate.ClientProxy;
 import su.sergiusonesimus.recreate.foundation.tileentity.SmartTileEntity;
@@ -33,9 +35,8 @@ public class ScrollValueRenderer {
             .get(world, target.blockX, target.blockY, target.blockZ, ScrollValueBehaviour.TYPE);
         if (behaviour == null) return;
         if (!behaviour.isActive()) return;
-        // TODO
-        // if (behaviour.needsWrench && !AllItems.WRENCH.isIn(mc.player.getMainHandItem()))
-        // return;
+        ItemStack heldItem = mc.thePlayer.getHeldItem();
+        if (behaviour.needsWrench && (heldItem == null || heldItem.getItem() != AllItems.wrench)) return;
         boolean highlight = behaviour.testHit(target.hitVec);
 
         if (behaviour instanceof BulkScrollValueBehaviour && AllKeys.ctrlDown()) {

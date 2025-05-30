@@ -249,11 +249,14 @@ public class AllSounds {
         public void play(World world, EntityPlayer entity, double x, double y, double z, float volume, float pitch) {
             for (Pair<String, Couple<Float>> pair : wrappedEvents) {
                 Couple<Float> volPitch = pair.getSecond();
-                world.playSoundAtEntity(
-                    entity,
+                world.playSound(
+                    x,
+                    y,
+                    z,
                     pair.getFirst(),
                     volPitch.getFirst() * volume,
-                    volPitch.getSecond() * pitch);
+                    volPitch.getSecond() * pitch,
+                    false);
             }
         }
 

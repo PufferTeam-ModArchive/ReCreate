@@ -2,13 +2,16 @@ package su.sergiusonesimus.recreate.foundation.tileentity.behaviour.scrollvalue;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import su.sergiusonesimus.recreate.AllItems;
 import su.sergiusonesimus.recreate.AllKeys;
+import su.sergiusonesimus.recreate.AllSounds;
 import su.sergiusonesimus.recreate.foundation.tileentity.SmartTileEntity;
 import su.sergiusonesimus.recreate.foundation.tileentity.TileEntityBehaviour;
 import su.sergiusonesimus.recreate.foundation.tileentity.behaviour.ValueBoxTransform.Sided;
@@ -42,9 +45,8 @@ public class ScrollValueHandler {
         if (scrolling == null) return false;
         if (!scrolling.isActive()) return false;
         if (mc.thePlayer.isPlayerSleeping() || mc.thePlayer.isRiding()) return false;
-        // TODO
-        // if (scrolling.needsWrench && !AllItems.WRENCH.isIn(mc.player.getMainHandItem()))
-        // return false;
+        ItemStack heldItem = mc.thePlayer.getHeldItem();
+        if (scrolling.needsWrench && (heldItem == null || heldItem.getItem() != AllItems.wrench)) return false;
 
         passiveScrollDirection = (float) -delta;
         wrenchCog.bump(3, -delta * 10);
@@ -66,8 +68,14 @@ public class ScrollValueHandler {
         if (prev != scrolling.scrollableValue) {
             float pitch = (scrolling.scrollableValue - scrolling.min) / (float) (scrolling.max - scrolling.min);
             pitch = ReCreateMath.lerp(pitch, 1.5f, 2f);
-            // TODO
-            // AllSoundEvents.SCROLL_VALUE.play(world, mc.player, blockPos, 1, pitch);
+            AllSounds.SCROLL_VALUE.play(
+                world,
+                mc.thePlayer,
+                objectMouseOver.blockX,
+                objectMouseOver.blockY,
+                objectMouseOver.blockZ,
+                1,
+                pitch);
         }
         return true;
     }

@@ -61,6 +61,8 @@ public class ReCreate {
         // items
         AllItems.registerItems();
 
+        AllTags.register();
+
         // Reading config file after registering blocks, because it needs a generated default stress list
         AllConfigs.init(new File(event.getModConfigurationDirectory(), "ReCreate.cfg"));
     }
