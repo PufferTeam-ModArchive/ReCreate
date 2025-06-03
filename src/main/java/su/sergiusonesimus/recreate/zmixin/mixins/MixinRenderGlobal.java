@@ -20,6 +20,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 
+import su.sergiusonesimus.metaworlds.zmixin.interfaces.minecraft.util.IMixinAxisAlignedBB;
+import su.sergiusonesimus.metaworlds.zmixin.interfaces.minecraft.util.IMixinMovingObjectPosition;
 import su.sergiusonesimus.recreate.zmixin.interfaces.IMixinBlock;
 
 @Mixin(RenderGlobal.class)
@@ -77,13 +79,13 @@ public class MixinRenderGlobal {
                 if (partAABB1.minY == partAABB.maxY || partAABB1.maxY == partAABB.minY) expandY = false;
                 if (partAABB1.minZ == partAABB.maxZ || partAABB1.maxZ == partAABB.minZ) expandZ = false;
             }
-            drawOutlinedBoundingBox(
-                partAABB
-                    .expand(
-                        expandX ? (double) storedF1 : 0,
-                        expandY ? (double) storedF1 : 0,
-                        expandZ ? (double) storedF1 : 0)
-                    .getOffsetBoundingBox(-storedD0, -storedD1, -storedD2),
+            original.call(
+                ((IMixinAxisAlignedBB) partAABB.expand(
+                    expandX ? (double) storedF1 : 0,
+                    expandY ? (double) storedF1 : 0,
+                    expandZ ? (double) storedF1 : 0))
+                        .getTransformedToGlobalBoundingBox(((IMixinMovingObjectPosition) storedRayTraceHit).getWorld())
+                        .offset(-storedD0, -storedD1, -storedD2),
                 -1);
         }
     }
