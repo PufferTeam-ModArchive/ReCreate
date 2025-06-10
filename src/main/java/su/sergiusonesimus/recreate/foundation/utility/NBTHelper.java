@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagFloat;
-import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.AxisAlignedBB;
@@ -95,14 +94,14 @@ public class NBTHelper {
             bbtag.func_150308_e(5));
     }
 
-    public static NBTTagList writeChunkCoordinates(ChunkCoordinates ck) {
-        NBTTagList tag = new NBTTagList();
-        tag.appendTag(new NBTTagIntArray(new int[] { ck.posX, ck.posY, ck.posZ }));
+    public static NBTTagCompound writeChunkCoordinates(ChunkCoordinates ck) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setIntArray("Coordinates", new int[] { ck.posX, ck.posY, ck.posZ });
         return tag;
     }
 
-    public static ChunkCoordinates readChunkCoordinates(NBTTagList tag) {
-        int[] array = tag.func_150306_c(0);
+    public static ChunkCoordinates readChunkCoordinates(NBTTagCompound tag) {
+        int[] array = tag.getIntArray("Coordinates");
         return new ChunkCoordinates(array[0], array[1], array[2]);
     }
 

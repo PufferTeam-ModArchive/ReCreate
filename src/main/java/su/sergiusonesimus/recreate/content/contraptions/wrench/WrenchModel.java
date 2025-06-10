@@ -4,6 +4,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
 import su.sergiusonesimus.recreate.AllModelTextures;
+import su.sergiusonesimus.recreate.foundation.tileentity.behaviour.scrollvalue.ScrollValueHandler;
 import su.sergiusonesimus.recreate.util.AnimationTickHolder;
 
 public class WrenchModel extends ModelBase {
@@ -89,7 +90,8 @@ public class WrenchModel extends ModelBase {
 
     public void render() {
         texture.bind();
-        cog.rotateAngleY = (float) (AnimationTickHolder.getTicks() / 180F * Math.PI);
+        cog.rotateAngleY = -ScrollValueHandler.getScroll(AnimationTickHolder.getPartialTicks()) / 180F
+            * (float) Math.PI;
         wrench.render(0.0625f);
     }
 

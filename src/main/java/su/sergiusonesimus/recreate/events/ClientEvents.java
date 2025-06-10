@@ -38,6 +38,7 @@ import su.sergiusonesimus.recreate.foundation.item.TooltipHelper;
 import su.sergiusonesimus.recreate.foundation.sound.SoundScapes;
 import su.sergiusonesimus.recreate.foundation.tileentity.behaviour.scrollvalue.ScrollValueHandler;
 import su.sergiusonesimus.recreate.foundation.tileentity.behaviour.scrollvalue.ScrollValueRenderer;
+import su.sergiusonesimus.recreate.foundation.utility.ServerSpeedProvider;
 import su.sergiusonesimus.recreate.foundation.utility.placement.PlacementHelpers;
 import su.sergiusonesimus.recreate.util.AnimationTickHolder;
 
@@ -66,12 +67,11 @@ public class ClientEvents {
         // ClientProxy.POTATO_CANNON_RENDER_HANDLER.tick();
         // ClientProxy.SOUL_PULSE_EFFECT_HANDLER.tick(world);
         //
-        // ContraptionHandler.tick(world);
         // CapabilityMinecartController.tick(world);
         // CouplingPhysics.tick(world);
         //
         // PonderTooltipHandler.tick();
-        // ServerSpeedProvider.clientTick();
+        ServerSpeedProvider.clientTick();
         // BeltConnectorHandler.tick();
         // FilteringRenderer.tick();
         // LinkRenderer.tick();
@@ -88,7 +88,6 @@ public class ClientEvents {
         PlacementHelpers.tick();
         ClientProxy.OUTLINER.tickOutlines();
         ClientProxy.GHOST_BLOCKS.tickGhosts();
-        // ContraptionRenderDispatcher.tick(world);
         // BlueprintOverlayRenderer.tick();
         // ToolboxHandlerClient.clientTick();
     }

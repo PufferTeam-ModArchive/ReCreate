@@ -43,7 +43,7 @@ public class CreativeMotorTileEntity extends GeneratingKineticTileEntity {
 
     @Override
     public float getGeneratedSpeed() {
-        if (this.getBlockType() != AllBlocks.creativeMotor) return 0;
+        if (this.getBlockType() != AllBlocks.creative_motor) return 0;
         return convertToDirection(
             generatedSpeed.getValue(),
             ((CreativeMotorBlock) getBlockType()).getDirection(this.getBlockMetadata()));

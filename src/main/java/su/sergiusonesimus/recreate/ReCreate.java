@@ -20,6 +20,9 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import su.sergiusonesimus.recreate.content.contraptions.TorquePropagator;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.AllSubWorldTypes;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueHandler;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftTileEntity;
 import su.sergiusonesimus.recreate.events.ClientEvents;
@@ -65,6 +68,8 @@ public class ReCreate {
 
         // Reading config file after registering blocks, because it needs a generated default stress list
         AllConfigs.init(new File(event.getModConfigurationDirectory(), "ReCreate.cfg"));
+
+        AllSubWorldTypes.register();
     }
 
     @EventHandler
@@ -83,6 +88,12 @@ public class ReCreate {
         FMLCommonHandler.instance()
             .bus()
             .register(commonEvents);
+
+        final SuperGlueHandler superGlueHandler = new SuperGlueHandler();
+        MinecraftForge.EVENT_BUS.register(superGlueHandler);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(superGlueHandler);
 
         // tile entities
         registerTileEntities();
@@ -109,6 +120,7 @@ public class ReCreate {
         GameRegistry.registerTileEntity(ShaftTileEntity.class, "Shaft");
         GameRegistry.registerTileEntity(CreativeMotorTileEntity.class, "Creative Motor");
         GameRegistry.registerTileEntity(CogWheelTileEntity.class, "Cogwheel");
+        GameRegistry.registerTileEntity(MechanicalBearingTileEntity.class, "Mechanical Bearing");
     }
 
     public static ResourceLocation asResource(String path) {

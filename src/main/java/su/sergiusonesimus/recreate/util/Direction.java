@@ -227,7 +227,7 @@ public enum Direction {
     }
 
     public ChunkCoordinates getNormal() {
-        return this.normal;
+        return new ChunkCoordinates(normal);
     }
 
     public boolean isFacingAngle(float angle) {

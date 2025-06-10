@@ -17,7 +17,6 @@ public class GogglesItem extends ItemArmor {
 
     public GogglesItem(ArmorMaterial material, int renderId) {
         super(material, renderId, 0);
-        setCreativeTab(AllItems.BASE_CREATIVE_TAB);
     }
 
     public static boolean canSeeParticles(EntityPlayer player) {

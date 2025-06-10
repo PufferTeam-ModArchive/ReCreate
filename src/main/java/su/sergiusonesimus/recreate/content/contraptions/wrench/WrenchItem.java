@@ -22,11 +22,6 @@ import su.sergiusonesimus.recreate.ReCreate;
 
 public class WrenchItem extends Item {
 
-    public WrenchItem() {
-        this.maxStackSize = 1;
-        this.setCreativeTab(AllItems.BASE_CREATIVE_TAB);
-    }
-
     @SideOnly(Side.CLIENT)
     public boolean isFull3D() {
         return true;

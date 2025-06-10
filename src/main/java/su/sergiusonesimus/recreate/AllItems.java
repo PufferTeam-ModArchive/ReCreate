@@ -5,6 +5,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraftforge.common.util.EnumHelper;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueItem;
 import su.sergiusonesimus.recreate.content.contraptions.goggles.GogglesItem;
 import su.sergiusonesimus.recreate.content.contraptions.wrench.WrenchItem;
 import su.sergiusonesimus.recreate.foundation.item.CreateCreativeTab;
@@ -16,6 +17,7 @@ public class AllItems {
 
     public static Item goggles;
     public static Item wrench;
+    public static Item super_glue;
 
     public static final CreateCreativeTab BASE_CREATIVE_TAB = new CreateCreativeTab("base");
 
@@ -23,12 +25,18 @@ public class AllItems {
         int gogglesRenderID = ReCreate.proxy.registerArmorRenderID("recreate/goggles_");
 
         goggles = new GogglesItem(ARMOR_GOGGLES, gogglesRenderID).setUnlocalizedName("goggles")
-            .setMaxStackSize(1);
+            .setMaxStackSize(1)
+            .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
         wrench = new WrenchItem().setUnlocalizedName("wrench")
-            .setMaxStackSize(1);
+            .setMaxStackSize(1)
+            .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
+        super_glue = new SuperGlueItem().setUnlocalizedName("super_glue")
+            .setMaxStackSize(1)
+            .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
 
         registerItem(goggles);
         registerItem(wrench);
+        registerItem(super_glue);
     }
 
     private static void registerItem(Item item) {

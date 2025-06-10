@@ -12,6 +12,9 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorRenderBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorTileEntityRenderer;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.BearingRenderBlock;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.BearingTileEntityRenderer;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.goggles.GogglesModel;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelRenderBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelTileEntity;
@@ -29,6 +32,7 @@ public class ClientProxy extends CommonProxy {
     int shaftRenderID;
     int creativeMotorRenderID;
     int cogwheelRenderID;
+    int bearingRenderID;
 
     ModelBiped gogglesArmorModel;
 
@@ -58,6 +62,8 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry
             .bindTileEntitySpecialRenderer(CreativeMotorTileEntity.class, new CreativeMotorTileEntityRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(CogWheelTileEntity.class, new CogWheelTileEntityRenderer());
+        ClientRegistry
+            .bindTileEntitySpecialRenderer(MechanicalBearingTileEntity.class, new BearingTileEntityRenderer());
 
         // block render ids
         shaftRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -66,6 +72,8 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(new CreativeMotorRenderBlock(creativeMotorRenderID));
         cogwheelRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new CogWheelRenderBlock(cogwheelRenderID));
+        bearingRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new BearingRenderBlock(bearingRenderID));
 
         // armor model
         gogglesArmorModel = new GogglesModel();
@@ -110,6 +118,10 @@ public class ClientProxy extends CommonProxy {
 
     public int getCogWheelBlockRenderID() {
         return cogwheelRenderID;
+    }
+
+    public int getBearingBlockRenderID() {
+        return bearingRenderID;
     }
 
     public ModelBiped getGogglesArmorModel() {

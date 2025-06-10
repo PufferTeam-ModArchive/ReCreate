@@ -9,6 +9,8 @@ public enum AllModelTextures {
     CREATIVE_MOTOR("creative_motor.png"),
     COGWHEEL("cogwheel.png"),
     LARGE_COGWHEEL("large_cogwheel.png"),
+    MECHANICAL_BEARING("mechanical_bearing.png"),
+
     WRENCH("wrench.png"),
 
     ;

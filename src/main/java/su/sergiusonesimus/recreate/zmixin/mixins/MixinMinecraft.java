@@ -16,10 +16,15 @@ public class MixinMinecraft {
 
     @WrapOperation(
         method = "runTick",
-        at = @At(value = "INVOKE", target = "Lorg/lwjgl/input/Mouse;getEventDWheel()I", opcode = Opcodes.INVOKESTATIC))
+        at = @At(
+            value = "INVOKE",
+            target = "Lorg/lwjgl/input/Mouse;getEventDWheel()I",
+            opcode = Opcodes.INVOKESTATIC,
+            remap = false))
     private int onMouseScrolled(Operation<Integer> original) {
         int delta = original.call();
         if (delta != 0) {
+            delta = delta > 0 ? 1 : -1;
             boolean cancelled = /*
                                  * TODO ClientProxy.SCHEMATIC_HANDLER.mouseScrolled(delta)
                                  * || ClientProxy.SCHEMATIC_AND_QUILL_HANDLER.mouseScrolled(delta)

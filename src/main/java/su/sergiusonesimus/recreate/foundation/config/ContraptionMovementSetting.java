@@ -29,7 +29,8 @@ public enum ContraptionMovementSetting {
     public static ContraptionMovementSetting get(Block block) {
         if (block instanceof IMovementSettingProvider)
             return ((IMovementSettingProvider) block).getContraptionMovementSetting();
-        return get(block);
+        Supplier<ContraptionMovementSetting> supplier = registry.get(block);
+        return supplier == null ? null : supplier.get();
     }
 
     public interface IMovementSettingProvider {

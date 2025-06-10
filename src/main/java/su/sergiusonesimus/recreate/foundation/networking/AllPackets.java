@@ -5,7 +5,10 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.ContraptionStallPacket;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.GlueEffectPacket;
 import su.sergiusonesimus.recreate.foundation.tileentity.behaviour.scrollvalue.ScrollValueUpdatePacket;
+import su.sergiusonesimus.recreate.foundation.utility.ServerSpeedProvider;
 
 public class AllPackets {
 
@@ -17,8 +20,10 @@ public class AllPackets {
         registerPacket(ScrollValueUpdatePacket.Handler.class, ScrollValueUpdatePacket.class, Side.SERVER);
 
         // Server -> Client
-        // TODO
-        // registerPacket(SymmetryEffectPacket.class, Side.CLIENT);
+        registerPacket(GlueEffectPacket.Handler.class, GlueEffectPacket.class, Side.CLIENT);
+        // registerPacket(ContraptionDisassemblyPacket.Handler.class, ContraptionDisassemblyPacket.class, Side.CLIENT);
+        registerPacket(ContraptionStallPacket.Handler.class, ContraptionStallPacket.class, Side.CLIENT);
+        registerPacket(ServerSpeedProvider.Packet.Handler.class, ServerSpeedProvider.Packet.class, Side.CLIENT);
     }
 
     private static <T extends IMessage> void registerPacket(Class<? extends IMessageHandler<T, IMessage>> handler,

@@ -8,7 +8,10 @@
   "mixins": [
 	"MixinBlock",
   	"MixinMinecraft",
-  	"MixinRenderGlobal"
+  	"MixinRenderGlobal",
+  	"MixinWorld",
+  	"MixinWorldClient",
+  	"MixinWorldServer"
   ],
   "client": [],
   "server": []

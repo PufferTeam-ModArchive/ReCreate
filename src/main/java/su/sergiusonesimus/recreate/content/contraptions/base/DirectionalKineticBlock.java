@@ -30,7 +30,7 @@ public abstract class DirectionalKineticBlock extends KineticBlock {
 
     @Override
     public int getMetaFromDirection(Direction direction) {
-        return direction.ordinal();
+        return direction.get3DDataValue();
     }
 
     @Override

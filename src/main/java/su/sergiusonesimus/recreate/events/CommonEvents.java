@@ -1,22 +1,28 @@
 package su.sergiusonesimus.recreate.events;
 
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
+import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 import su.sergiusonesimus.recreate.ReCreate;
+import su.sergiusonesimus.recreate.content.contraptions.wrench.WrenchItem;
+import su.sergiusonesimus.recreate.foundation.utility.ServerSpeedProvider;
 
 public class CommonEvents {
 
-    // TODO
-    // @SubscribeEvent
-    // public void onServerTick(ServerTickEvent event) {
-    // if (event.phase == Phase.START)
-    // return;
-    // ReCreate.SCHEMATIC_RECEIVER.tick();
-    // ReCreate.LAGGER.tick();
-    // ServerSpeedProvider.serverTick();
-    // }
+    @SubscribeEvent
+    public void onServerTick(ServerTickEvent event) {
+        if (event.phase == Phase.START) return;
+        // TODO
+        // ReCreate.SCHEMATIC_RECEIVER.tick();
+        // ReCreate.LAGGER.tick();
+        ServerSpeedProvider.serverTick();
+    }
 
     // TODO
     // @SubscribeEvent
@@ -54,17 +60,15 @@ public class CommonEvents {
     // }
     // }
 
-    // TODO
-    // @SubscribeEvent
-    // public void onWorldTick(WorldTickEvent event) {
-    // if (event.phase == Phase.START)
-    // return;
-    // World world = event.world;
-    // ContraptionHandler.tick(world);
-    // CapabilityMinecartController.tick(world);
-    // CouplingPhysics.tick(world);
-    // LinkedControllerServerHandler.tick(world);
-    // }
+    @SubscribeEvent
+    public void onWorldTick(WorldTickEvent event) {
+        if (event.phase == Phase.START) return;
+        World world = event.world;
+        // TODO
+        // CapabilityMinecartController.tick(world);
+        // CouplingPhysics.tick(world);
+        // LinkedControllerServerHandler.tick(world);
+    }
 
     // TODO
     // @SubscribeEvent
@@ -77,17 +81,10 @@ public class CommonEvents {
     // ToolboxHandler.entityTick(entityLiving, world);
     // }
 
-    // TODO
-    // @SubscribeEvent
-    // public void onEntityAdded(EntityJoinWorldEvent event) {
-    // ContraptionHandler.addSpawnedContraptionsToCollisionList(event.entity, event.world);
-    // }
-
-    // TODO
-    // @SubscribeEvent
-    // public void onEntityAttackedByPlayer(AttackEntityEvent event) {
-    // WrenchItem.wrenchInstaKillsMinecarts(event);
-    // }
+    @SubscribeEvent
+    public void onEntityAttackedByPlayer(AttackEntityEvent event) {
+        WrenchItem.wrenchInstaKillsMinecarts(event);
+    }
 
     // TODO
     // @SubscribeEvent
