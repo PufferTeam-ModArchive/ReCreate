@@ -22,7 +22,7 @@ public class AllItems {
     public static final CreateCreativeTab BASE_CREATIVE_TAB = new CreateCreativeTab("base");
 
     public static void registerItems() {
-        int gogglesRenderID = ReCreate.proxy.registerArmorRenderID("recreate/goggles_");
+        int gogglesRenderID = ReCreate.proxy.registerArmorRenderID(ReCreate.ID + "/goggles_");
 
         goggles = new GogglesItem(ARMOR_GOGGLES, gogglesRenderID).setUnlocalizedName("goggles")
             .setMaxStackSize(1)
@@ -31,6 +31,7 @@ public class AllItems {
             .setMaxStackSize(1)
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
         super_glue = new SuperGlueItem().setUnlocalizedName("super_glue")
+            .setTextureName(ReCreate.ID + ":super_glue")
             .setMaxStackSize(1)
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
 

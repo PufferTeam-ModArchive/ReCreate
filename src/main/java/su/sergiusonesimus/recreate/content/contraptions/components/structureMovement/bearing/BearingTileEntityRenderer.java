@@ -25,7 +25,7 @@ public class BearingTileEntityRenderer extends KineticTileEntityRenderer {
                 tileEntity.yCoord,
                 tileEntity.zCoord,
                 direction.getAxis()),
-            ((IBearingTileEntity) tileEntity).getInterpolatedAngle(partialTicks - 1) / 180f * (float) Math.PI);
+            ((IBearingTileEntity) tileEntity).getInterpolatedAngle(partialTicks - 1f) / 180f * (float) Math.PI);
         Color color = getColor((KineticTileEntity) tileEntity);
 
         GL11.glPushMatrix();

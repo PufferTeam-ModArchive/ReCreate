@@ -106,7 +106,7 @@ public class SuperGlueEntity extends Entity implements IEntityAdditionalSpawnDat
             double x = hangingPositionX + 0.5 - normal.posX * offset;
             double y = hangingPositionY + 0.5 - normal.posY * offset;
             double z = hangingPositionZ + 0.5 - normal.posZ * offset;
-            this.setPosition(x, y, z);
+            super.setPosition(x, y, z);
             double w = getWidthPixels();
             double h = getHeightPixels();
             double l = getWidthPixels();
@@ -186,7 +186,7 @@ public class SuperGlueEntity extends Entity implements IEntityAdditionalSpawnDat
             hangingPositionY,
             hangingPositionZ,
             getFacingDirection().getOpposite())) return false;
-        return worldObj.getEntitiesWithinAABBExcludingEntity(this, getBoundingBox(), e -> e instanceof SuperGlueEntity)
+        return worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox, e -> e instanceof SuperGlueEntity)
             .isEmpty();
     }
 

@@ -35,7 +35,7 @@ public class ContraptionWorldClient extends SubWorldClient implements Contraptio
 
     @Override
     public void tick() {
-        contraption.tick();
+        if (contraption != null) contraption.tick();
         super.tick();
     }
 

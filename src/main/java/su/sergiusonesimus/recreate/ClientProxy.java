@@ -15,6 +15,8 @@ import su.sergiusonesimus.recreate.content.contraptions.components.motor.Creativ
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.BearingRenderBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.BearingTileEntityRenderer;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueEntity;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueRenderer;
 import su.sergiusonesimus.recreate.content.contraptions.goggles.GogglesModel;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelRenderBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelTileEntity;
@@ -56,6 +58,9 @@ public class ClientProxy extends CommonProxy {
 
         // items
         MinecraftForgeClient.registerItemRenderer(AllItems.wrench, new WrenchRenderItem());
+
+        // entities
+        RenderingRegistry.registerEntityRenderingHandler(SuperGlueEntity.class, new SuperGlueRenderer());
 
         // tile entities
         ClientRegistry.bindTileEntitySpecialRenderer(ShaftTileEntity.class, new ShaftTileEntityRenderer());

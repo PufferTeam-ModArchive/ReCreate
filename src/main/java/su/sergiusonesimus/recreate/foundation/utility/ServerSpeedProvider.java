@@ -66,7 +66,7 @@ public class ServerSpeedProvider {
                     clientTimer = 0;
                     return null;
                 }
-                float target = ((float) getSyncInterval()) / Math.max(clientTimer, 1);
+                float target = ((float) getSyncInterval() * 2) / (float) Math.max(clientTimer, 1);
                 modifier.target(Math.min(target, 1));
                 // Set this to -1 because packets are processed before ticks.
                 // ServerSpeedProvider#clientTick will increment it to 0 at the end of this tick.

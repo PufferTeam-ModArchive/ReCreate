@@ -1,5 +1,8 @@
 package su.sergiusonesimus.recreate.foundation.utility;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -8,6 +11,7 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagFloat;
@@ -15,6 +19,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
+
+import io.netty.buffer.ByteBuf;
 
 public class NBTHelper {
 
@@ -110,6 +116,38 @@ public class NBTHelper {
         NBTBase inbt = nbt.getTag(id);
         if (inbt != null) return inbt;
         return new NBTTagCompound();
+    }
+
+    public static void writeNBTTagCompound(NBTTagCompound nbt, ByteBuf buf) {
+        try {
+            ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+            CompressedStreamTools.writeCompressed(nbt, byteStream);
+            byte[] bytes = byteStream.toByteArray();
+
+            buf.writeInt(bytes.length);
+            buf.writeBytes(bytes);
+        } catch (IOException e) {
+            buf.writeInt(0);
+            e.printStackTrace();
+        }
+    }
+
+    public static NBTTagCompound readNBTTagCompound(ByteBuf buf) {
+        try {
+            int length = buf.readInt();
+            if (length <= 0) {
+                return null;
+            }
+
+            byte[] bytes = new byte[length];
+            buf.readBytes(bytes);
+
+            ByteArrayInputStream byteStream = new ByteArrayInputStream(bytes);
+            return CompressedStreamTools.readCompressed(byteStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

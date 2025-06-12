@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,9 +37,7 @@ import su.sergiusonesimus.metaworlds.world.SubWorldServer;
 import su.sergiusonesimus.metaworlds.zmixin.interfaces.minecraft.world.IMixinWorld;
 import su.sergiusonesimus.recreate.AllBlocks;
 import su.sergiusonesimus.recreate.AllSounds;
-import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.BearingContraption;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingBlock;
-import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.StabilizedContraption;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueHandler;
@@ -237,16 +236,20 @@ public abstract class Contraption {
 
     public void tick() {
         if (anchorWorld == null) {
-            anchorWorld = ((IMixinWorld) DimensionManager.getWorld(0)).getSubWorld(anchorWorldID);
-            if (this instanceof BearingContraption) {
-                ChunkCoordinates normal = ((BearingContraption) this).getFacing()
-                    .getOpposite()
-                    .getNormal();
-                TileEntity anchorTE = anchorWorld
-                    .getTileEntity(anchorX + normal.posX, anchorY + normal.posY, anchorZ + normal.posZ);
-                if (anchorTE instanceof MechanicalBearingTileEntity)
-                    ((MechanicalBearingTileEntity) anchorTE).attach(this);
-            }
+            anchorWorld = ((IMixinWorld) (this.contraptionWorld.isRemote ? Minecraft.getMinecraft().theWorld
+                : DimensionManager.getWorld(0))).getSubWorld(anchorWorldID);
+            // if (this instanceof BearingContraption) {
+            // ChunkCoordinates normal = ((BearingContraption) this).getFacing()
+            // .getOpposite()
+            // .getNormal();
+            // ReCreate.LOGGER.info("Looking for tile entity on coordinates: " + (anchorX + normal.posX) + ", " +
+            // (anchorY + normal.posY) + ", " + (anchorZ + normal.posZ));
+            // TileEntity anchorTE = anchorWorld
+            // .getTileEntity(anchorX + normal.posX, anchorY + normal.posY, anchorZ + normal.posZ);
+            // ReCreate.LOGGER.info(anchorTE == null? "Found none" : "Tile entity found");
+            // if (anchorTE instanceof MechanicalBearingTileEntity)
+            // ((MechanicalBearingTileEntity) anchorTE).attach(this);
+            // }
         }
         if (stabilizedSubContraptionsIDs.size() > stabilizedSubContraptions.size()) {
             for (Map.Entry<Integer, BlockFace> entry : stabilizedSubContraptionsIDs.entrySet()) {
@@ -257,7 +260,7 @@ public abstract class Contraption {
                 stabilizedSubContraptions.put(contraptionWorld.getContraption(), entry.getValue());
             }
         }
-        if (anchorWorld instanceof SubWorld) {
+        if (anchorWorld instanceof SubWorld && !anchorWorld.isRemote) {
             SubWorld subworld = (SubWorld) anchorWorld;
             if (subworld.getMotionX() != 0 || subworld.getMotionY() != 0
                 || subworld.getMotionZ() != 0
@@ -836,7 +839,7 @@ public abstract class Contraption {
         // nbt.setTag("Storage", storageNBT);
         // nbt.setTag("FluidStorage", fluidStorageNBT);
         nbt.setIntArray("Anchor", new int[] { anchorX, anchorY, anchorZ });
-        nbt.setInteger("AnchorWorld", ((IMixinWorld) anchorWorld).getSubWorldID());
+        if (anchorWorld != null) nbt.setInteger("AnchorWorld", ((IMixinWorld) anchorWorld).getSubWorldID());
         nbt.setBoolean("Stalled", stalled);
         nbt.setBoolean("BottomlessSupply", hasUniversalCreativeCrate);
 

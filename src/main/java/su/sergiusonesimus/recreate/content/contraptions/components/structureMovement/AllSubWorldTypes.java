@@ -3,6 +3,7 @@ package su.sergiusonesimus.recreate.content.contraptions.components.structureMov
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import su.sergiusonesimus.metaworlds.api.SubWorld;
 import su.sergiusonesimus.metaworlds.api.SubWorldTypeManager;
 import su.sergiusonesimus.metaworlds.api.SubWorldTypeManager.SubWorldInfoProvider;
@@ -22,6 +23,10 @@ public class AllSubWorldTypes {
 
         public World create(World parentWorld, int id) {
             return ((IMixinWorldReCreate) parentWorld).createContraptionWorld(id, null);
+        }
+
+        public IMessage getCreatePacket(SubWorld sourceWorld) {
+            return new ContraptionWorldCreatePacket((ContraptionWorld) sourceWorld);
         }
 
         public SubWorldInfoHolder fromSubworld(SubWorld sourceWorld) {

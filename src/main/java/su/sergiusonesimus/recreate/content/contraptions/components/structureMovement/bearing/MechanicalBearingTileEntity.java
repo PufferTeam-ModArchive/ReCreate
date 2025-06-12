@@ -7,18 +7,21 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IChatComponent;
 
+import su.sergiusonesimus.metaworlds.zmixin.interfaces.minecraft.world.IMixinWorld;
 import su.sergiusonesimus.recreate.AllSounds;
 import su.sergiusonesimus.recreate.content.contraptions.base.DirectionalKineticBlock;
 import su.sergiusonesimus.recreate.content.contraptions.base.GeneratingKineticTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.base.IRotate;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.AssemblyException;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.Contraption;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.ContraptionWorld;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.IDisplayAssemblyExceptions;
 import su.sergiusonesimus.recreate.foundation.item.TooltipHelper;
 import su.sergiusonesimus.recreate.foundation.tileentity.TileEntityBehaviour;
 import su.sergiusonesimus.recreate.foundation.tileentity.behaviour.scrollvalue.ScrollOptionBehaviour;
 import su.sergiusonesimus.recreate.foundation.utility.AngleHelper;
 import su.sergiusonesimus.recreate.foundation.utility.Lang;
+import su.sergiusonesimus.recreate.foundation.utility.ServerSpeedProvider;
 import su.sergiusonesimus.recreate.util.Direction;
 import su.sergiusonesimus.recreate.util.ReCreateMath;
 
@@ -27,6 +30,7 @@ public class MechanicalBearingTileEntity extends GeneratingKineticTileEntity
 
     protected ScrollOptionBehaviour<RotationMode> movementMode;
     protected BearingContraption movedContraption;
+    protected Integer contraptionWorldID;
     protected float angle;
     protected boolean running;
     protected boolean assembleNextTick;
@@ -67,6 +71,7 @@ public class MechanicalBearingTileEntity extends GeneratingKineticTileEntity
     public void write(NBTTagCompound compound, boolean clientPacket) {
         compound.setBoolean("Running", running);
         compound.setFloat("Angle", angle);
+        if (contraptionWorldID != null) compound.setInteger("ContraptionWorldID", contraptionWorldID);
         AssemblyException.write(compound, lastException);
         super.write(compound, clientPacket);
     }
@@ -81,6 +86,7 @@ public class MechanicalBearingTileEntity extends GeneratingKineticTileEntity
         float angleBefore = angle;
         running = compound.getBoolean("Running");
         angle = compound.getFloat("Angle");
+        if (compound.hasKey("ContraptionWorldID")) contraptionWorldID = compound.getInteger("ContraptionWorldID");
         lastException = AssemblyException.read(compound);
         super.fromTag(compound, clientPacket);
         if (!clientPacket) return;
@@ -111,9 +117,8 @@ public class MechanicalBearingTileEntity extends GeneratingKineticTileEntity
         float speed = convertToAngular(isWindmill() ? getGeneratedSpeed() : getSpeed());
         if (getSpeed() == 0) speed = 0;
         if (worldObj.isRemote) {
-            // Works better without this line, nowhere near perfect though
-            // speed *= ServerSpeedProvider.get();
-            speed += clientAngleDiff / 3f;
+            speed *= ServerSpeedProvider.get();
+            speed += clientAngleDiff/* / 3f */;
         }
         return speed;
     }
@@ -159,6 +164,8 @@ public class MechanicalBearingTileEntity extends GeneratingKineticTileEntity
         movedContraption.anchorY = yCoord + offset.posY;
         movedContraption.anchorZ = zCoord + offset.posZ;
         movedContraption.init();
+        contraptionWorldID = movedContraption.getContraptionWorld()
+            .getSubWorldID();
 
         AllSounds.CONTRAPTION_ASSEMBLE.playOnServer(worldObj, xCoord, yCoord, zCoord);
 
@@ -178,6 +185,7 @@ public class MechanicalBearingTileEntity extends GeneratingKineticTileEntity
             AllSounds.CONTRAPTION_DISASSEMBLE.playOnServer(worldObj, xCoord, yCoord, zCoord);
         }
 
+        contraptionWorldID = null;
         movedContraption = null;
         running = false;
         updateGeneratedRotation();
@@ -188,6 +196,16 @@ public class MechanicalBearingTileEntity extends GeneratingKineticTileEntity
     @Override
     public void updateEntity() {
         super.updateEntity();
+        if (movedContraption == null && contraptionWorldID != null) {
+            ContraptionWorld contraptionWorld = (ContraptionWorld) ((IMixinWorld) this.getWorldObj())
+                .getSubWorld(contraptionWorldID);
+            if (contraptionWorld != null) {
+                this.attach(contraptionWorld.getContraption());
+                movedContraption.tick();
+            } else {
+                contraptionWorldID = null;
+            }
+        }
 
         prevAngle = angle;
         if (worldObj.isRemote) clientAngleDiff /= 2;
@@ -233,7 +251,7 @@ public class MechanicalBearingTileEntity extends GeneratingKineticTileEntity
     }
 
     protected void applyRotation() {
-        if (movedContraption == null) return;
+        if (movedContraption == null || worldObj.isRemote) return;
         movedContraption.setAngle(angle);
         movedContraption.setSpeed(getAngularSpeed());
         Block block = this.getBlockType();
