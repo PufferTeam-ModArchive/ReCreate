@@ -13,9 +13,9 @@ import su.sergiusonesimus.recreate.content.contraptions.base.DirectionalShaftHal
 import su.sergiusonesimus.recreate.content.contraptions.base.IRotate;
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.ICogWheel;
-import su.sergiusonesimus.recreate.content.contraptions.transmission.AbstractRedstoneShaftBlock;
-import su.sergiusonesimus.recreate.content.contraptions.transmission.GearshiftTileEntity;
-import su.sergiusonesimus.recreate.content.contraptions.transmission.SplitShaftTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.relays.encased.AbstractRedstoneShaftBlock;
+import su.sergiusonesimus.recreate.content.contraptions.relays.encased.GearshiftTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.relays.encased.SplitShaftTileEntity;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
 import su.sergiusonesimus.recreate.foundation.utility.Iterate;
 import su.sergiusonesimus.recreate.util.Direction;

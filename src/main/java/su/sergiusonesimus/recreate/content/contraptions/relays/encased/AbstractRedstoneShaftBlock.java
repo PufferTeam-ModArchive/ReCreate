@@ -1,4 +1,4 @@
-package su.sergiusonesimus.recreate.content.contraptions.transmission;
+package su.sergiusonesimus.recreate.content.contraptions.relays.encased;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -10,11 +10,10 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import su.sergiusonesimus.recreate.content.contraptions.RotationPropagator;
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntity;
-import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftBlock;
 
 import java.util.Random;
 
-public class AbstractRedstoneShaftBlock extends AbstractShaftBlock {
+public class AbstractRedstoneShaftBlock extends AbstractEncasedShaftBlock {
     private final boolean field_150171_a;
 
     public AbstractRedstoneShaftBlock(Material materialIn, boolean p_i45421_1_) {
@@ -37,6 +36,7 @@ public class AbstractRedstoneShaftBlock extends AbstractShaftBlock {
             else if (!this.field_150171_a && worldIn.isBlockIndirectlyGettingPowered(x, y, z))
             {
                 worldIn.setBlock(x, y, z, this.getLitBlock(), worldIn.getBlockMetadata(x, y, z), 2);
+                this.updateTileEntity(worldIn, x, y, z);
             }
         }
     }
@@ -58,8 +58,8 @@ public class AbstractRedstoneShaftBlock extends AbstractShaftBlock {
             else if (!this.field_150171_a && worldIn.isBlockIndirectlyGettingPowered(x, y, z))
             {
                 worldIn.setBlock(x, y, z, this.getLitBlock(), worldIn.getBlockMetadata(x, y, z), 2);
-                this.updateTileEntity(worldIn, x, y, z);
                 detachKinetics(worldIn, x, y, z, true);
+                this.updateTileEntity(worldIn, x, y, z);
             }
         }
     }

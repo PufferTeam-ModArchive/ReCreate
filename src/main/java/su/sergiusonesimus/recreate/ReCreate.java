@@ -25,8 +25,8 @@ import su.sergiusonesimus.recreate.content.contraptions.components.structureMove
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueHandler;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftTileEntity;
-import su.sergiusonesimus.recreate.content.contraptions.transmission.ClutchTileEntity;
-import su.sergiusonesimus.recreate.content.contraptions.transmission.GearshiftTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.relays.encased.ClutchTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.relays.encased.GearshiftTileEntity;
 import su.sergiusonesimus.recreate.events.ClientEvents;
 import su.sergiusonesimus.recreate.events.CommonEvents;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;

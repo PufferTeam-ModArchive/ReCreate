@@ -1,4 +1,4 @@
-package su.sergiusonesimus.recreate.content.contraptions.transmission;
+package su.sergiusonesimus.recreate.content.contraptions.relays.encased;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

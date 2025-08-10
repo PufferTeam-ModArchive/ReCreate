@@ -1,9 +1,6 @@
-package su.sergiusonesimus.recreate.content.contraptions.transmission;
+package su.sergiusonesimus.recreate.content.contraptions.relays.encased;
 
-import net.minecraft.block.Block;
-import su.sergiusonesimus.recreate.content.contraptions.KineticNetwork;
 import su.sergiusonesimus.recreate.content.contraptions.base.DirectionalShaftHalvesTileEntity;
-import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.SimpleKineticTileEntity;
 import su.sergiusonesimus.recreate.util.Direction;
 
 public abstract class SplitShaftTileEntity extends DirectionalShaftHalvesTileEntity {

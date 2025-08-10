@@ -12,8 +12,8 @@ import su.sergiusonesimus.recreate.content.contraptions.components.structureMove
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelItemBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftBlock;
-import su.sergiusonesimus.recreate.content.contraptions.transmission.ClutchBlock;
-import su.sergiusonesimus.recreate.content.contraptions.transmission.GearshiftBlock;
+import su.sergiusonesimus.recreate.content.contraptions.relays.encased.ClutchBlock;
+import su.sergiusonesimus.recreate.content.contraptions.relays.encased.GearshiftBlock;
 import su.sergiusonesimus.recreate.foundation.block.BlockStressDefaults;
 
 public class AllBlocks {
