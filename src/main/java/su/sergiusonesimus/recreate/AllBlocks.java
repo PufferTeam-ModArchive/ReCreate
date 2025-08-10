@@ -12,6 +12,8 @@ import su.sergiusonesimus.recreate.content.contraptions.components.structureMove
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelItemBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftBlock;
+import su.sergiusonesimus.recreate.content.contraptions.transmission.ClutchBlock;
+import su.sergiusonesimus.recreate.content.contraptions.transmission.GearshiftBlock;
 import su.sergiusonesimus.recreate.foundation.block.BlockStressDefaults;
 
 public class AllBlocks {
@@ -21,6 +23,10 @@ public class AllBlocks {
     public static Block cogwheel;
     public static Block large_cogwheel;
     public static Block mechanical_bearing;
+    public static Block clutch;
+    public static Block lit_clutch;
+    public static Block gearshift;
+    public static Block lit_gearshift;
 
     public static void registerBlocks() {
         shaft = new ShaftBlock(Material.rock).setBlockName("shaft")
@@ -35,6 +41,12 @@ public class AllBlocks {
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
         mechanical_bearing = new MechanicalBearingBlock(Material.piston).setBlockName("mechanical_bearing")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
+        clutch = new ClutchBlock(Material.piston, false).setBlockName("clutch")
+                .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
+        lit_clutch = new ClutchBlock(Material.piston, true).setBlockName("lit_clutch");
+        gearshift = new GearshiftBlock(Material.piston, false).setBlockName("gearshift")
+                .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
+        lit_gearshift = new GearshiftBlock(Material.piston, true).setBlockName("lit_gearshift");
 
         registerMyBlock(shaft);
         registerMyBlock(creative_motor, CreativeMotorItemBlock.class);
@@ -42,6 +54,10 @@ public class AllBlocks {
         registerMyBlock(cogwheel, CogWheelItemBlock.class);
         registerMyBlock(large_cogwheel, CogWheelItemBlock.class);
         registerMyBlock(mechanical_bearing);
+        registerMyBlock(gearshift);
+        registerMyBlock(lit_gearshift);
+        registerMyBlock(clutch);
+        registerMyBlock(lit_clutch);
     }
 
     private static void registerMyBlock(Block block, Class<? extends ItemBlock> pickup, BlockSlab singleSlab,

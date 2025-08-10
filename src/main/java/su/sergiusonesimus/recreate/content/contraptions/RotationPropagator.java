@@ -9,9 +9,13 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
+import su.sergiusonesimus.recreate.content.contraptions.base.DirectionalShaftHalvesTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.base.IRotate;
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.ICogWheel;
+import su.sergiusonesimus.recreate.content.contraptions.transmission.AbstractRedstoneShaftBlock;
+import su.sergiusonesimus.recreate.content.contraptions.transmission.GearshiftTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.transmission.SplitShaftTileEntity;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
 import su.sergiusonesimus.recreate.foundation.utility.Iterate;
 import su.sergiusonesimus.recreate.util.Direction;
@@ -128,17 +132,17 @@ public class RotationPropagator {
     }
 
     private static float getAxisModifier(KineticTileEntity te, Direction direction) {
-        // TODO
-        // if (!(te.hasSource()||te.isSource()) || !(te instanceof DirectionalShaftHalvesTileEntity))
-        // return 1;
-        // Direction source = ((DirectionalShaftHalvesTileEntity) te).getSourceFacing();
-        //
-        // if (te instanceof GearboxTileEntity)
-        // return direction.getAxis() == source.getAxis() ? direction == source ? 1 : -1
-        // : direction.getAxisDirection() == source.getAxisDirection() ? -1 : 1;
-        //
-        // if (te instanceof SplitShaftTileEntity)
-        // return ((SplitShaftTileEntity) te).getRotationSpeedModifier(direction);
+        if (!(te.hasSource() || te.isSource()) || !(te instanceof DirectionalShaftHalvesTileEntity))
+            return 1;
+
+        Direction source = ((DirectionalShaftHalvesTileEntity) te).getSourceFacing();
+
+        if (te instanceof GearshiftTileEntity te2 && ((AbstractRedstoneShaftBlock) te2.blockType).isPowered())
+            return direction.getAxis() == source.getAxis() ? direction == source ? 1 : -1
+                    : direction.getAxisDirection() == source.getAxisDirection() ? -1 : 1;
+
+        if (te instanceof SplitShaftTileEntity)
+            return ((SplitShaftTileEntity) te).getRotationSpeedModifier(direction);
 
         return 1;
     }
