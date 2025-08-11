@@ -14,6 +14,7 @@ import su.sergiusonesimus.recreate.content.contraptions.base.IRotate;
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.ICogWheel;
 import su.sergiusonesimus.recreate.content.contraptions.relays.encased.AbstractRedstoneShaftBlock;
+import su.sergiusonesimus.recreate.content.contraptions.relays.encased.ClutchTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.encased.GearshiftTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.encased.SplitShaftTileEntity;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
@@ -140,6 +141,10 @@ public class RotationPropagator {
         if (te instanceof GearshiftTileEntity te2 && ((AbstractRedstoneShaftBlock) te2.blockType).isPowered())
             return direction.getAxis() == source.getAxis() ? direction == source ? 1 : -1
                     : direction.getAxisDirection() == source.getAxisDirection() ? -1 : 1;
+
+        if (te instanceof ClutchTileEntity te2 && ((AbstractRedstoneShaftBlock) te2.blockType).isPowered())
+            return direction.getAxis() == source.getAxis() ? direction == source ? 1 : 0
+                    : direction.getAxisDirection() == source.getAxisDirection() ? 0 : 1;
 
         if (te instanceof SplitShaftTileEntity)
             return ((SplitShaftTileEntity) te).getRotationSpeedModifier(direction);
