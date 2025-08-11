@@ -36,6 +36,7 @@ public class AbstractRedstoneShaftBlock extends AbstractEncasedShaftBlock {
             else if (!this.field_150171_a && worldIn.isBlockIndirectlyGettingPowered(x, y, z))
             {
                 worldIn.setBlock(x, y, z, this.getLitBlock(), worldIn.getBlockMetadata(x, y, z), 2);
+                detachKinetics(worldIn, x, y, z, true);
                 this.updateTileEntity(worldIn, x, y, z);
             }
         }

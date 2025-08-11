@@ -36,13 +36,12 @@ public interface IWrenchable {
     }
 
     public default boolean onSneakWrenched(World world, int x, int y, int z, int face, EntityPlayer player) {
-        if (world instanceof WorldServer) {
-            if (player != null && !player.capabilities.isCreativeMode) world.getBlock(x, y, z)
+        if (player != null && !player.capabilities.isCreativeMode) world.getBlock(x, y, z)
                 .getDrops(world, x, y, z, world.getBlockMetadata(x, y, z), 0)
                 .forEach(itemStack -> { player.inventory.addItemStackToInventory(itemStack); });
-            world.setBlockToAir(x, y, z);
-            playRemoveSound(world, x, y, z);
-        }
+        world.setBlockToAir(x, y, z);
+        playRemoveSound(world, x, y, z);
+
         return true;
     }
 

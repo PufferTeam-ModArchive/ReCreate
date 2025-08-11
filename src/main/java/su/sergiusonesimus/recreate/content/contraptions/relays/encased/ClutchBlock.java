@@ -3,6 +3,7 @@ package su.sergiusonesimus.recreate.content.contraptions.relays.encased;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import su.sergiusonesimus.recreate.AllBlocks;
+import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.foundation.block.ITE;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -14,6 +15,7 @@ public class ClutchBlock extends AbstractRedstoneShaftBlock implements ITE<Clutc
         this.setHardness(2.0F);
         this.setResistance(5.0F);
         this.setStepSound(soundTypeWood);
+        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         this.setBlockTextureName("planks_oak");
     }
 
@@ -30,5 +32,20 @@ public class ClutchBlock extends AbstractRedstoneShaftBlock implements ITE<Clutc
     @Override
     public Block getLitBlock() {
         return AllBlocks.lit_clutch;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    @Override
+    public int getRenderType() {
+        return ReCreate.proxy.getClutchBlockRenderID();
     }
 }

@@ -24,6 +24,7 @@ import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwhe
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftRenderBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftTileEntityRenderer;
+import su.sergiusonesimus.recreate.content.contraptions.relays.encased.*;
 import su.sergiusonesimus.recreate.content.contraptions.wrench.WrenchRenderItem;
 import su.sergiusonesimus.recreate.events.InputEvents;
 import su.sergiusonesimus.recreate.foundation.utility.ghost.GhostBlocks;
@@ -35,6 +36,8 @@ public class ClientProxy extends CommonProxy {
     int creativeMotorRenderID;
     int cogwheelRenderID;
     int bearingRenderID;
+    int gearshiftRenderID;
+    int clutchRenderID;
 
     ModelBiped gogglesArmorModel;
 
@@ -69,6 +72,10 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(CogWheelTileEntity.class, new CogWheelTileEntityRenderer());
         ClientRegistry
             .bindTileEntitySpecialRenderer(MechanicalBearingTileEntity.class, new BearingTileEntityRenderer());
+        ClientRegistry
+                .bindTileEntitySpecialRenderer(GearshiftTileEntity.class, new GearshiftTileEntityRenderer());
+        ClientRegistry
+                .bindTileEntitySpecialRenderer(ClutchTileEntity.class, new ClutchTileEntityRenderer());
 
         // block render ids
         shaftRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -79,6 +86,10 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(new CogWheelRenderBlock(cogwheelRenderID));
         bearingRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new BearingRenderBlock(bearingRenderID));
+        gearshiftRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GearshiftRenderBlock(gearshiftRenderID));
+        clutchRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new ClutchRenderBlock(clutchRenderID));
 
         // armor model
         gogglesArmorModel = new GogglesModel();
@@ -127,6 +138,14 @@ public class ClientProxy extends CommonProxy {
 
     public int getBearingBlockRenderID() {
         return bearingRenderID;
+    }
+
+    public int getGearshiftBlockRenderID() {
+        return gearshiftRenderID;
+    }
+
+    public int getClutchBlockRenderID() {
+        return clutchRenderID;
     }
 
     public ModelBiped getGogglesArmorModel() {

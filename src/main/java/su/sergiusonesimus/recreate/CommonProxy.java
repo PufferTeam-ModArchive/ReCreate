@@ -44,6 +44,14 @@ public class CommonProxy {
         return 0;
     }
 
+    public int getGearshiftBlockRenderID() {
+        return 0;
+    }
+
+    public int getClutchBlockRenderID() {
+        return 0;
+    }
+
     public int registerArmorRenderID(String prefix) {
         return 0;
     }
