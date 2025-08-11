@@ -16,7 +16,7 @@ public class ClutchBlock extends AbstractRedstoneShaftBlock implements ITE<Clutc
         this.setResistance(5.0F);
         this.setStepSound(soundTypeWood);
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        this.setBlockTextureName("planks_oak");
+        this.setBlockTextureName("planks_spruce");
     }
 
     @Override

@@ -7,22 +7,24 @@ import su.sergiusonesimus.recreate.content.contraptions.relays.encased.EncasedSh
 import su.sergiusonesimus.recreate.util.Direction;
 
 public class GearboxModel extends AbstractShaftModel {
-    ModelRenderer[] sides = new ModelRenderer[4];
     ModelRenderer bearing;
     ModelRenderer bearing2;
     ModelRenderer bearing3;
     ModelRenderer bearing4;
 
+    ModelRenderer side;
+    ModelRenderer side2;
+
     public GearboxModel(AllModelTextures texture) {
         super(texture, 64, 64);
 
-        bearing = new ModelRenderer(this, 0, 18).setTextureSize(textureWidth, textureHeight);
-        bearing.addBox(-6.0F, -15.0F + 8F, -6.0F, 12, 1, 12, 0.0F);
+        bearing = new ModelRenderer(this, -2, 16).setTextureSize(textureWidth, textureHeight);
+        bearing.addBox(-6.0F, -15.0F + 8F, -7.0F, 12, 1, 14);
         bearing.setRotationPoint(0, 0, 0);
         core.addChild(bearing);
 
-        bearing2 = new ModelRenderer(this, 0, 18).setTextureSize(textureWidth, textureHeight);
-        bearing2.addBox(-6.0F, -2.0F + 8F, -6.0F, 12, 1, 12);
+        bearing2 = new ModelRenderer(this, -2, 16).setTextureSize(textureWidth, textureHeight);
+        bearing2.addBox(-6.0F, -2.0F + 8F, -7.0F, 12, 1, 14);
         bearing2.setRotationPoint(0, 0, 0);
         core.addChild(bearing2);
 
@@ -36,7 +38,18 @@ public class GearboxModel extends AbstractShaftModel {
         bearing4.setRotationPoint(0, 0, 0);
         core.addChild(bearing4);
 
+        side = new ModelRenderer(this, 21, 32).setTextureSize(textureWidth, textureHeight);
+        side.addBox(6.0F, -16.0F + 8F, -8.0F, 2, 16, 16);
+        side.setRotationPoint(7 + 7, 0, 0);
+        side.rotateAngleY = (float) Math.PI;
+        core.addChild(side);
+
+        side2 = new ModelRenderer(this, 21, 32).setTextureSize(textureWidth, textureHeight);
+        side2.addBox(-8.0F, -16.0F + 8F, -8.0F, 2, 16, 16);
+        side2.setRotationPoint(0, 0, 0);
+        core.addChild(side2);
     }
+
 
     @Override
     public AbstractShaftModel setAxis(Direction.Axis axis) {
