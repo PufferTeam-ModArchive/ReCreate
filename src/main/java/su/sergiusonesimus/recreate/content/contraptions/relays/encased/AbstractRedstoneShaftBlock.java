@@ -1,9 +1,12 @@
 package su.sergiusonesimus.recreate.content.contraptions.relays.encased;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
@@ -99,6 +102,21 @@ public class AbstractRedstoneShaftBlock extends AbstractEncasedShaftBlock {
     public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
     {
         return new ItemStack(getUnlitBlock(), 1, 0);
+    }
+
+    @Override
+    public Item getItemDropped(int meta, Random random, int fortune)
+    {
+        if(this != getUnlitBlock()) {
+            return getUnlitBlock().getItemDropped(0, random, fortune);
+        }
+        return super.getItemDropped(0, random, fortune);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public Item getItem(World worldIn, int x, int y, int z)
+    {
+        return Item.getItemFromBlock(getUnlitBlock());
     }
 
     public Block getUnlitBlock() {

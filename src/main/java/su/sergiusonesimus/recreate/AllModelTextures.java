@@ -14,6 +14,7 @@ public enum AllModelTextures {
     LIT_GEARSHIFT("lit_gearshift.png"),
     CLUTCH("clutch.png"),
     LIT_CLUTCH("lit_clutch.png"),
+    GEARBOX("gearbox.png"),
 
     WRENCH("wrench.png"),
 

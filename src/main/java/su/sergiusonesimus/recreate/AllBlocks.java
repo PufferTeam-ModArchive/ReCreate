@@ -14,6 +14,7 @@ import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwhe
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.encased.ClutchBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.encased.GearshiftBlock;
+import su.sergiusonesimus.recreate.content.contraptions.relays.gearbox.GearboxBlock;
 import su.sergiusonesimus.recreate.foundation.block.BlockStressDefaults;
 
 public class AllBlocks {
@@ -27,6 +28,7 @@ public class AllBlocks {
     public static Block lit_clutch;
     public static Block gearshift;
     public static Block lit_gearshift;
+    public static Block gearbox;
 
     public static void registerBlocks() {
         shaft = new ShaftBlock(Material.rock).setBlockName("shaft")
@@ -47,6 +49,7 @@ public class AllBlocks {
         gearshift = new GearshiftBlock(Material.piston, false).setBlockName("gearshift")
                 .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
         lit_gearshift = new GearshiftBlock(Material.piston, true).setBlockName("lit_gearshift");
+        gearbox = new GearboxBlock(Material.piston).setBlockName("gearbox").setCreativeTab(AllItems.BASE_CREATIVE_TAB);;
 
         registerMyBlock(shaft);
         registerMyBlock(creative_motor, CreativeMotorItemBlock.class);
@@ -58,6 +61,7 @@ public class AllBlocks {
         registerMyBlock(lit_gearshift);
         registerMyBlock(clutch);
         registerMyBlock(lit_clutch);
+        registerMyBlock(gearbox);
     }
 
     private static void registerMyBlock(Block block, Class<? extends ItemBlock> pickup, BlockSlab singleSlab,

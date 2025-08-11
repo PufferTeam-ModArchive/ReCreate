@@ -9,7 +9,7 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
-import su.sergiusonesimus.recreate.content.contraptions.base.DirectionalShaftHalvesTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.relays.encased.DirectionalShaftHalvesTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.base.IRotate;
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.ICogWheel;
@@ -17,6 +17,7 @@ import su.sergiusonesimus.recreate.content.contraptions.relays.encased.AbstractR
 import su.sergiusonesimus.recreate.content.contraptions.relays.encased.ClutchTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.encased.GearshiftTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.encased.SplitShaftTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.relays.gearbox.GearboxTileEntity;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
 import su.sergiusonesimus.recreate.foundation.utility.Iterate;
 import su.sergiusonesimus.recreate.util.Direction;
@@ -139,6 +140,10 @@ public class RotationPropagator {
         Direction source = ((DirectionalShaftHalvesTileEntity) te).getSourceFacing();
 
         if (te instanceof GearshiftTileEntity te2 && ((AbstractRedstoneShaftBlock) te2.blockType).isPowered())
+            return direction.getAxis() == source.getAxis() ? direction == source ? 1 : -1
+                    : direction.getAxisDirection() == source.getAxisDirection() ? -1 : 1;
+
+        if (te instanceof GearboxTileEntity)
             return direction.getAxis() == source.getAxis() ? direction == source ? 1 : -1
                     : direction.getAxisDirection() == source.getAxisDirection() ? -1 : 1;
 

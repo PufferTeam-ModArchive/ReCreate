@@ -25,6 +25,9 @@ import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftTileEntityRenderer;
 import su.sergiusonesimus.recreate.content.contraptions.relays.encased.*;
+import su.sergiusonesimus.recreate.content.contraptions.relays.gearbox.GearboxRenderBlock;
+import su.sergiusonesimus.recreate.content.contraptions.relays.gearbox.GearboxTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.relays.gearbox.GearboxTileEntityRenderer;
 import su.sergiusonesimus.recreate.content.contraptions.wrench.WrenchRenderItem;
 import su.sergiusonesimus.recreate.events.InputEvents;
 import su.sergiusonesimus.recreate.foundation.utility.ghost.GhostBlocks;
@@ -38,6 +41,7 @@ public class ClientProxy extends CommonProxy {
     int bearingRenderID;
     int gearshiftRenderID;
     int clutchRenderID;
+    int gearboxRenderID;
 
     ModelBiped gogglesArmorModel;
 
@@ -76,6 +80,8 @@ public class ClientProxy extends CommonProxy {
                 .bindTileEntitySpecialRenderer(GearshiftTileEntity.class, new GearshiftTileEntityRenderer());
         ClientRegistry
                 .bindTileEntitySpecialRenderer(ClutchTileEntity.class, new ClutchTileEntityRenderer());
+        ClientRegistry
+                .bindTileEntitySpecialRenderer(GearboxTileEntity.class, new GearboxTileEntityRenderer());
 
         // block render ids
         shaftRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -90,6 +96,8 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(new GearshiftRenderBlock(gearshiftRenderID));
         clutchRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new ClutchRenderBlock(clutchRenderID));
+        gearboxRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new GearboxRenderBlock(gearboxRenderID));
 
         // armor model
         gogglesArmorModel = new GogglesModel();
@@ -146,6 +154,10 @@ public class ClientProxy extends CommonProxy {
 
     public int getClutchBlockRenderID() {
         return clutchRenderID;
+    }
+
+    public int getGearboxBlockRenderID() {
+        return gearboxRenderID;
     }
 
     public ModelBiped getGogglesArmorModel() {

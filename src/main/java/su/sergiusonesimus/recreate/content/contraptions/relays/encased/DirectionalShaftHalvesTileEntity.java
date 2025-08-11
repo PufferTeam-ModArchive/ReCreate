@@ -1,4 +1,4 @@
-package su.sergiusonesimus.recreate.content.contraptions.base;
+package su.sergiusonesimus.recreate.content.contraptions.relays.encased;
 
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.SimpleKineticTileEntity;
 import su.sergiusonesimus.recreate.util.Direction;

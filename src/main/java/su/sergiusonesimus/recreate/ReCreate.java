@@ -3,6 +3,7 @@ package su.sergiusonesimus.recreate;
 import java.io.File;
 import java.util.Random;
 
+import cpw.mods.fml.common.Loader;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -18,6 +19,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import su.sergiusonesimus.recreate.compat.nei.CreateNEI;
 import su.sergiusonesimus.recreate.content.contraptions.TorquePropagator;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.AllSubWorldTypes;
@@ -27,6 +29,7 @@ import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwhe
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.encased.ClutchTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.encased.GearshiftTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.relays.gearbox.GearboxTileEntity;
 import su.sergiusonesimus.recreate.events.ClientEvents;
 import su.sergiusonesimus.recreate.events.CommonEvents;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
@@ -46,6 +49,7 @@ public class ReCreate {
     public static final Random RANDOM = new Random();
 
     public static final ReCreateRegistrate REGISTRATE = new ReCreateRegistrate();
+    public static final CreateNEI CreateNEICompat = new CreateNEI();
 
     @SidedProxy(
         clientSide = "su.sergiusonesimus.recreate.ClientProxy",
@@ -99,6 +103,9 @@ public class ReCreate {
 
         // tile entities
         registerTileEntities();
+        if(Loader.isModLoaded("NotEnoughItems")) {
+            CreateNEICompat.loadConfig();
+        }
 
         proxy.init(event);
 
@@ -125,6 +132,7 @@ public class ReCreate {
         GameRegistry.registerTileEntity(MechanicalBearingTileEntity.class, "Mechanical Bearing");
         GameRegistry.registerTileEntity(GearshiftTileEntity.class, "Gearshift");
         GameRegistry.registerTileEntity(ClutchTileEntity.class, "Clutch");
+        GameRegistry.registerTileEntity(GearboxTileEntity.class, "Gearbox");
     }
 
     public static ResourceLocation asResource(String path) {

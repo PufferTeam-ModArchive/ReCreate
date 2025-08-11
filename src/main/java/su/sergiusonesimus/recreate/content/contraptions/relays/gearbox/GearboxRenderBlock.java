@@ -1,4 +1,4 @@
-package su.sergiusonesimus.recreate.content.contraptions.relays.encased;
+package su.sergiusonesimus.recreate.content.contraptions.relays.gearbox;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
@@ -7,30 +7,30 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
+import su.sergiusonesimus.recreate.AllModelTextures;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftModel;
-import su.sergiusonesimus.recreate.content.contraptions.relays.gearbox.GearboxBlock;
+import su.sergiusonesimus.recreate.content.contraptions.relays.encased.AbstractRedstoneShaftBlock;
+import su.sergiusonesimus.recreate.content.contraptions.relays.encased.SplitShaftModel;
+import su.sergiusonesimus.recreate.content.contraptions.relays.encased.SplitShaftRenderBlock;
+import su.sergiusonesimus.recreate.content.contraptions.relays.encased.SplitShaftTileEntityRenderer;
 import su.sergiusonesimus.recreate.util.Direction;
 
-public class SplitShaftRenderBlock implements ISimpleBlockRenderingHandler {
+public class GearboxRenderBlock implements ISimpleBlockRenderingHandler {
 
     final int renderID;
-    private final SplitShaftModel model = new SplitShaftModel();
-    AbstractShaftModel lit = getLitModel();
-    AbstractShaftModel unlit = getUnlitModel();
+    SplitShaftModel model = new SplitShaftModel();
+    SplitShaftModel model2 = new SplitShaftModel();
+    AbstractShaftModel normal = getModel();
 
-    public AbstractShaftModel getUnlitModel() {
-        return null;
-    }
-
-    public AbstractShaftModel getLitModel() {
-        return null;
-    }
-
-    public SplitShaftRenderBlock(int blockComplexRenderID) {
+    public GearboxRenderBlock(int blockComplexRenderID) {
         this.renderID = blockComplexRenderID;
     }
 
+    public AbstractShaftModel getModel() {
+        return new GearboxModel(AllModelTextures.GEARBOX);
+    }
+    
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -39,23 +39,18 @@ public class SplitShaftRenderBlock implements ISimpleBlockRenderingHandler {
         Direction.Axis axis = Direction.Axis.X;
 
         model.setAxis(axis);
-        if(block instanceof AbstractRedstoneShaftBlock redstonete) {
-            if(redstonete.isPowered()) {
-                this.lit.setAxis(axis);
-            } else {
-                this.unlit.setAxis(axis);
-            }
+        if(block instanceof GearboxBlock gearboxte){
+            this.normal.setAxis(axis);
+            this.model2.setAxis(gearboxte.getSecondAxis(gearboxte.getMetaFromAxis(axis)));
         }
 
         model.render();
 
-        if(block instanceof AbstractRedstoneShaftBlock redstonete) {
-            if(redstonete.isPowered()) {
-                this.lit.render();
-            } else {
-                this.unlit.render();
-            }
+        if(block instanceof GearboxBlock gearboxte){
+            this.normal.render();
+            this.model2.render();
         }
+
 
         block.setBlockBoundsForItemRender();
     }
@@ -70,24 +65,18 @@ public class SplitShaftRenderBlock implements ISimpleBlockRenderingHandler {
         Direction.Axis axis = ((AbstractShaftBlock) block).getAxis(world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ));
 
         model.setAxis(axis);
-        if(block instanceof AbstractRedstoneShaftBlock redstonete) {
-            if(redstonete.isPowered()) {
-                this.lit.setAxis(axis);
-            } else {
-                this.unlit.setAxis(axis);
-            }
+        if(block instanceof GearboxBlock gearboxte){
+            this.normal.setAxis(gearboxte.getBoxAxis(gearboxte.getMetaFromAxis(axis)));
+            this.model2.setAxis(gearboxte.getSecondAxis(gearboxte.getMetaFromAxis(axis)));
         }
 
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 
         model.render();
-        if(block instanceof AbstractRedstoneShaftBlock redstonete) {
-            if(redstonete.isPowered()) {
-                this.lit.render();
-            } else {
-                this.unlit.render();
-            }
+        if(block instanceof GearboxBlock gearboxte){
+            this.normal.render();
+            this.model2.render();
         }
 
         GL11.glPopMatrix();
