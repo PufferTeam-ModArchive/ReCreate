@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftModel;
@@ -40,21 +41,13 @@ public class SplitShaftRenderBlock implements ISimpleBlockRenderingHandler {
 
         model.setAxis(axis);
         if(block instanceof AbstractRedstoneShaftBlock redstonete) {
-            if(redstonete.isPowered()) {
-                this.lit.setAxis(axis);
-            } else {
-                this.unlit.setAxis(axis);
-            }
+            this.unlit.setAxis(axis);
         }
 
         model.render();
 
         if(block instanceof AbstractRedstoneShaftBlock redstonete) {
-            if(redstonete.isPowered()) {
-                this.lit.render();
-            } else {
-                this.unlit.render();
-            }
+            this.unlit.render();
         }
 
         block.setBlockBoundsForItemRender();
@@ -71,7 +64,7 @@ public class SplitShaftRenderBlock implements ISimpleBlockRenderingHandler {
 
         model.setAxis(axis);
         if(block instanceof AbstractRedstoneShaftBlock redstonete) {
-            if(redstonete.isPowered()) {
+            if(redstonete.isPowered((World) world, x, y, z)) {
                 this.lit.setAxis(axis);
             } else {
                 this.unlit.setAxis(axis);
@@ -83,7 +76,7 @@ public class SplitShaftRenderBlock implements ISimpleBlockRenderingHandler {
 
         model.render();
         if(block instanceof AbstractRedstoneShaftBlock redstonete) {
-            if(redstonete.isPowered()) {
+            if(redstonete.isPowered((World) world, x, y, z)) {
                 this.lit.render();
             } else {
                 this.unlit.render();

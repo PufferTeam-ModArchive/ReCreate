@@ -27,7 +27,7 @@ public class GearboxTileEntityRenderer extends KineticTileEntityRenderer {
         Direction.Axis axis = ((AbstractEncasedShaftBlock) tileEntity.getBlockType()).getAxis(tileEntity.getBlockMetadata());
 
         if(tileEntity.blockType instanceof GearboxBlock gearboxte){
-            this.normal.setAxis(gearboxte.getBoxAxis(gearboxte.getMetaFromAxis(axis)));
+            this.normal.setAxis(axis);
             this.model2.setAxis(gearboxte.getSecondAxis(gearboxte.getMetaFromAxis(axis)));
         }
 

@@ -13,17 +13,30 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import su.sergiusonesimus.recreate.content.contraptions.RotationPropagator;
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntity;
+import su.sergiusonesimus.recreate.util.Direction;
 
 import java.util.Random;
 
 public class AbstractRedstoneShaftBlock extends AbstractEncasedShaftBlock {
-    private final boolean field_150171_a;
+    private boolean field_150171_a;
 
-    public AbstractRedstoneShaftBlock(Material materialIn, boolean p_i45421_1_) {
+    public AbstractRedstoneShaftBlock(Material materialIn) {
         super(materialIn);
 
         setTickRandomly(true);
-        this.field_150171_a = p_i45421_1_;
+    }
+
+    @Override
+    public Direction.Axis getAxis(int meta) {
+        switch (meta) {
+            default:
+            case 0, 3:
+                return Direction.Axis.Y;
+            case 1, 4:
+                return Direction.Axis.X;
+            case 2, 5:
+                return Direction.Axis.Z;
+        }
     }
 
     public void onBlockAdded(World worldIn, int x, int y, int z)
@@ -32,13 +45,14 @@ public class AbstractRedstoneShaftBlock extends AbstractEncasedShaftBlock {
 
         if (!worldIn.isRemote)
         {
-            if (this.field_150171_a && !worldIn.isBlockIndirectlyGettingPowered(x, y, z))
+            if (this.isPowered(worldIn, x, y, z) && !worldIn.isBlockIndirectlyGettingPowered(x, y, z))
             {
                 worldIn.scheduleBlockUpdate(x, y, z, this, 4);
             }
-            else if (!this.field_150171_a && worldIn.isBlockIndirectlyGettingPowered(x, y, z))
+            else if (!this.isPowered(worldIn, x, y, z) && worldIn.isBlockIndirectlyGettingPowered(x, y, z))
             {
-                worldIn.setBlock(x, y, z, this.getLitBlock(), worldIn.getBlockMetadata(x, y, z), 2);
+                this.setPowered(true);
+                worldIn.setBlock(x, y, z, this, worldIn.getBlockMetadata(x, y, z) + 3, 2);
                 detachKinetics(worldIn, x, y, z, true);
                 this.updateTileEntity(worldIn, x, y, z);
             }
@@ -55,13 +69,14 @@ public class AbstractRedstoneShaftBlock extends AbstractEncasedShaftBlock {
 
         if (!worldIn.isRemote)
         {
-            if (this.field_150171_a && !worldIn.isBlockIndirectlyGettingPowered(x, y, z))
+            if (this.isPowered(worldIn, x, y, z) && !worldIn.isBlockIndirectlyGettingPowered(x, y, z))
             {
                 worldIn.scheduleBlockUpdate(x, y, z, this, 4);
             }
-            else if (!this.field_150171_a && worldIn.isBlockIndirectlyGettingPowered(x, y, z))
+            else if (!this.isPowered(worldIn, x, y, z) && worldIn.isBlockIndirectlyGettingPowered(x, y, z))
             {
-                worldIn.setBlock(x, y, z, this.getLitBlock(), worldIn.getBlockMetadata(x, y, z), 2);
+                this.setPowered(true);
+                worldIn.setBlock(x, y, z, this, worldIn.getBlockMetadata(x, y, z) + 3, 2);
                 detachKinetics(worldIn, x, y, z, true);
                 this.updateTileEntity(worldIn, x, y, z);
             }
@@ -91,43 +106,35 @@ public class AbstractRedstoneShaftBlock extends AbstractEncasedShaftBlock {
             return;
         RotationPropagator.handleAdded(worldIn, x, y, z, kte);
 
-        if (!worldIn.isRemote && this.field_150171_a && !worldIn.isBlockIndirectlyGettingPowered(x, y, z))
+        if (!worldIn.isRemote && this.isPowered(worldIn, x, y, z) && !worldIn.isBlockIndirectlyGettingPowered(x, y, z))
         {
-            worldIn.setBlock(x, y, z, this.getUnlitBlock(), worldIn.getBlockMetadata(x, y, z), 2);
+            this.setPowered(false);
+            worldIn.setBlock(x, y, z, this, worldIn.getBlockMetadata(x, y, z) - 3, 2);
             this.updateTileEntity(worldIn, x, y, z);
         }
     }
 
-    @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
-    {
-        return new ItemStack(getUnlitBlock(), 1, 0);
+    public void setPowered(boolean powered) {
+        this.field_150171_a = powered;
     }
 
-    @Override
-    public Item getItemDropped(int meta, Random random, int fortune)
-    {
-        if(this != getUnlitBlock()) {
-            return getUnlitBlock().getItemDropped(0, random, fortune);
+    public boolean isPowered(World world, int x, int y, int z) {
+        int meta = world.getBlockMetadata(x, y, z);
+        if(meta > 3) {
+            return true;
         }
-        return super.getItemDropped(0, random, fortune);
+        return false;
     }
 
-    @SideOnly(Side.CLIENT)
-    public Item getItem(World worldIn, int x, int y, int z)
-    {
-        return Item.getItemFromBlock(getUnlitBlock());
-    }
-
-    public Block getUnlitBlock() {
-        return Blocks.redstone_lamp;
-    }
-
-    public Block getLitBlock() {
-        return Blocks.redstone_lamp;
-    }
-
-    public boolean isPowered() {
-        return this.field_150171_a;
+    public boolean isPowered(TileEntity te) {
+        World world = te.getWorldObj();
+        int x = te.xCoord;
+        int y = te.yCoord;
+        int z = te.zCoord;
+        int meta = world.getBlockMetadata(x, y, z);
+        if(meta > 3) {
+            return true;
+        }
+        return false;
     }
  }

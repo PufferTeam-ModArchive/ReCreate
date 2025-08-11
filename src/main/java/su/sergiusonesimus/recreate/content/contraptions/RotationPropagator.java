@@ -139,7 +139,7 @@ public class RotationPropagator {
 
         Direction source = ((DirectionalShaftHalvesTileEntity) te).getSourceFacing();
 
-        if (te instanceof GearshiftTileEntity te2 && ((AbstractRedstoneShaftBlock) te2.blockType).isPowered())
+        if (te instanceof GearshiftTileEntity te2 && ((AbstractRedstoneShaftBlock) te2.blockType).isPowered(te))
             return direction.getAxis() == source.getAxis() ? direction == source ? 1 : -1
                     : direction.getAxisDirection() == source.getAxisDirection() ? -1 : 1;
 
@@ -147,7 +147,7 @@ public class RotationPropagator {
             return direction.getAxis() == source.getAxis() ? direction == source ? 1 : -1
                     : direction.getAxisDirection() == source.getAxisDirection() ? -1 : 1;
 
-        if (te instanceof ClutchTileEntity te2 && ((AbstractRedstoneShaftBlock) te2.blockType).isPowered())
+        if (te instanceof ClutchTileEntity te2 && ((AbstractRedstoneShaftBlock) te2.blockType).isPowered(te))
             return direction.getAxis() == source.getAxis() ? direction == source ? 1 : 0
                     : direction.getAxisDirection() == source.getAxisDirection() ? 0 : 1;
 

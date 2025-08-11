@@ -25,9 +25,7 @@ public class AllBlocks {
     public static Block large_cogwheel;
     public static Block mechanical_bearing;
     public static Block clutch;
-    public static Block lit_clutch;
     public static Block gearshift;
-    public static Block lit_gearshift;
     public static Block gearbox;
 
     public static void registerBlocks() {
@@ -43,12 +41,10 @@ public class AllBlocks {
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
         mechanical_bearing = new MechanicalBearingBlock(Material.piston).setBlockName("mechanical_bearing")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
-        clutch = new ClutchBlock(Material.piston, false).setBlockName("clutch")
+        clutch = new ClutchBlock(Material.piston).setBlockName("clutch")
                 .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
-        lit_clutch = new ClutchBlock(Material.piston, true).setBlockName("lit_clutch");
-        gearshift = new GearshiftBlock(Material.piston, false).setBlockName("gearshift")
+        gearshift = new GearshiftBlock(Material.piston).setBlockName("gearshift")
                 .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
-        lit_gearshift = new GearshiftBlock(Material.piston, true).setBlockName("lit_gearshift");
         gearbox = new GearboxBlock(Material.piston).setBlockName("gearbox").setCreativeTab(AllItems.BASE_CREATIVE_TAB);;
 
         registerMyBlock(shaft);
@@ -58,9 +54,7 @@ public class AllBlocks {
         registerMyBlock(large_cogwheel, CogWheelItemBlock.class);
         registerMyBlock(mechanical_bearing);
         registerMyBlock(gearshift);
-        registerMyBlock(lit_gearshift);
         registerMyBlock(clutch);
-        registerMyBlock(lit_clutch);
         registerMyBlock(gearbox);
     }
 

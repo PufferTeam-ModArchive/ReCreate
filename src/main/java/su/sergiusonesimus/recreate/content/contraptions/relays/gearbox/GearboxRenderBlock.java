@@ -51,7 +51,6 @@ public class GearboxRenderBlock implements ISimpleBlockRenderingHandler {
             this.model2.render();
         }
 
-
         block.setBlockBoundsForItemRender();
     }
 
@@ -66,7 +65,7 @@ public class GearboxRenderBlock implements ISimpleBlockRenderingHandler {
 
         model.setAxis(axis);
         if(block instanceof GearboxBlock gearboxte){
-            this.normal.setAxis(gearboxte.getBoxAxis(gearboxte.getMetaFromAxis(axis)));
+            this.normal.setAxis(axis);
             this.model2.setAxis(gearboxte.getSecondAxis(gearboxte.getMetaFromAxis(axis)));
         }
 

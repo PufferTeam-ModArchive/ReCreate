@@ -31,7 +31,7 @@ public class SplitShaftTileEntityRenderer extends KineticTileEntityRenderer {
         Direction.Axis axis = ((AbstractEncasedShaftBlock) tileEntity.getBlockType()).getAxis(tileEntity.getBlockMetadata());
 
         if(tileEntity.blockType instanceof AbstractRedstoneShaftBlock redstonete) {
-            if(redstonete.isPowered()) {
+            if(redstonete.isPowered(tileEntity)) {
                 this.lit.setAxis(axis);
             } else {
                 this.unlit.setAxis(axis);
@@ -73,7 +73,7 @@ public class SplitShaftTileEntityRenderer extends KineticTileEntityRenderer {
         GL11.glColor4f(color.getRedAsFloat(), color.getGreenAsFloat(), color.getBlueAsFloat(), color.getAlphaAsFloat());
 
         if(tileEntity.blockType instanceof AbstractRedstoneShaftBlock redstonete) {
-            if(redstonete.isPowered()) {
+            if(redstonete.isPowered(tileEntity)) {
                 this.lit.render();
             } else {
                 this.unlit.render();

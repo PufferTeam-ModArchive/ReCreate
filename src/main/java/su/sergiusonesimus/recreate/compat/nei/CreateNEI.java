@@ -9,8 +9,6 @@ import su.sergiusonesimus.recreate.Tags;
 public class CreateNEI implements IConfigureNEI {
     @Override
     public void loadConfig() {
-        API.hideItem(new ItemStack(AllBlocks.lit_clutch, 1, 0));
-        API.hideItem(new ItemStack(AllBlocks.lit_gearshift, 1, 0));
     }
 
     @Override

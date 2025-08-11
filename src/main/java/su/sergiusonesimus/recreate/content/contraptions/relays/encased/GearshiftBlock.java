@@ -15,8 +15,8 @@ import java.util.Random;
 
 @ParametersAreNonnullByDefault
 public class GearshiftBlock extends AbstractRedstoneShaftBlock implements ITE<GearshiftTileEntity> {
-    public GearshiftBlock(Material materialIn, boolean isLit) {
-        super(materialIn, isLit);
+    public GearshiftBlock(Material materialIn) {
+        super(materialIn);
         this.setHardness(2.0F);
         this.setResistance(5.0F);
         this.setStepSound(soundTypeWood);
@@ -27,16 +27,6 @@ public class GearshiftBlock extends AbstractRedstoneShaftBlock implements ITE<Ge
     @Override
     public Class<GearshiftTileEntity> getTileEntityClass() {
         return GearshiftTileEntity.class;
-    }
-
-    @Override
-    public Block getUnlitBlock() {
-        return AllBlocks.gearshift;
-    }
-
-    @Override
-    public Block getLitBlock() {
-        return AllBlocks.lit_gearshift;
     }
 
     @Override

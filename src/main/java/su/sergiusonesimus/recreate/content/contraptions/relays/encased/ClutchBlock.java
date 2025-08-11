@@ -10,8 +10,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 public class ClutchBlock extends AbstractRedstoneShaftBlock implements ITE<ClutchTileEntity> {
-    public ClutchBlock(Material materialIn, boolean isLit) {
-        super(materialIn, isLit);
+    public ClutchBlock(Material materialIn) {
+        super(materialIn);
         this.setHardness(2.0F);
         this.setResistance(5.0F);
         this.setStepSound(soundTypeWood);
@@ -22,16 +22,6 @@ public class ClutchBlock extends AbstractRedstoneShaftBlock implements ITE<Clutc
     @Override
     public Class<ClutchTileEntity> getTileEntityClass() {
         return ClutchTileEntity.class;
-    }
-
-    @Override
-    public Block getUnlitBlock() {
-        return AllBlocks.clutch;
-    }
-
-    @Override
-    public Block getLitBlock() {
-        return AllBlocks.lit_clutch;
     }
 
     @Override

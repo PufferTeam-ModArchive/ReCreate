@@ -49,18 +49,6 @@ public class GearboxBlock extends AbstractEncasedShaftBlock implements ITE<Gearb
         }
     }
 
-    public Direction.Axis getBoxAxis(int meta) {
-        switch (meta) {
-            default:
-            case 0:
-                return Direction.Axis.Y;
-            case 1:
-                return Direction.Axis.Z;
-            case 2:
-                return Direction.Axis.X;
-        }
-    }
-
     @Override
     public int getRenderType() {
         return ReCreate.proxy.getGearboxBlockRenderID();

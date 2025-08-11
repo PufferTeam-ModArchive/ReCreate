@@ -4,6 +4,7 @@ import net.minecraft.client.model.ModelRenderer;
 import su.sergiusonesimus.recreate.AllModelTextures;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftModel;
 import su.sergiusonesimus.recreate.content.contraptions.relays.encased.EncasedShaftModel;
+import su.sergiusonesimus.recreate.util.Direction;
 
 public class GearboxModel extends AbstractShaftModel {
     ModelRenderer[] sides = new ModelRenderer[4];
@@ -35,5 +36,29 @@ public class GearboxModel extends AbstractShaftModel {
         bearing4.setRotationPoint(0, 0, 0);
         core.addChild(bearing4);
 
+    }
+
+    @Override
+    public AbstractShaftModel setAxis(Direction.Axis axis) {
+        this.axis = axis;
+        switch (this.axis) {
+            case Y:
+                core.rotateAngleX = (float) (-Math.PI / 2);
+                core.rotateAngleY = 0;
+                core.rotateAngleZ = 0;
+                break;
+            case X:
+                core.rotateAngleX = 0;
+                core.rotateAngleY = (float) (-Math.PI / 2);
+                core.rotateAngleZ = (float) (-Math.PI / 2);
+                break;
+            default:
+            case Z:
+                core.rotateAngleX = (float) (-Math.PI / 2);
+                core.rotateAngleY = 0;
+                core.rotateAngleZ = (float) (-Math.PI / 2);
+                break;
+        }
+        return this;
     }
 }
