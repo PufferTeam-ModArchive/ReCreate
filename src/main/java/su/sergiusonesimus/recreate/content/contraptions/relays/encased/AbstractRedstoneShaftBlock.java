@@ -41,8 +41,6 @@ public class AbstractRedstoneShaftBlock extends AbstractEncasedShaftBlock {
 
     public void onBlockAdded(World worldIn, int x, int y, int z)
     {
-        super.onBlockAdded(worldIn, x, y, z);
-
         if (!worldIn.isRemote)
         {
             if (this.isPowered(worldIn, x, y, z) && !worldIn.isBlockIndirectlyGettingPowered(x, y, z))
@@ -51,12 +49,11 @@ public class AbstractRedstoneShaftBlock extends AbstractEncasedShaftBlock {
             }
             else if (!this.isPowered(worldIn, x, y, z) && worldIn.isBlockIndirectlyGettingPowered(x, y, z))
             {
-                this.setPowered(true);
                 worldIn.setBlock(x, y, z, this, worldIn.getBlockMetadata(x, y, z) + 3, 2);
                 detachKinetics(worldIn, x, y, z, true);
-                this.updateTileEntity(worldIn, x, y, z);
             }
         }
+        super.onBlockAdded(worldIn, x, y, z);
     }
 
     /**
@@ -75,10 +72,9 @@ public class AbstractRedstoneShaftBlock extends AbstractEncasedShaftBlock {
             }
             else if (!this.isPowered(worldIn, x, y, z) && worldIn.isBlockIndirectlyGettingPowered(x, y, z))
             {
-                this.setPowered(true);
                 worldIn.setBlock(x, y, z, this, worldIn.getBlockMetadata(x, y, z) + 3, 2);
                 detachKinetics(worldIn, x, y, z, true);
-                this.updateTileEntity(worldIn, x, y, z);
+                //this.updateTileEntity(worldIn, x, y, z);
             }
         }
     }
@@ -110,7 +106,6 @@ public class AbstractRedstoneShaftBlock extends AbstractEncasedShaftBlock {
         {
             this.setPowered(false);
             worldIn.setBlock(x, y, z, this, worldIn.getBlockMetadata(x, y, z) - 3, 2);
-            this.updateTileEntity(worldIn, x, y, z);
         }
     }
 

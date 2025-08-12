@@ -9,6 +9,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorItemBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingBlock;
+import su.sergiusonesimus.recreate.content.contraptions.components.waterwheel.WaterWheelBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelItemBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftBlock;
@@ -27,6 +28,7 @@ public class AllBlocks {
     public static Block clutch;
     public static Block gearshift;
     public static Block gearbox;
+    public static Block waterwheel;
 
     public static void registerBlocks() {
         shaft = new ShaftBlock(Material.rock).setBlockName("shaft")
@@ -45,7 +47,8 @@ public class AllBlocks {
                 .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
         gearshift = new GearshiftBlock(Material.piston).setBlockName("gearshift")
                 .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
-        gearbox = new GearboxBlock(Material.piston).setBlockName("gearbox").setCreativeTab(AllItems.BASE_CREATIVE_TAB);;
+        gearbox = new GearboxBlock(Material.piston).setBlockName("gearbox").setCreativeTab(AllItems.BASE_CREATIVE_TAB);
+        waterwheel = new WaterWheelBlock(Material.piston).setBlockName("water_wheel").setCreativeTab(AllItems.BASE_CREATIVE_TAB);
 
         registerMyBlock(shaft);
         registerMyBlock(creative_motor, CreativeMotorItemBlock.class);
@@ -56,6 +59,8 @@ public class AllBlocks {
         registerMyBlock(gearshift);
         registerMyBlock(clutch);
         registerMyBlock(gearbox);
+        registerMyBlock(waterwheel);
+        BlockStressDefaults.setCapacity(waterwheel, 32.0);
     }
 
     private static void registerMyBlock(Block block, Class<? extends ItemBlock> pickup, BlockSlab singleSlab,

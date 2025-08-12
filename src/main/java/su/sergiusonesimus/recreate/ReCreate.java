@@ -25,6 +25,7 @@ import su.sergiusonesimus.recreate.content.contraptions.components.motor.Creativ
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.AllSubWorldTypes;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueHandler;
+import su.sergiusonesimus.recreate.content.contraptions.components.waterwheel.WaterWheelTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.encased.ClutchTileEntity;
@@ -133,6 +134,7 @@ public class ReCreate {
         GameRegistry.registerTileEntity(GearshiftTileEntity.class, "Gearshift");
         GameRegistry.registerTileEntity(ClutchTileEntity.class, "Clutch");
         GameRegistry.registerTileEntity(GearboxTileEntity.class, "Gearbox");
+        GameRegistry.registerTileEntity(WaterWheelTileEntity.class, "Waterwheel");
     }
 
     public static ResourceLocation asResource(String path) {
