@@ -1,9 +1,9 @@
 package su.sergiusonesimus.recreate.content.contraptions.relays.encased;
 
 import net.minecraft.client.model.ModelRenderer;
+
 import su.sergiusonesimus.recreate.AllModelTextures;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftModel;
-import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftModel;
 import su.sergiusonesimus.recreate.util.Direction;
 
 public class SplitShaftModel extends AbstractShaftModel {

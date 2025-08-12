@@ -1,17 +1,15 @@
 package su.sergiusonesimus.recreate.content.contraptions.components.waterwheel;
 
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
+
 import org.lwjgl.opengl.GL11;
-import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftBlock;
-import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelBlock;
-import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelModel;
+
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.ICogWheel;
-import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.LargeCogWheelModel;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftModel;
 import su.sergiusonesimus.recreate.util.Direction;
 
@@ -41,24 +39,25 @@ public class WaterWheelRenderBlock implements ISimpleBlockRenderingHandler {
 
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
-                                    RenderBlocks renderer) {
+        RenderBlocks renderer) {
         if (world == null || world.getTileEntity(x, y, z) != null) return false;
         MovingObjectPosition mop = Minecraft.getMinecraft().objectMouseOver;
         if (mop == null || mop.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK
-                || !(world.getBlock(mop.blockX, mop.blockY, mop.blockZ) instanceof WaterWheelBlock)) return false;
+            || !(world.getBlock(mop.blockX, mop.blockY, mop.blockZ) instanceof WaterWheelBlock)) return false;
 
-        Direction.Axis axis = ((WaterWheelBlock) block).getAxis(world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ));
+        Direction.Axis axis = ((WaterWheelBlock) block)
+            .getAxis(world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ));
         if (ICogWheel.isLargeCog(block) && ICogWheel.isLargeCog(world.getBlock(mop.blockX, mop.blockY, mop.blockZ)))
             switch (axis) {
-                case X:
-                    axis = mop.blockY == y ? Direction.Axis.Z : Direction.Axis.Y;
-                    break;
-                case Y:
-                    axis = mop.blockZ == z ? Direction.Axis.X : Direction.Axis.Z;
-                    break;
-                case Z:
-                    axis = mop.blockX == x ? Direction.Axis.Y : Direction.Axis.X;
-                    break;
+            case X:
+            axis = mop.blockY == y ? Direction.Axis.Z : Direction.Axis.Y;
+            break;
+            case Y:
+            axis = mop.blockZ == z ? Direction.Axis.X : Direction.Axis.Z;
+            break;
+            case Z:
+            axis = mop.blockX == x ? Direction.Axis.Y : Direction.Axis.X;
+            break;
             }
         shaft.setAxis(axis);
         wheel.setAxis(axis);

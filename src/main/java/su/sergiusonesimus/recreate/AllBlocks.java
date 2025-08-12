@@ -44,11 +44,13 @@ public class AllBlocks {
         mechanical_bearing = new MechanicalBearingBlock(Material.piston).setBlockName("mechanical_bearing")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
         clutch = new ClutchBlock(Material.piston).setBlockName("clutch")
-                .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
+            .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
         gearshift = new GearshiftBlock(Material.piston).setBlockName("gearshift")
-                .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
-        gearbox = new GearboxBlock(Material.piston).setBlockName("gearbox").setCreativeTab(AllItems.BASE_CREATIVE_TAB);
-        waterwheel = new WaterWheelBlock(Material.piston).setBlockName("water_wheel").setCreativeTab(AllItems.BASE_CREATIVE_TAB);
+            .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
+        gearbox = new GearboxBlock(Material.piston).setBlockName("gearbox")
+            .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
+        waterwheel = new WaterWheelBlock(Material.piston).setBlockName("water_wheel")
+            .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
 
         registerMyBlock(shaft);
         registerMyBlock(creative_motor, CreativeMotorItemBlock.class);

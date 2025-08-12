@@ -3,8 +3,8 @@ package su.sergiusonesimus.recreate.content.contraptions.components.waterwheel;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
+
 import su.sergiusonesimus.recreate.AllModelTextures;
-import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftModel;
 import su.sergiusonesimus.recreate.util.Direction;
 
 public class WaterWheelModel extends ModelBase {
@@ -25,7 +25,7 @@ public class WaterWheelModel extends ModelBase {
 
         setRotation(0);
 
-        //core.setRotationPoint(0.0F, 24.0F, 0.0F);
+        // core.setRotationPoint(0.0F, 24.0F, 0.0F);
         core.setRotationPoint(0.0F, 0.0F, 0.0F);
         core.cubeList.add(new ModelBox(core, 60, 97, 5.0F, -18.0F + 9F, 8.0F, 1, 18, 8, 0.0F));
         core.cubeList.add(new ModelBox(core, 96, 102, -6.0F, -18.0F + 9F, -16.0F, 1, 18, 8, 0.0F));

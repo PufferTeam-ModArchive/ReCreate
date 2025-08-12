@@ -3,7 +3,6 @@ package su.sergiusonesimus.recreate;
 import java.io.File;
 import java.util.Random;
 
-import cpw.mods.fml.common.Loader;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -11,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -104,7 +104,7 @@ public class ReCreate {
 
         // tile entities
         registerTileEntities();
-        if(Loader.isModLoaded("NotEnoughItems")) {
+        if (Loader.isModLoaded("NotEnoughItems")) {
             CreateNEICompat.loadConfig();
         }
 

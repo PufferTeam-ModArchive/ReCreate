@@ -1,12 +1,12 @@
 package su.sergiusonesimus.recreate.content.contraptions.relays.encased;
 
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.tileentity.TileEntity;
+
 import org.lwjgl.opengl.GL11;
+
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntityRenderer;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftModel;
-import su.sergiusonesimus.recreate.content.contraptions.relays.gearbox.GearboxBlock;
 import su.sergiusonesimus.recreate.foundation.utility.Color;
 import su.sergiusonesimus.recreate.foundation.utility.Iterate;
 import su.sergiusonesimus.recreate.util.AnimationTickHolder;
@@ -28,10 +28,11 @@ public class SplitShaftTileEntityRenderer extends KineticTileEntityRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partialTicks) {
-        Direction.Axis axis = ((AbstractEncasedShaftBlock) tileEntity.getBlockType()).getAxis(tileEntity.getBlockMetadata());
+        Direction.Axis axis = ((AbstractEncasedShaftBlock) tileEntity.getBlockType())
+            .getAxis(tileEntity.getBlockMetadata());
 
-        if(tileEntity.blockType instanceof AbstractRedstoneShaftBlock redstonete) {
-            if(redstonete.isPowered(tileEntity)) {
+        if (tileEntity.blockType instanceof AbstractRedstoneShaftBlock redstonete) {
+            if (redstonete.isPowered(tileEntity)) {
                 this.lit.setAxis(axis);
             } else {
                 this.unlit.setAxis(axis);
@@ -41,11 +42,11 @@ public class SplitShaftTileEntityRenderer extends KineticTileEntityRenderer {
         model.setAxis(axis);
 
         float angle2 = getAngleForTe(
-                (KineticTileEntity) tileEntity,
-                tileEntity.xCoord,
-                tileEntity.yCoord,
-                tileEntity.zCoord,
-                axis);
+            (KineticTileEntity) tileEntity,
+            tileEntity.xCoord,
+            tileEntity.yCoord,
+            tileEntity.zCoord,
+            axis);
 
         KineticTileEntity te = (KineticTileEntity) tileEntity;
 
@@ -55,7 +56,7 @@ public class SplitShaftTileEntityRenderer extends KineticTileEntityRenderer {
             float angle = ((time * te.getSpeed() * 3f / 10) % 360);
             float modifier = 1;
 
-            if(te instanceof SplitShaftTileEntity) {
+            if (te instanceof SplitShaftTileEntity) {
                 modifier = ((SplitShaftTileEntity) te).getRotationSpeedModifier(direction);
             }
 
@@ -72,8 +73,8 @@ public class SplitShaftTileEntityRenderer extends KineticTileEntityRenderer {
         GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
         GL11.glColor4f(color.getRedAsFloat(), color.getGreenAsFloat(), color.getBlueAsFloat(), color.getAlphaAsFloat());
 
-        if(tileEntity.blockType instanceof AbstractRedstoneShaftBlock redstonete) {
-            if(redstonete.isPowered(tileEntity)) {
+        if (tileEntity.blockType instanceof AbstractRedstoneShaftBlock redstonete) {
+            if (redstonete.isPowered(tileEntity)) {
                 this.lit.render();
             } else {
                 this.unlit.render();

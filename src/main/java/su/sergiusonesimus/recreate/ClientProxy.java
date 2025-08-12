@@ -80,14 +80,10 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(CogWheelTileEntity.class, new CogWheelTileEntityRenderer());
         ClientRegistry
             .bindTileEntitySpecialRenderer(MechanicalBearingTileEntity.class, new BearingTileEntityRenderer());
-        ClientRegistry
-                .bindTileEntitySpecialRenderer(GearshiftTileEntity.class, new GearshiftTileEntityRenderer());
-        ClientRegistry
-                .bindTileEntitySpecialRenderer(ClutchTileEntity.class, new ClutchTileEntityRenderer());
-        ClientRegistry
-                .bindTileEntitySpecialRenderer(GearboxTileEntity.class, new GearboxTileEntityRenderer());
-        ClientRegistry
-                .bindTileEntitySpecialRenderer(WaterWheelTileEntity.class, new WaterWheelTileEntityRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(GearshiftTileEntity.class, new GearshiftTileEntityRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(ClutchTileEntity.class, new ClutchTileEntityRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(GearboxTileEntity.class, new GearboxTileEntityRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(WaterWheelTileEntity.class, new WaterWheelTileEntityRenderer());
 
         // block render ids
         shaftRenderID = RenderingRegistry.getNextAvailableRenderId();

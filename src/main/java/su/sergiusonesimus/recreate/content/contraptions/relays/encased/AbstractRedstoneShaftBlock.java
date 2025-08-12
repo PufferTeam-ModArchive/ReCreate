@@ -1,23 +1,18 @@
 package su.sergiusonesimus.recreate.content.contraptions.relays.encased;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+
 import su.sergiusonesimus.recreate.content.contraptions.RotationPropagator;
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntity;
 import su.sergiusonesimus.recreate.util.Direction;
 
-import java.util.Random;
-
 public class AbstractRedstoneShaftBlock extends AbstractEncasedShaftBlock {
+
     private boolean field_150171_a;
 
     public AbstractRedstoneShaftBlock(Material materialIn) {
@@ -39,16 +34,11 @@ public class AbstractRedstoneShaftBlock extends AbstractEncasedShaftBlock {
         }
     }
 
-    public void onBlockAdded(World worldIn, int x, int y, int z)
-    {
-        if (!worldIn.isRemote)
-        {
-            if (this.isPowered(worldIn, x, y, z) && !worldIn.isBlockIndirectlyGettingPowered(x, y, z))
-            {
+    public void onBlockAdded(World worldIn, int x, int y, int z) {
+        if (!worldIn.isRemote) {
+            if (this.isPowered(worldIn, x, y, z) && !worldIn.isBlockIndirectlyGettingPowered(x, y, z)) {
                 worldIn.scheduleBlockUpdate(x, y, z, this, 4);
-            }
-            else if (!this.isPowered(worldIn, x, y, z) && worldIn.isBlockIndirectlyGettingPowered(x, y, z))
-            {
+            } else if (!this.isPowered(worldIn, x, y, z) && worldIn.isBlockIndirectlyGettingPowered(x, y, z)) {
                 worldIn.setBlock(x, y, z, this, worldIn.getBlockMetadata(x, y, z) + 3, 2);
                 detachKinetics(worldIn, x, y, z, true);
             }
@@ -60,50 +50,41 @@ public class AbstractRedstoneShaftBlock extends AbstractEncasedShaftBlock {
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor Block
      */
-    public void onNeighborBlockChange(World worldIn, int x, int y, int z, Block neighbor)
-    {
+    public void onNeighborBlockChange(World worldIn, int x, int y, int z, Block neighbor) {
         super.onNeighborBlockChange(worldIn, x, y, z, neighbor);
 
-        if (!worldIn.isRemote)
-        {
-            if (this.isPowered(worldIn, x, y, z) && !worldIn.isBlockIndirectlyGettingPowered(x, y, z))
-            {
+        if (!worldIn.isRemote) {
+            if (this.isPowered(worldIn, x, y, z) && !worldIn.isBlockIndirectlyGettingPowered(x, y, z)) {
                 worldIn.scheduleBlockUpdate(x, y, z, this, 4);
-            }
-            else if (!this.isPowered(worldIn, x, y, z) && worldIn.isBlockIndirectlyGettingPowered(x, y, z))
-            {
+            } else if (!this.isPowered(worldIn, x, y, z) && worldIn.isBlockIndirectlyGettingPowered(x, y, z)) {
                 worldIn.setBlock(x, y, z, this, worldIn.getBlockMetadata(x, y, z) + 3, 2);
                 detachKinetics(worldIn, x, y, z, true);
-                //this.updateTileEntity(worldIn, x, y, z);
+                // this.updateTileEntity(worldIn, x, y, z);
             }
         }
     }
 
     public void detachKinetics(World worldIn, int x, int y, int z, boolean reAttachNextTick) {
         TileEntity te = worldIn.getTileEntity(x, y, z);
-        if (te == null || !(te instanceof KineticTileEntity))
-            return;
+        if (te == null || !(te instanceof KineticTileEntity)) return;
         RotationPropagator.handleRemoved(worldIn, x, y, z, (KineticTileEntity) te);
 
         // Re-attach next tick
-        if (reAttachNextTick)
-            worldIn.scheduleBlockUpdate(x, y, z, this, 4);
+        if (reAttachNextTick) worldIn.scheduleBlockUpdate(x, y, z, this, 4);
     }
 
     /**
      * Ticks the block if it's been scheduled
      */
-    public void updateTick(World worldIn, int x, int y, int z, Random random)
-    {
+    public void updateTick(World worldIn, int x, int y, int z, Random random) {
         super.updateTick(worldIn, x, y, z, random);
 
         TileEntity te = worldIn.getTileEntity(x, y, z);
-        if (te == null || !(te instanceof KineticTileEntity kte))
-            return;
+        if (te == null || !(te instanceof KineticTileEntity kte)) return;
         RotationPropagator.handleAdded(worldIn, x, y, z, kte);
 
-        if (!worldIn.isRemote && this.isPowered(worldIn, x, y, z) && !worldIn.isBlockIndirectlyGettingPowered(x, y, z))
-        {
+        if (!worldIn.isRemote && this.isPowered(worldIn, x, y, z)
+            && !worldIn.isBlockIndirectlyGettingPowered(x, y, z)) {
             this.setPowered(false);
             worldIn.setBlock(x, y, z, this, worldIn.getBlockMetadata(x, y, z) - 3, 2);
         }
@@ -115,7 +96,7 @@ public class AbstractRedstoneShaftBlock extends AbstractEncasedShaftBlock {
 
     public boolean isPowered(World world, int x, int y, int z) {
         int meta = world.getBlockMetadata(x, y, z);
-        if(meta > 3) {
+        if (meta > 3) {
             return true;
         }
         return false;
@@ -127,9 +108,9 @@ public class AbstractRedstoneShaftBlock extends AbstractEncasedShaftBlock {
         int y = te.yCoord;
         int z = te.zCoord;
         int meta = world.getBlockMetadata(x, y, z);
-        if(meta > 3) {
+        if (meta > 3) {
             return true;
         }
         return false;
     }
- }
+}

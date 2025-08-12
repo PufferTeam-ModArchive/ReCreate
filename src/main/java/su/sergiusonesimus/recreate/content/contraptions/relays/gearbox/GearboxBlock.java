@@ -2,13 +2,14 @@ package su.sergiusonesimus.recreate.content.contraptions.relays.gearbox;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.world.IBlockAccess;
+
 import su.sergiusonesimus.recreate.ReCreate;
-import su.sergiusonesimus.recreate.content.contraptions.base.RotatedPillarKineticBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.encased.AbstractEncasedShaftBlock;
 import su.sergiusonesimus.recreate.foundation.block.ITE;
 import su.sergiusonesimus.recreate.util.Direction;
 
 public class GearboxBlock extends AbstractEncasedShaftBlock implements ITE<GearboxTileEntity> {
+
     public GearboxBlock(Material materialIn) {
         super(materialIn);
         this.setHardness(2.0F);
@@ -37,7 +38,7 @@ public class GearboxBlock extends AbstractEncasedShaftBlock implements ITE<Gearb
     @Override
     public boolean hasShaftTowards(IBlockAccess world, int x, int y, int z, Direction face) {
         int meta = world.getBlockMetadata(x, y, z);
-        if(face.getAxis() == this.getAxis(meta) || face.getAxis() == this.getSecondAxis(meta)) {
+        if (face.getAxis() == this.getAxis(meta) || face.getAxis() == this.getSecondAxis(meta)) {
             return true;
         }
         return false;

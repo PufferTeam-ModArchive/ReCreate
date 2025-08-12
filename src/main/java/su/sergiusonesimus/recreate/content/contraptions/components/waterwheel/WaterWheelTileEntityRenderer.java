@@ -1,14 +1,11 @@
 package su.sergiusonesimus.recreate.content.contraptions.components.waterwheel;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
+
 import org.lwjgl.opengl.GL11;
+
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntityRenderer;
-import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelBlock;
-import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.LargeCogWheelModel;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftModel;
 import su.sergiusonesimus.recreate.foundation.utility.Color;
 import su.sergiusonesimus.recreate.util.Direction;
@@ -22,11 +19,11 @@ public class WaterWheelTileEntityRenderer extends KineticTileEntityRenderer {
         WaterWheelBlock block = (WaterWheelBlock) tileEntity.getBlockType();
         Direction.Axis axis = block.getAxis(tileEntity.getBlockMetadata());
         float angle = getAngleForTe(
-                (KineticTileEntity) tileEntity,
-                tileEntity.xCoord,
-                tileEntity.yCoord,
-                tileEntity.zCoord,
-                axis);
+            (KineticTileEntity) tileEntity,
+            tileEntity.xCoord,
+            tileEntity.yCoord,
+            tileEntity.zCoord,
+            axis);
         shaft.setAxis(axis);
         shaft.setRotation(angle);
         wheel.setAxis(axis);

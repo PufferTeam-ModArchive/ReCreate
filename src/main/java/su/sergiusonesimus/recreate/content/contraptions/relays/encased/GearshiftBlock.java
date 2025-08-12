@@ -1,20 +1,15 @@
 package su.sergiusonesimus.recreate.content.contraptions.relays.encased;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import su.sergiusonesimus.recreate.AllBlocks;
-import su.sergiusonesimus.recreate.ReCreate;
-import su.sergiusonesimus.recreate.content.contraptions.RotationPropagator;
-import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntity;
-import su.sergiusonesimus.recreate.foundation.block.ITE;
-
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Random;
+
+import net.minecraft.block.material.Material;
+
+import su.sergiusonesimus.recreate.ReCreate;
+import su.sergiusonesimus.recreate.foundation.block.ITE;
 
 @ParametersAreNonnullByDefault
 public class GearshiftBlock extends AbstractRedstoneShaftBlock implements ITE<GearshiftTileEntity> {
+
     public GearshiftBlock(Material materialIn) {
         super(materialIn);
         this.setHardness(2.0F);
