@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Random;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
@@ -20,6 +21,8 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import su.sergiusonesimus.metaworlds.util.Direction;
+import su.sergiusonesimus.metaworlds.util.RotationHelper;
 import su.sergiusonesimus.recreate.content.contraptions.TorquePropagator;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.AllSubWorldTypes;
@@ -120,6 +123,7 @@ public class ReCreate {
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
+        registerRotators();
     }
 
     @EventHandler
@@ -138,6 +142,44 @@ public class ReCreate {
         GameRegistry.registerTileEntity(CreativeMotorTileEntity.class, "Creative Motor");
         GameRegistry.registerTileEntity(CogWheelTileEntity.class, "Cogwheel");
         GameRegistry.registerTileEntity(MechanicalBearingTileEntity.class, "Mechanical Bearing");
+    }
+
+    private void registerRotators() {
+        // Directional kinetic blocks
+        RotationHelper.registerBlocks("3d_directional", AllBlocks.creative_motor, AllBlocks.mechanical_bearing);
+
+        // Rotated pillar kinetic blocks
+        RotationHelper.registerBlockRotator("rotated_pillar", (meta) -> {
+            Vec3 dir = Vec3.createVectorHelper(0, 0, 0);
+            switch (meta % 3) {
+                default:
+                case 0:
+                    dir.yCoord = 1;
+                    break;
+                case 1:
+                    dir.xCoord = 1;
+                    break;
+                case 2:
+                    dir.zCoord = 1;
+                    break;
+            }
+            return dir;
+        }, (originalMeta, vec) -> {
+            if (vec != null) {
+                Direction dir = Direction.getNearest(vec);
+                switch (dir.getAxis()) {
+                    default:
+                    case Y:
+                        return 0;
+                    case X:
+                        return 1;
+                    case Z:
+                        return 2;
+                }
+            }
+            return originalMeta;
+        });
+        RotationHelper.registerBlocks("rotated_pillar", AllBlocks.shaft, AllBlocks.cogwheel, AllBlocks.large_cogwheel);
     }
 
     public static ResourceLocation asResource(String path) {
