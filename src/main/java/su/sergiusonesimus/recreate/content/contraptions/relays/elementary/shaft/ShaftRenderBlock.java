@@ -10,8 +10,8 @@ import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import su.sergiusonesimus.metaworlds.util.Direction.Axis;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftBlock;
-import su.sergiusonesimus.recreate.util.Direction.Axis;
 
 public class ShaftRenderBlock implements ISimpleBlockRenderingHandler {
 

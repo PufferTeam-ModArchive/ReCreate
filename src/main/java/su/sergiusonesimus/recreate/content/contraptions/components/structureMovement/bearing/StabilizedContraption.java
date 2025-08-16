@@ -5,10 +5,10 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
 import su.sergiusonesimus.metaworlds.api.SubWorld;
+import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.AssemblyException;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.Contraption;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.ContraptionType;
-import su.sergiusonesimus.recreate.util.Direction;
 
 public class StabilizedContraption extends Contraption {
 

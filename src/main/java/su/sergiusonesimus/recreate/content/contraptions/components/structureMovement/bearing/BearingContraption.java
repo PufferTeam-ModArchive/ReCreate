@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
+import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.AllTags.AllBlockTags;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.AllSubWorldTypes;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.AssemblyException;
@@ -12,7 +13,6 @@ import su.sergiusonesimus.recreate.content.contraptions.components.structureMove
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.ContraptionType;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.ContraptionWorld;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
-import su.sergiusonesimus.recreate.util.Direction;
 
 public class BearingContraption extends Contraption {
 

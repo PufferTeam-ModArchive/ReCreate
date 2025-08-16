@@ -12,16 +12,19 @@ import org.apache.logging.log4j.Logger;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import su.sergiusonesimus.recreate.content.contraptions.TorquePropagator;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.AllSubWorldTypes;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueHandler;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftTileEntity;
@@ -44,6 +47,11 @@ public class ReCreate {
     public static final Random RANDOM = new Random();
 
     public static final ReCreateRegistrate REGISTRATE = new ReCreateRegistrate();
+
+    public static int idEntitySuperGlue;
+
+    @Instance(ID)
+    public static ReCreate instance;
 
     @SidedProxy(
         clientSide = "su.sergiusonesimus.recreate.ClientProxy",
@@ -68,6 +76,7 @@ public class ReCreate {
 
         // Reading config file after registering blocks, because it needs a generated default stress list
         AllConfigs.init(new File(event.getModConfigurationDirectory(), "ReCreate.cfg"));
+        idEntitySuperGlue = 500;
 
         AllSubWorldTypes.register();
     }
@@ -95,6 +104,9 @@ public class ReCreate {
             .bus()
             .register(superGlueHandler);
 
+        // entities
+        registerEntities();
+
         // tile entities
         registerTileEntities();
 
@@ -114,6 +126,11 @@ public class ReCreate {
     // register server commands in this event handler (Remove if not needed)
     public void serverStarting(FMLServerStartingEvent event) {
         proxy.serverStarting(event);
+    }
+
+    private void registerEntities() {
+        EntityRegistry
+            .registerModEntity(SuperGlueEntity.class, "Super Glue", idEntitySuperGlue, instance, 64, 1, false);
     }
 
     private void registerTileEntities() {

@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IChatComponent;
 
+import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.metaworlds.zmixin.interfaces.minecraft.world.IMixinWorld;
 import su.sergiusonesimus.recreate.AllSounds;
 import su.sergiusonesimus.recreate.content.contraptions.base.DirectionalKineticBlock;
@@ -22,7 +23,6 @@ import su.sergiusonesimus.recreate.foundation.tileentity.behaviour.scrollvalue.S
 import su.sergiusonesimus.recreate.foundation.utility.AngleHelper;
 import su.sergiusonesimus.recreate.foundation.utility.Lang;
 import su.sergiusonesimus.recreate.foundation.utility.ServerSpeedProvider;
-import su.sergiusonesimus.recreate.util.Direction;
 import su.sergiusonesimus.recreate.util.ReCreateMath;
 
 public class MechanicalBearingTileEntity extends GeneratingKineticTileEntity

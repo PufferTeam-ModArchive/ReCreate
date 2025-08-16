@@ -2,8 +2,6 @@ package su.sergiusonesimus.recreate.content.contraptions.components.structureMov
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBasePressurePlate;
@@ -24,15 +22,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
-import su.sergiusonesimus.metaworlds.block.BlockDummyReobfTracker;
+import su.sergiusonesimus.metaworlds.util.BlockVolatilityMap;
+import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
 import su.sergiusonesimus.recreate.foundation.config.ContraptionMovementSetting;
-import su.sergiusonesimus.recreate.util.Direction;
 
 public class BlockMovementChecks {
-
-    public static Map<Integer, Boolean> blockVolatilityMap = new TreeMap<Integer, Boolean>();
 
     private static final List<MovementNecessaryCheck> MOVEMENT_NECESSARY_CHECKS = new ArrayList<>();
     private static final List<MovementAllowedCheck> MOVEMENT_ALLOWED_CHECKS = new ArrayList<>();
@@ -94,42 +90,6 @@ public class BlockMovementChecks {
     }
 
     /**
-     * Brittle blocks will be collected first, as they may break when other blocks
-     * are removed before them
-     */
-    public static boolean isBrittle(Block block, int meta) {
-        Integer blockId = Integer.valueOf(Block.getIdFromBlock(block));
-        Boolean isVolatile = (Boolean) blockVolatilityMap.get(blockId);
-        if (isVolatile == null) {
-            try {
-                if (block.getClass()
-                    .getMethod(
-                        BlockDummyReobfTracker.canBlockStayMethodName,
-                        new Class[] { World.class, Integer.TYPE, Integer.TYPE, Integer.TYPE })
-                    .getDeclaringClass()
-                    .equals(Block.class)
-                    && block.getClass()
-                        .getMethod(
-                            BlockDummyReobfTracker.onNeighborBlockChange,
-                            new Class[] { World.class, Integer.TYPE, Integer.TYPE, Integer.TYPE, Block.class })
-                        .getDeclaringClass()
-                        .equals(Block.class)) {
-                    isVolatile = Boolean.valueOf(false);
-                } else {
-                    isVolatile = Boolean.valueOf(true);
-                }
-            } catch (SecurityException var18) {
-                ;
-            } catch (NoSuchMethodException var19) {
-                ;
-            }
-
-            blockVolatilityMap.put(blockId, isVolatile);
-        }
-        return isVolatile;
-    }
-
-    /**
      * Attached blocks will move if blocks they are attached to are moved
      */
     public static boolean isBlockAttachedTowards(Block block, int meta, World world, int x, int y, int z,
@@ -160,7 +120,7 @@ public class BlockMovementChecks {
     // Fallback checks
 
     private static boolean isMovementNecessaryFallback(Block block, int meta, World world, int x, int y, int z) {
-        if (isBrittle(block, meta)) return true;
+        if (BlockVolatilityMap.checkBlockVolatility(block)) return true;
         if (block instanceof BlockFenceGate) return true;
         if (block.getMaterial()
             .isReplaceable()) return false;
@@ -327,7 +287,7 @@ public class BlockMovementChecks {
         // .getAxis();
         // if (AllBlocks.STICKER.has(state) && !state.getValue(StickerBlock.EXTENDED))
         // return facing == state.getValue(StickerBlock.FACING);
-        return isBrittle(block, meta);
+        return BlockVolatilityMap.checkBlockVolatility(block);
     }
 
     // Check classes

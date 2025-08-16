@@ -5,7 +5,7 @@ import java.util.Set;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
-import su.sergiusonesimus.recreate.util.Direction;
+import su.sergiusonesimus.metaworlds.util.Direction;
 
 public abstract class TranslatingContraption extends Contraption {
 

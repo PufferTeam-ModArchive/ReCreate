@@ -7,8 +7,8 @@ import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.AllModelTextures;
-import su.sergiusonesimus.recreate.util.Direction;
 
 public class BearingRenderBlock implements ISimpleBlockRenderingHandler {
 

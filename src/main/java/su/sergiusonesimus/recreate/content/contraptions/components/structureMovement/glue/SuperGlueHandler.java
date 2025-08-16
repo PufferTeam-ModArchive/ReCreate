@@ -11,8 +11,8 @@ import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.foundation.networking.AllPackets;
-import su.sergiusonesimus.recreate.util.Direction;
 
 public class SuperGlueHandler {
 

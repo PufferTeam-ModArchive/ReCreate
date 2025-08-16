@@ -9,6 +9,7 @@ import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.AllItems;
 import su.sergiusonesimus.recreate.AllKeys;
 import su.sergiusonesimus.recreate.AllSounds;
@@ -17,7 +18,6 @@ import su.sergiusonesimus.recreate.foundation.tileentity.TileEntityBehaviour;
 import su.sergiusonesimus.recreate.foundation.tileentity.behaviour.ValueBoxTransform.Sided;
 import su.sergiusonesimus.recreate.foundation.tileentity.behaviour.scrollvalue.ScrollValueBehaviour.StepContext;
 import su.sergiusonesimus.recreate.foundation.utility.animation.PhysicalFloat;
-import su.sergiusonesimus.recreate.util.Direction;
 import su.sergiusonesimus.recreate.util.ReCreateMath;
 
 public class ScrollValueHandler {

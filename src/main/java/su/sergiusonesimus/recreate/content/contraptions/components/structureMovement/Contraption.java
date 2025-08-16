@@ -33,6 +33,9 @@ import net.minecraftforge.fluids.IFluidHandler;
 import org.apache.commons.lang3.tuple.Pair;
 
 import su.sergiusonesimus.metaworlds.api.SubWorld;
+import su.sergiusonesimus.metaworlds.util.BlockVolatilityMap;
+import su.sergiusonesimus.metaworlds.util.Direction;
+import su.sergiusonesimus.metaworlds.util.RotationHelper;
 import su.sergiusonesimus.metaworlds.world.SubWorldServer;
 import su.sergiusonesimus.metaworlds.zmixin.interfaces.minecraft.world.IMixinWorld;
 import su.sergiusonesimus.recreate.AllBlocks;
@@ -47,7 +50,6 @@ import su.sergiusonesimus.recreate.foundation.utility.BlockFace;
 import su.sergiusonesimus.recreate.foundation.utility.Iterate;
 import su.sergiusonesimus.recreate.foundation.utility.NBTHelper;
 import su.sergiusonesimus.recreate.foundation.utility.UniqueLinkedList;
-import su.sergiusonesimus.recreate.util.Direction;
 import su.sergiusonesimus.recreate.zmixin.interfaces.IMixinWorldReCreate;
 
 public abstract class Contraption {
@@ -169,7 +171,7 @@ public abstract class Contraption {
         anchorY = y;
         anchorZ = z;
 
-        if (!BlockMovementChecks.isBrittle(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z)))
+        if (!BlockVolatilityMap.checkBlockVolatility(world.getBlock(x, y, z)))
             frontier.add(new ChunkCoordinates(x, y, z));
         if (!addToInitialFrontier(world, x, y, z, forcedDirection, frontier)) return false;
         for (int limit = 100000; limit > 0; limit--) {
@@ -647,7 +649,7 @@ public abstract class Contraption {
             entity.getHangingPositionY(),
             entity.getHangingPositionZ());
         Direction direction = entity.getFacingDirection();
-        this.superglue.add(Pair.of(toLocalPos(pos), direction));
+        this.superglue.add(Pair.of(pos, direction));
         glueToRemove.add(entity);
     }
 
@@ -662,6 +664,19 @@ public abstract class Contraption {
             (int) Math.floor(localPos.xCoord),
             (int) Math.floor(localPos.yCoord),
             (int) Math.floor(localPos.zCoord));
+    }
+
+    protected ChunkCoordinates toGlobalPos(ChunkCoordinates localPos) {
+        return toGlobalPos(localPos.posX, localPos.posY, localPos.posZ);
+    }
+
+    protected ChunkCoordinates toGlobalPos(int x, int y, int z) {
+        Vec3 globalPos = this.getContraptionWorld()
+            .transformToGlobal(x + 0.5, y + 0.5, z + 0.5);
+        return new ChunkCoordinates(
+            (int) Math.floor(globalPos.xCoord),
+            (int) Math.floor(globalPos.yCoord),
+            (int) Math.floor(globalPos.zCoord));
     }
 
     protected boolean movementAllowed(Block block, int meta, World world, int x, int y, int z) {
@@ -884,11 +899,31 @@ public abstract class Contraption {
         NBTTagCompound nbttag;
         TileEntity newTE;
 
-        for (boolean brittles : Iterate.trueAndFalse) {
-            for (ChunkCoordinates curCoord : blocks) {
+        ArrayList<ChunkCoordinates> blocksToTake = new ArrayList<ChunkCoordinates>();
+        ArrayList<ChunkCoordinates> blocksToTakeSolidBrittle = new ArrayList<ChunkCoordinates>();
+        ArrayList<ChunkCoordinates> blocksToTakeBrittle = new ArrayList<ChunkCoordinates>();
+
+        for (ChunkCoordinates curCoord : blocks) {
+            block = parentWorld.getBlock(curCoord.posX, curCoord.posY, curCoord.posZ);
+            if (BlockVolatilityMap.checkBlockVolatility(block)) {
+                if (BlockVolatilityMap.isBlockSolid(block, parentWorld, curCoord.posX, curCoord.posY, curCoord.posZ)) {
+                    blocksToTakeSolidBrittle.add(curCoord);
+                } else {
+                    blocksToTakeBrittle.add(curCoord);
+                }
+            } else {
+                blocksToTake.add(curCoord);
+            }
+        }
+
+        List<List<ChunkCoordinates>> listsToParse = new ArrayList<List<ChunkCoordinates>>();
+        listsToParse.add(blocksToTake);
+        listsToParse.add(blocksToTakeSolidBrittle);
+        listsToParse.add(blocksToTakeBrittle);
+        for (List<ChunkCoordinates> currentList : listsToParse) {
+            for (ChunkCoordinates curCoord : currentList) {
                 block = parentWorld.getBlock(curCoord.posX, curCoord.posY, curCoord.posZ);
                 meta = parentWorld.getBlockMetadata(curCoord.posX, curCoord.posY, curCoord.posZ);
-                if (brittles == BlockMovementChecks.isBrittle(block, meta)) continue;
                 contraptionWorld.setBlock(curCoord.posX, curCoord.posY, curCoord.posZ, block, meta, 0);
                 contraptionWorld.setBlockMetadataWithNotify(curCoord.posX, curCoord.posY, curCoord.posZ, meta, 0);
                 if (block.hasTileEntity(meta)) {
@@ -902,14 +937,16 @@ public abstract class Contraption {
             }
         }
 
-        for (boolean brittles : Iterate.falseAndTrue) {
-            for (ChunkCoordinates curCoord : blocks) {
+        listsToParse.set(0, blocksToTakeBrittle);
+        listsToParse.set(2, blocksToTake);
+        for (List<ChunkCoordinates> currentList : listsToParse) {
+            for (ChunkCoordinates curCoord : currentList) {
                 block = contraptionWorld.getBlock(curCoord.posX, curCoord.posY, curCoord.posZ);
                 meta = contraptionWorld.getBlockMetadata(curCoord.posX, curCoord.posY, curCoord.posZ);
-                if (brittles == BlockMovementChecks.isBrittle(block, meta)) continue;
                 parentWorld.setBlockToAir(curCoord.posX, curCoord.posY, curCoord.posZ);
             }
         }
+
         contraption.setTranslation(
             ((IMixinWorld) parentWorld).getTranslationX(),
             ((IMixinWorld) parentWorld).getTranslationY(),
@@ -967,29 +1004,66 @@ public abstract class Contraption {
         }
 
         Block block;
-        int meta;
-        for (boolean brittles : Iterate.trueAndFalse) {
-            for (ChunkCoordinates curCoord : blocks) {
-                block = contraptionWorld.getBlock(curCoord.posX, curCoord.posY, curCoord.posZ);
-                meta = contraptionWorld.getBlockMetadata(curCoord.posX, curCoord.posY, curCoord.posZ);
-                if (brittles == BlockMovementChecks.isBrittle(block, meta)) continue;
-                world.setBlock(
-                    (int) (translationX + (long) (xzTransfMatrix[0] * curCoord.posX)
-                        + (long) (xzTransfMatrix[1] * curCoord.posZ)),
-                    (int) (translationY + (long) curCoord.posY),
-                    (int) (translationZ + (long) (xzTransfMatrix[2] * curCoord.posX)
-                        + (long) (xzTransfMatrix[3] * curCoord.posZ)),
-                    block,
-                    meta,
-                    3);
+        int oldMeta;
+        int newMeta;
+        TileEntity origTE;
+        NBTTagCompound nbttag;
+        TileEntity newTE;
+
+        ArrayList<ChunkCoordinates> blocksToTake = new ArrayList<ChunkCoordinates>();
+        ArrayList<ChunkCoordinates> blocksToTakeSolidBrittle = new ArrayList<ChunkCoordinates>();
+        ArrayList<ChunkCoordinates> blocksToTakeBrittle = new ArrayList<ChunkCoordinates>();
+
+        for (ChunkCoordinates curCoord : blocks) {
+            block = contraptionWorld.getBlock(curCoord.posX, curCoord.posY, curCoord.posZ);
+            if (BlockVolatilityMap.checkBlockVolatility(block)) {
+                if (BlockVolatilityMap
+                    .isBlockSolid(block, contraptionWorld, curCoord.posX, curCoord.posY, curCoord.posZ)) {
+                    blocksToTakeSolidBrittle.add(curCoord);
+                } else {
+                    blocksToTakeBrittle.add(curCoord);
+                }
+            } else {
+                blocksToTake.add(curCoord);
             }
         }
 
-        for (boolean brittles : Iterate.falseAndTrue) {
-            for (ChunkCoordinates curCoord : blocks) {
+        List<List<ChunkCoordinates>> listsToParse = new ArrayList<List<ChunkCoordinates>>();
+        listsToParse.add(blocksToTake);
+        listsToParse.add(blocksToTakeSolidBrittle);
+        listsToParse.add(blocksToTakeBrittle);
+        for (List<ChunkCoordinates> currentList : listsToParse) {
+            for (ChunkCoordinates curCoord : currentList) {
                 block = contraptionWorld.getBlock(curCoord.posX, curCoord.posY, curCoord.posZ);
-                meta = contraptionWorld.getBlockMetadata(curCoord.posX, curCoord.posY, curCoord.posZ);
-                if (brittles == BlockMovementChecks.isBrittle(block, meta)) continue;
+                oldMeta = contraptionWorld.getBlockMetadata(curCoord.posX, curCoord.posY, curCoord.posZ);
+                newMeta = RotationHelper.getRotatedMeta(contraptionWorld, curCoord.posX, curCoord.posY, curCoord.posZ);
+                ChunkCoordinates globalPos = this.getContraptionWorld()
+                    .transformBlockToGlobal(curCoord.posX, curCoord.posY, curCoord.posZ);
+                world.setBlock(globalPos.posX, globalPos.posY, globalPos.posZ, block, newMeta, 3);
+                world.setBlockMetadataWithNotify(globalPos.posX, globalPos.posY, globalPos.posZ, newMeta, 3);
+                if (block.hasTileEntity(oldMeta)) {
+                    RotationHelper.rotateTileEntity(contraptionWorld, curCoord.posX, curCoord.posY, curCoord.posZ);
+                    origTE = contraptionWorld.getTileEntity(curCoord.posX, curCoord.posY, curCoord.posZ);
+                    nbttag = new NBTTagCompound();
+                    origTE.writeToNBT(nbttag);
+                    origTE.invalidate();
+                    newTE = TileEntity.createAndLoadEntity(nbttag);
+                    if (newTE.blockMetadata != -1) newTE.blockMetadata = newMeta;
+                    newTE.xCoord = globalPos.posX;
+                    newTE.yCoord = globalPos.posY;
+                    newTE.zCoord = globalPos.posZ;
+                    newTE.setWorldObj(world);
+                    world.setTileEntity(globalPos.posX, globalPos.posY, globalPos.posZ, newTE);
+                }
+            }
+        }
+
+        listsToParse.set(0, blocksToTakeBrittle);
+        listsToParse.set(2, blocksToTake);
+        for (List<ChunkCoordinates> currentList : listsToParse) {
+            for (ChunkCoordinates curCoord : currentList) {
+                block = contraptionWorld.getBlock(curCoord.posX, curCoord.posY, curCoord.posZ);
+                oldMeta = contraptionWorld.getBlockMetadata(curCoord.posX, curCoord.posY, curCoord.posZ);
                 contraptionWorld.setBlockToAir(curCoord.posX, curCoord.posY, curCoord.posZ);
             }
         }
@@ -1005,7 +1079,7 @@ public abstract class Contraption {
         }
 
         for (Pair<ChunkCoordinates, Direction> pair : superglue) {
-            ChunkCoordinates pos = pair.getKey();
+            ChunkCoordinates pos = this.toGlobalPos(pair.getKey());
             Direction facing = pair.getValue();
             // TODO Apply transformations later
             // ChunkCoordinates targetPos = transform.apply(pair.getKey());

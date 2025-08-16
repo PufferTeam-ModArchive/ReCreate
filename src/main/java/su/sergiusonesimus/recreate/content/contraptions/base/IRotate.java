@@ -6,12 +6,12 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.IBlockAccess;
 
+import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.content.contraptions.goggles.IHaveGoggleInformation;
 import su.sergiusonesimus.recreate.content.contraptions.wrench.IWrenchable;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
 import su.sergiusonesimus.recreate.foundation.item.ItemDescription;
 import su.sergiusonesimus.recreate.foundation.utility.Lang;
-import su.sergiusonesimus.recreate.util.Direction;
 
 public interface IRotate extends IWrenchable {
 

@@ -18,7 +18,6 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 
@@ -29,15 +28,15 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import su.sergiusonesimus.metaworlds.api.SubWorld;
+import su.sergiusonesimus.metaworlds.util.Direction;
+import su.sergiusonesimus.metaworlds.util.Direction.Axis;
+import su.sergiusonesimus.metaworlds.util.Rotation;
 import su.sergiusonesimus.recreate.AllItems;
 import su.sergiusonesimus.recreate.AllSounds;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.BlockMovementChecks;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.BearingBlock;
 import su.sergiusonesimus.recreate.foundation.networking.AllPackets;
 import su.sergiusonesimus.recreate.foundation.utility.BlockFace;
-import su.sergiusonesimus.recreate.util.Direction;
-import su.sergiusonesimus.recreate.util.Direction.Axis;
-import su.sergiusonesimus.recreate.util.Rotation;
 
 public class SuperGlueEntity extends Entity implements IEntityAdditionalSpawnData {
 
@@ -45,7 +44,12 @@ public class SuperGlueEntity extends Entity implements IEntityAdditionalSpawnDat
     protected int hangingPositionX;
     protected int hangingPositionY;
     protected int hangingPositionZ;
-    protected Direction facingDirection = Direction.SOUTH;
+    protected Direction facingDirection;
+    private static boolean blockPlacement = false;
+
+    public SuperGlueEntity(World world) {
+        super(world);
+    }
 
     public SuperGlueEntity(World world, int posX, int posY, int posZ, Direction direction) {
         super(world);
@@ -57,11 +61,11 @@ public class SuperGlueEntity extends Entity implements IEntityAdditionalSpawnDat
     }
 
     public int getWidthPixels() {
-        return 12;
+        return 8;
     }
 
     public int getHeightPixels() {
-        return 12;
+        return 8;
     }
 
     public void onBroken(@Nullable Entity breaker) {
@@ -101,18 +105,21 @@ public class SuperGlueEntity extends Entity implements IEntityAdditionalSpawnDat
 
     protected void updateBoundingBox() {
         if (this.getFacingDirection() != null) {
-            double offset = 0.5 - 1 / 256d;
+            double offset = 0.5d - 1 / 256d;
             ChunkCoordinates normal = facingDirection.getNormal();
-            double x = hangingPositionX + 0.5 - normal.posX * offset;
-            double y = hangingPositionY + 0.5 - normal.posY * offset;
-            double z = hangingPositionZ + 0.5 - normal.posZ * offset;
-            super.setPosition(x, y, z);
-            double w = getWidthPixels();
-            double h = getHeightPixels();
-            double l = getWidthPixels();
+            double x = (double) hangingPositionX + 0.5d - (double) normal.posX * offset;
+            double y = (double) hangingPositionY + 0.5d - (double) normal.posY * offset;
+            double z = (double) hangingPositionZ + 0.5d - (double) normal.posZ * offset;
+            super.setPosition(
+                (double) hangingPositionX + 0.5d,
+                (double) hangingPositionY + 0.5d,
+                (double) hangingPositionZ + 0.5d);
+            double w = getWidthPixels() / 16d / 2d;
+            double h = getHeightPixels() / 16d / 2d;
+            double l = getWidthPixels() / 16d / 2d;
             Axis axis = this.getFacingDirection()
                 .getAxis();
-            double depth = 2 - 1 / 128f;
+            double depth = 1d / 128d;
 
             switch (axis) {
                 case X:
@@ -124,17 +131,13 @@ public class SuperGlueEntity extends Entity implements IEntityAdditionalSpawnDat
                 case Z:
                     l = depth;
             }
-
-            w = w / 32.0D;
-            h = h / 32.0D;
-            l = l / 32.0D;
             this.boundingBox = AxisAlignedBB.getBoundingBox(x - w, y - h, z - l, x + w, y + h, z + l);
         }
     }
 
     @Override
-    // TODO replace with onEntityUpdate?
     public void onUpdate() {
+        super.onUpdate();
         if (this.validationTimer++ == 10 && !this.worldObj.isRemote) {
             this.validationTimer = 0;
             if (isEntityAlive() && !this.onValidSurface()) {
@@ -287,7 +290,9 @@ public class SuperGlueEntity extends Entity implements IEntityAdditionalSpawnDat
     @Override
     public boolean interactFirst(EntityPlayer player) {
         if (player instanceof FakePlayer) return false;
+        blockPlacement = true;
         if (player.isClientWorld()) triggerPlaceBlock(player);
+        blockPlacement = false;
         return true;
     }
 
@@ -298,6 +303,7 @@ public class SuperGlueEntity extends Entity implements IEntityAdditionalSpawnDat
 
         EntityPlayerSP cPlayer = (EntityPlayerSP) player;
         Minecraft mc = Minecraft.getMinecraft();
+        mc.entityRenderer.getMouseOver(mc.timer.renderPartialTicks);
         MovingObjectPosition ray = mc.objectMouseOver;
 
         if (ray == null || ray.typeOfHit != MovingObjectType.BLOCK) return;
@@ -311,18 +317,15 @@ public class SuperGlueEntity extends Entity implements IEntityAdditionalSpawnDat
 
         ItemStack itemstack = cPlayer.getHeldItem();
         int countBefore = itemstack.stackSize;
-        Vec3 hitVec = ray.hitVec;
-        // TODO May have to redo this l8r
-        boolean actionResult = itemstack.tryPlaceItemIntoWorld(
+        boolean actionResult = mc.playerController.onPlayerRightClick(
             cPlayer,
             cPlayer.worldObj,
+            itemstack,
             ray.blockX,
             ray.blockY,
             ray.blockZ,
             ray.sideHit,
-            (float) hitVec.xCoord - ray.blockX,
-            (float) hitVec.yCoord - ray.blockY,
-            (float) hitVec.zCoord - ray.blockZ);
+            ray.hitVec);
         if (!actionResult) return;
 
         cPlayer.swingItem();
@@ -346,6 +349,7 @@ public class SuperGlueEntity extends Entity implements IEntityAdditionalSpawnDat
     public void readEntityFromNBT(NBTTagCompound tagCompound) {
         this.hangingPositionX = tagCompound.getInteger("TileX");
         this.hangingPositionY = tagCompound.getInteger("TileY");
+        if (this.hangingPositionY < 0) kill();
         this.hangingPositionZ = tagCompound.getInteger("TileZ");
         this.facingDirection = Direction.from3DDataValue(tagCompound.getByte("Facing"));
         updateFacingWithBoundingBox();
@@ -418,11 +422,11 @@ public class SuperGlueEntity extends Entity implements IEntityAdditionalSpawnDat
     }
 
     public int getHangingPositionY() {
-        return this.hangingPositionX;
+        return this.hangingPositionY;
     }
 
     public int getHangingPositionZ() {
-        return this.hangingPositionX;
+        return this.hangingPositionZ;
     }
 
     public Direction getAttachedDirection(int x, int y, int z) {
@@ -449,6 +453,7 @@ public class SuperGlueEntity extends Entity implements IEntityAdditionalSpawnDat
         this.hangingPositionX = additionalData.readInt();
         this.hangingPositionY = additionalData.readInt();
         this.hangingPositionZ = additionalData.readInt();
+        this.updateFacingWithBoundingBox();
     }
 
     public Direction getFacingDirection() {
@@ -458,6 +463,11 @@ public class SuperGlueEntity extends Entity implements IEntityAdditionalSpawnDat
     @Override
     public boolean doesEntityNotTriggerPressurePlate() {
         return true;
+    }
+
+    @Override
+    public boolean canBeCollidedWith() {
+        return !blockPlacement;
     }
 
     @Override
