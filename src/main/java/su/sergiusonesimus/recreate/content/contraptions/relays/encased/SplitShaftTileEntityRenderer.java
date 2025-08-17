@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntityRenderer;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftModel;
+import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftModel;
 import su.sergiusonesimus.recreate.foundation.utility.Color;
 import su.sergiusonesimus.recreate.foundation.utility.Iterate;
 import su.sergiusonesimus.recreate.util.AnimationTickHolder;
@@ -14,7 +15,8 @@ import su.sergiusonesimus.recreate.util.Direction;
 
 public class SplitShaftTileEntityRenderer extends KineticTileEntityRenderer {
 
-    SplitShaftModel model = new SplitShaftModel();
+    ShaftModel shaft1 = new ShaftModel(Direction.AxisDirection.POSITIVE);
+    ShaftModel shaft2 = new ShaftModel(Direction.AxisDirection.NEGATIVE);
     AbstractShaftModel lit = getLitModel();
     AbstractShaftModel unlit = getUnlitModel();
 
@@ -39,7 +41,8 @@ public class SplitShaftTileEntityRenderer extends KineticTileEntityRenderer {
             }
         }
 
-        model.setAxis(axis);
+        shaft1.setAxis(axis);
+        shaft2.setAxis(axis);
 
         float angle2 = getAngleForTe(
             (KineticTileEntity) tileEntity,
@@ -64,7 +67,8 @@ public class SplitShaftTileEntityRenderer extends KineticTileEntityRenderer {
             angle += offset;
             angle = angle / 180f * (float) Math.PI;
 
-            model.setRotations(angle2, angle);
+            shaft1.setRotation(angle);
+            shaft2.setRotation(angle2);
         }
 
         Color color = getColor((KineticTileEntity) tileEntity);
@@ -81,7 +85,8 @@ public class SplitShaftTileEntityRenderer extends KineticTileEntityRenderer {
             }
         }
 
-        model.render();
+        shaft1.render();
+        shaft2.render();
 
         GL11.glPopMatrix();
     }

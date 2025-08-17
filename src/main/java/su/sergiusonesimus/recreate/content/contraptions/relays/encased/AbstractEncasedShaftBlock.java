@@ -16,4 +16,5 @@ public class AbstractEncasedShaftBlock extends RotatedPillarKineticBlock {
     public boolean hasShaftTowards(IBlockAccess world, int x, int y, int z, Direction face) {
         return face.getAxis() == this.getAxis(world.getBlockMetadata(x, y, z));
     }
+
 }

@@ -11,10 +11,10 @@ public class WaterWheelModel extends ModelBase {
 
     protected ModelRenderer core;
     protected Direction.Axis axis;
-    private final ModelRenderer InnerSegment_r1;
-    private final ModelRenderer Connector_r1;
-    private final ModelRenderer Connector_r2;
-    private final ModelRenderer InnerSegment_r2;
+    private final ModelRenderer innerSegment_r1;
+    private final ModelRenderer connector_r1;
+    private final ModelRenderer connector_r2;
+    private final ModelRenderer innerSegment_r2;
     AllModelTextures texture = AllModelTextures.WATER_WHEEL;
 
     public WaterWheelModel() {
@@ -40,45 +40,45 @@ public class WaterWheelModel extends ModelBase {
         core.cubeList.add(new ModelBox(core, 0, 26, -13.0F, -0.4F + 9F, -13.0F, 26, 0, 26, 0.0F));
         core.cubeList.add(new ModelBox(core, 0, 0, -13.0F, -17.7F + 9F, -13.0F, 26, 0, 26, 0.0F));
 
-        InnerSegment_r1 = new ModelRenderer(this);
-        InnerSegment_r1.setRotationPoint(0.0F, -9.1F, 0.0F);
-        core.addChild(InnerSegment_r1);
-        setRotationAngle(InnerSegment_r1, 0.0F, 0.7854F, 0.0F);
-        InnerSegment_r1.cubeList.add(new ModelBox(InnerSegment_r1, 40, 97, -10.0F, -8.4F + 9F, -4.0F, 2, 17, 8, 0.0F));
-        InnerSegment_r1.cubeList.add(new ModelBox(InnerSegment_r1, 20, 97, 7.9F, -8.4F + 9F, -4.0F, 2, 17, 8, 0.0F));
-        InnerSegment_r1.cubeList.add(new ModelBox(InnerSegment_r1, 122, 0, -4.0F, -8.4F + 9F, 7.9F, 8, 17, 2, 0.0F));
-        InnerSegment_r1.cubeList.add(new ModelBox(InnerSegment_r1, 92, 128, -16.0F, -8.9F + 9F, 5.0F, 8, 18, 1, 0.0F));
-        InnerSegment_r1.cubeList.add(new ModelBox(InnerSegment_r1, 78, 102, 5.0F, -8.9F + 9F, 8.0F, 1, 18, 8, 0.0F));
-        InnerSegment_r1.cubeList.add(new ModelBox(InnerSegment_r1, 122, 38, 8.0F, -8.9F + 9F, -6.0F, 8, 18, 1, 0.0F));
+        innerSegment_r1 = new ModelRenderer(this);
+        innerSegment_r1.setRotationPoint(0.0F, -9.1F, 0.0F);
+        core.addChild(innerSegment_r1);
+        setRotationAngle(innerSegment_r1, 0.0F, 0.7854F, 0.0F);
+        innerSegment_r1.cubeList.add(new ModelBox(innerSegment_r1, 40, 97, -10.0F, -8.4F + 9F, -4.0F, 2, 17, 8, 0.0F));
+        innerSegment_r1.cubeList.add(new ModelBox(innerSegment_r1, 20, 97, 7.9F, -8.4F + 9F, -4.0F, 2, 17, 8, 0.0F));
+        innerSegment_r1.cubeList.add(new ModelBox(innerSegment_r1, 122, 0, -4.0F, -8.4F + 9F, 7.9F, 8, 17, 2, 0.0F));
+        innerSegment_r1.cubeList.add(new ModelBox(innerSegment_r1, 92, 128, -16.0F, -8.9F + 9F, 5.0F, 8, 18, 1, 0.0F));
+        innerSegment_r1.cubeList.add(new ModelBox(innerSegment_r1, 78, 102, 5.0F, -8.9F + 9F, 8.0F, 1, 18, 8, 0.0F));
+        innerSegment_r1.cubeList.add(new ModelBox(innerSegment_r1, 122, 38, 8.0F, -8.9F + 9F, -6.0F, 8, 18, 1, 0.0F));
 
-        Connector_r1 = new ModelRenderer(this);
-        Connector_r1.setRotationPoint(0.0F, -9.0F, 0.0F);
-        core.addChild(Connector_r1);
-        setRotationAngle(Connector_r1, 0.0F, -0.3927F, 0.0F);
-        Connector_r1.cubeList.add(new ModelBox(Connector_r1, 0, 82, -9.0F, -6.0F + 9F, -1.5F, 18, 12, 3, 0.0F));
-        Connector_r1.cubeList.add(new ModelBox(Connector_r1, 0, 52, -1.5F, -6.0F + 9F, -9.0F, 3, 12, 18, 0.0F));
-        Connector_r1.cubeList.add(new ModelBox(Connector_r1, 74, 128, -16.0F, -9.0F + 9F, 5.0F, 8, 18, 1, 0.0F));
-        Connector_r1.cubeList.add(new ModelBox(Connector_r1, 114, 78, -6.0F, -9.0F + 9F, -16.0F, 1, 18, 8, 0.0F));
-        Connector_r1.cubeList.add(new ModelBox(Connector_r1, 104, 0, 5.0F, -9.0F + 9F, 8.0F, 1, 18, 8, 0.0F));
-        Connector_r1.cubeList.add(new ModelBox(Connector_r1, 38, 122, 8.0F, -9.0F + 9F, -6.0F, 8, 18, 1, 0.0F));
+        connector_r1 = new ModelRenderer(this);
+        connector_r1.setRotationPoint(0.0F, -9.0F, 0.0F);
+        core.addChild(connector_r1);
+        setRotationAngle(connector_r1, 0.0F, -0.3927F, 0.0F);
+        connector_r1.cubeList.add(new ModelBox(connector_r1, 0, 82, -9.0F, -6.0F + 9F, -1.5F, 18, 12, 3, 0.0F));
+        connector_r1.cubeList.add(new ModelBox(connector_r1, 0, 52, -1.5F, -6.0F + 9F, -9.0F, 3, 12, 18, 0.0F));
+        connector_r1.cubeList.add(new ModelBox(connector_r1, 74, 128, -16.0F, -9.0F + 9F, 5.0F, 8, 18, 1, 0.0F));
+        connector_r1.cubeList.add(new ModelBox(connector_r1, 114, 78, -6.0F, -9.0F + 9F, -16.0F, 1, 18, 8, 0.0F));
+        connector_r1.cubeList.add(new ModelBox(connector_r1, 104, 0, 5.0F, -9.0F + 9F, 8.0F, 1, 18, 8, 0.0F));
+        connector_r1.cubeList.add(new ModelBox(connector_r1, 38, 122, 8.0F, -9.0F + 9F, -6.0F, 8, 18, 1, 0.0F));
 
-        Connector_r2 = new ModelRenderer(this);
-        Connector_r2.setRotationPoint(0.0F, -9.0F, 0.0F);
-        core.addChild(Connector_r2);
-        setRotationAngle(Connector_r2, 0.0F, 0.3927F, 0.0F);
-        Connector_r2.cubeList.add(new ModelBox(Connector_r2, 42, 82, -9.0F, -5.9F + 9F, -1.5F, 18, 11, 3, 0.0F));
-        Connector_r2.cubeList.add(new ModelBox(Connector_r2, 42, 52, -1.5F, -5.9F + 9F, -9.0F, 3, 11, 18, 0.0F));
-        Connector_r2.cubeList.add(new ModelBox(Connector_r2, 104, 52, 5.0F, -9.0F + 9F, 8.0F, 1, 18, 8, 0.0F));
-        Connector_r2.cubeList.add(new ModelBox(Connector_r2, 104, 26, -6.0F, -9.0F + 9F, -16.0F, 1, 18, 8, 0.0F));
-        Connector_r2.cubeList.add(new ModelBox(Connector_r2, 114, 124, 8.0F, -9.0F + 9F, -6.0F, 8, 18, 1, 0.0F));
-        Connector_r2.cubeList.add(new ModelBox(Connector_r2, 56, 123, -16.0F, -9.0F + 9F, 5.0F, 8, 18, 1, 0.0F));
+        connector_r2 = new ModelRenderer(this);
+        connector_r2.setRotationPoint(0.0F, -9.0F, 0.0F);
+        core.addChild(connector_r2);
+        setRotationAngle(connector_r2, 0.0F, 0.3927F, 0.0F);
+        connector_r2.cubeList.add(new ModelBox(connector_r2, 42, 82, -9.0F, -5.9F + 9F, -1.5F, 18, 11, 3, 0.0F));
+        connector_r2.cubeList.add(new ModelBox(connector_r2, 42, 52, -1.5F, -5.9F + 9F, -9.0F, 3, 11, 18, 0.0F));
+        connector_r2.cubeList.add(new ModelBox(connector_r2, 104, 52, 5.0F, -9.0F + 9F, 8.0F, 1, 18, 8, 0.0F));
+        connector_r2.cubeList.add(new ModelBox(connector_r2, 104, 26, -6.0F, -9.0F + 9F, -16.0F, 1, 18, 8, 0.0F));
+        connector_r2.cubeList.add(new ModelBox(connector_r2, 114, 124, 8.0F, -9.0F + 9F, -6.0F, 8, 18, 1, 0.0F));
+        connector_r2.cubeList.add(new ModelBox(connector_r2, 56, 123, -16.0F, -9.0F + 9F, 5.0F, 8, 18, 1, 0.0F));
 
-        InnerSegment_r2 = new ModelRenderer(this);
-        InnerSegment_r2.setRotationPoint(0.0F, -9.1F, 0.0F);
-        core.addChild(InnerSegment_r2);
-        setRotationAngle(InnerSegment_r2, 0.0F, -0.7854F, 0.0F);
-        InnerSegment_r2.cubeList.add(new ModelBox(InnerSegment_r2, 0, 97, -10.0F, -8.4F + 9F, -4.0F, 2, 17, 8, 0.0F));
-        InnerSegment_r2.cubeList.add(new ModelBox(InnerSegment_r2, 20, 122, -16.0F, -8.9F + 9F, 5.0F, 8, 18, 1, 0.0F));
+        innerSegment_r2 = new ModelRenderer(this);
+        innerSegment_r2.setRotationPoint(0.0F, -9.1F, 0.0F);
+        core.addChild(innerSegment_r2);
+        setRotationAngle(innerSegment_r2, 0.0F, -0.7854F, 0.0F);
+        innerSegment_r2.cubeList.add(new ModelBox(innerSegment_r2, 0, 97, -10.0F, -8.4F + 9F, -4.0F, 2, 17, 8, 0.0F));
+        innerSegment_r2.cubeList.add(new ModelBox(innerSegment_r2, 20, 122, -16.0F, -8.9F + 9F, 5.0F, 8, 18, 1, 0.0F));
 
     }
 

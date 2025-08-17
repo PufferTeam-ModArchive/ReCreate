@@ -10,7 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -19,7 +18,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import su.sergiusonesimus.recreate.compat.nei.CreateNEI;
 import su.sergiusonesimus.recreate.content.contraptions.TorquePropagator;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.AllSubWorldTypes;
@@ -50,7 +48,6 @@ public class ReCreate {
     public static final Random RANDOM = new Random();
 
     public static final ReCreateRegistrate REGISTRATE = new ReCreateRegistrate();
-    public static final CreateNEI CreateNEICompat = new CreateNEI();
 
     @SidedProxy(
         clientSide = "su.sergiusonesimus.recreate.ClientProxy",
@@ -104,9 +101,6 @@ public class ReCreate {
 
         // tile entities
         registerTileEntities();
-        if (Loader.isModLoaded("NotEnoughItems")) {
-            CreateNEICompat.loadConfig();
-        }
 
         proxy.init(event);
 

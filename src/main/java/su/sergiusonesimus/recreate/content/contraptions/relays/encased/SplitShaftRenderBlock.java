@@ -12,12 +12,14 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftModel;
+import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftModel;
 import su.sergiusonesimus.recreate.util.Direction;
 
 public class SplitShaftRenderBlock implements ISimpleBlockRenderingHandler {
 
     final int renderID;
-    private final SplitShaftModel model = new SplitShaftModel();
+    ShaftModel shaft1 = new ShaftModel(Direction.AxisDirection.POSITIVE);
+    ShaftModel shaft2 = new ShaftModel(Direction.AxisDirection.NEGATIVE);
     AbstractShaftModel lit = getLitModel();
     AbstractShaftModel unlit = getUnlitModel();
 
@@ -40,14 +42,16 @@ public class SplitShaftRenderBlock implements ISimpleBlockRenderingHandler {
 
         Direction.Axis axis = Direction.Axis.X;
 
-        model.setAxis(axis);
-        if (block instanceof AbstractRedstoneShaftBlock redstonete) {
+        shaft1.setAxis(axis);
+        shaft2.setAxis(axis);
+        if (block instanceof AbstractRedstoneShaftBlock) {
             this.unlit.setAxis(axis);
         }
 
-        model.render();
+        shaft1.render();
+        shaft2.render();
 
-        if (block instanceof AbstractRedstoneShaftBlock redstonete) {
+        if (block instanceof AbstractRedstoneShaftBlock) {
             this.unlit.render();
         }
 
@@ -64,7 +68,8 @@ public class SplitShaftRenderBlock implements ISimpleBlockRenderingHandler {
         Direction.Axis axis = ((AbstractShaftBlock) block)
             .getAxis(world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ));
 
-        model.setAxis(axis);
+        shaft1.setAxis(axis);
+        shaft2.setAxis(axis);
         if (block instanceof AbstractRedstoneShaftBlock redstonete) {
             if (redstonete.isPowered((World) world, x, y, z)) {
                 this.lit.setAxis(axis);
@@ -76,7 +81,8 @@ public class SplitShaftRenderBlock implements ISimpleBlockRenderingHandler {
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 
-        model.render();
+        shaft1.render();
+        shaft2.render();
         if (block instanceof AbstractRedstoneShaftBlock redstonete) {
             if (redstonete.isPowered((World) world, x, y, z)) {
                 this.lit.render();

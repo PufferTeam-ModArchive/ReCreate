@@ -12,14 +12,16 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import su.sergiusonesimus.recreate.AllModelTextures;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftModel;
-import su.sergiusonesimus.recreate.content.contraptions.relays.encased.SplitShaftModel;
+import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftModel;
 import su.sergiusonesimus.recreate.util.Direction;
 
 public class GearboxRenderBlock implements ISimpleBlockRenderingHandler {
 
     final int renderID;
-    SplitShaftModel model = new SplitShaftModel();
-    SplitShaftModel model2 = new SplitShaftModel();
+    ShaftModel shaft1 = new ShaftModel(Direction.AxisDirection.POSITIVE);
+    ShaftModel shaft2 = new ShaftModel(Direction.AxisDirection.NEGATIVE);
+    ShaftModel shaft3 = new ShaftModel(Direction.AxisDirection.POSITIVE);
+    ShaftModel shaft4 = new ShaftModel(Direction.AxisDirection.NEGATIVE);
     AbstractShaftModel normal = getModel();
 
     public GearboxRenderBlock(int blockComplexRenderID) {
@@ -37,18 +39,20 @@ public class GearboxRenderBlock implements ISimpleBlockRenderingHandler {
 
         Direction.Axis axis = Direction.Axis.X;
 
-        model.setAxis(axis);
+        this.shaft1.setAxis(axis);
+        this.shaft2.setAxis(axis);
+
         if (block instanceof GearboxBlock gearboxte) {
             this.normal.setAxis(axis);
-            this.model2.setAxis(gearboxte.getSecondAxis(gearboxte.getMetaFromAxis(axis)));
+            this.shaft3.setAxis(gearboxte.getSecondAxis(gearboxte.getMetaFromAxis(axis)));
+            this.shaft4.setAxis(gearboxte.getSecondAxis(gearboxte.getMetaFromAxis(axis)));
         }
 
-        model.render();
-
-        if (block instanceof GearboxBlock gearboxte) {
-            this.normal.render();
-            this.model2.render();
-        }
+        this.normal.render();
+        shaft1.render();
+        shaft2.render();
+        shaft3.render();
+        shaft4.render();
 
         block.setBlockBoundsForItemRender();
     }
@@ -63,20 +67,22 @@ public class GearboxRenderBlock implements ISimpleBlockRenderingHandler {
         Direction.Axis axis = ((AbstractShaftBlock) block)
             .getAxis(world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ));
 
-        model.setAxis(axis);
+        this.shaft1.setAxis(axis);
+        this.shaft2.setAxis(axis);
         if (block instanceof GearboxBlock gearboxte) {
             this.normal.setAxis(axis);
-            this.model2.setAxis(gearboxte.getSecondAxis(gearboxte.getMetaFromAxis(axis)));
+            this.shaft3.setAxis(gearboxte.getSecondAxis(gearboxte.getMetaFromAxis(axis)));
+            this.shaft4.setAxis(gearboxte.getSecondAxis(gearboxte.getMetaFromAxis(axis)));
         }
 
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 
-        model.render();
-        if (block instanceof GearboxBlock gearboxte) {
-            this.normal.render();
-            this.model2.render();
-        }
+        this.normal.render();
+        shaft1.render();
+        shaft2.render();
+        shaft3.render();
+        shaft4.render();
 
         GL11.glPopMatrix();
         return true;

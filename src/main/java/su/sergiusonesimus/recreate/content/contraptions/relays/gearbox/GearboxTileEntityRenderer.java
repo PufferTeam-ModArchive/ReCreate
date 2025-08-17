@@ -8,6 +8,7 @@ import su.sergiusonesimus.recreate.AllModelTextures;
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntityRenderer;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftModel;
+import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftModel;
 import su.sergiusonesimus.recreate.content.contraptions.relays.encased.*;
 import su.sergiusonesimus.recreate.foundation.utility.Color;
 import su.sergiusonesimus.recreate.foundation.utility.Iterate;
@@ -16,8 +17,10 @@ import su.sergiusonesimus.recreate.util.Direction;
 
 public class GearboxTileEntityRenderer extends KineticTileEntityRenderer {
 
-    SplitShaftModel model = new SplitShaftModel();
-    SplitShaftModel model2 = new SplitShaftModel();
+    ShaftModel shaft1 = new ShaftModel(Direction.AxisDirection.POSITIVE);
+    ShaftModel shaft2 = new ShaftModel(Direction.AxisDirection.NEGATIVE);
+    ShaftModel shaft3 = new ShaftModel(Direction.AxisDirection.POSITIVE);
+    ShaftModel shaft4 = new ShaftModel(Direction.AxisDirection.NEGATIVE);
     AbstractShaftModel normal = getModel();
 
     public AbstractShaftModel getModel() {
@@ -31,10 +34,12 @@ public class GearboxTileEntityRenderer extends KineticTileEntityRenderer {
 
         if (tileEntity.blockType instanceof GearboxBlock gearboxte) {
             this.normal.setAxis(axis);
-            this.model2.setAxis(gearboxte.getSecondAxis(gearboxte.getMetaFromAxis(axis)));
+            this.shaft3.setAxis(gearboxte.getSecondAxis(gearboxte.getMetaFromAxis(axis)));
+            this.shaft4.setAxis(gearboxte.getSecondAxis(gearboxte.getMetaFromAxis(axis)));
         }
 
-        model.setAxis(axis);
+        this.shaft1.setAxis(axis);
+        this.shaft2.setAxis(axis);
 
         float angle2 = getAngleForTe(
             (KineticTileEntity) tileEntity,
@@ -70,9 +75,13 @@ public class GearboxTileEntityRenderer extends KineticTileEntityRenderer {
             float angle = ((time * te.getSpeed() * 3f / 10) % 360);
 
             if (te.getSpeed() != 0 && te.hasSource()) {
-                Direction sourceFacing = Direction.getNearest(te.xCoord, te.yCoord, te.zCoord);
-                if (sourceFacing.getAxis() == direction.getAxis()) angle *= sourceFacing == direction ? 1 : -1;
-                else if (sourceFacing.getAxisDirection() == direction.getAxisDirection()) angle *= -1;
+                Direction sourceFacing = Direction.getNearest(te.sourceX, te.sourceY, te.sourceZ);
+                if (te.hasSource()) {
+                    if (direction != sourceFacing) {
+                        angle *= -1;
+                    }
+                }
+                angle *= 1;
             }
 
             float angle0 = angle;
@@ -81,8 +90,10 @@ public class GearboxTileEntityRenderer extends KineticTileEntityRenderer {
             angle = angle / 180f * (float) Math.PI;
             angle0 = angle0 / 180f * (float) Math.PI;
 
-            model.setRotations(angle2, angle);
-            model2.setRotations(angle3, angle0);
+            shaft1.setRotation(angle);
+            shaft2.setRotation(angle2);
+            shaft3.setRotation(angle0);
+            shaft4.setRotation(angle3);
         }
 
         Color color = getColor((KineticTileEntity) tileEntity);
@@ -92,8 +103,10 @@ public class GearboxTileEntityRenderer extends KineticTileEntityRenderer {
         GL11.glColor4f(color.getRedAsFloat(), color.getGreenAsFloat(), color.getBlueAsFloat(), color.getAlphaAsFloat());
 
         this.normal.render();
-        this.model2.render();
-        model.render();
+        shaft1.render();
+        shaft2.render();
+        shaft3.render();
+        shaft4.render();
 
         GL11.glPopMatrix();
     }
