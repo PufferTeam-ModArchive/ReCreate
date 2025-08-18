@@ -15,7 +15,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import su.sergiusonesimus.recreate.util.Direction.Axis;
+import su.sergiusonesimus.metaworlds.util.Direction.Axis;
 
 public class VecHelper {
 

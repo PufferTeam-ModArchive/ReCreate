@@ -7,9 +7,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.content.contraptions.RotationPropagator;
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntity;
-import su.sergiusonesimus.recreate.util.Direction;
 
 public class AbstractRedstoneShaftBlock extends AbstractEncasedShaftBlock {
 

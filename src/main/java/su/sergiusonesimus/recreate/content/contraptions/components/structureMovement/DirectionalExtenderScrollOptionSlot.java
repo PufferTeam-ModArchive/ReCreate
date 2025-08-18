@@ -8,11 +8,11 @@ import net.minecraft.util.Vec3;
 
 import org.lwjgl.opengl.GL11;
 
+import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.content.contraptions.base.IRotate;
 import su.sergiusonesimus.recreate.foundation.tileentity.behaviour.CenteredSideValueBoxTransform;
 import su.sergiusonesimus.recreate.foundation.utility.AngleHelper;
 import su.sergiusonesimus.recreate.foundation.utility.Pair;
-import su.sergiusonesimus.recreate.util.Direction;
 
 public class DirectionalExtenderScrollOptionSlot extends CenteredSideValueBoxTransform {
 

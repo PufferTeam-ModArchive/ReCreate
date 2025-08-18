@@ -5,8 +5,8 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
+import su.sergiusonesimus.metaworlds.util.Direction.Axis;
 import su.sergiusonesimus.recreate.content.contraptions.base.IRotate.SpeedLevel;
-import su.sergiusonesimus.recreate.util.Direction.Axis;
 import su.sergiusonesimus.recreate.util.VecHelper;
 
 public class KineticEffectHandler {

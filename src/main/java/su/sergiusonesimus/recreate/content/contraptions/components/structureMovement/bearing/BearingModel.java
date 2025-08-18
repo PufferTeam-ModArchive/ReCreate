@@ -3,11 +3,11 @@ package su.sergiusonesimus.recreate.content.contraptions.components.structureMov
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
+import su.sergiusonesimus.metaworlds.util.Direction;
+import su.sergiusonesimus.metaworlds.util.Direction.Axis;
+import su.sergiusonesimus.metaworlds.util.Direction.AxisDirection;
 import su.sergiusonesimus.recreate.AllModelTextures;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftModel;
-import su.sergiusonesimus.recreate.util.Direction;
-import su.sergiusonesimus.recreate.util.Direction.Axis;
-import su.sergiusonesimus.recreate.util.Direction.AxisDirection;
 
 public class BearingModel extends ModelBase {
 

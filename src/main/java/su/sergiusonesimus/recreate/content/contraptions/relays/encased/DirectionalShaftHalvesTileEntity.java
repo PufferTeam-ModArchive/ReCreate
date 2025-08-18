@@ -1,7 +1,7 @@
 package su.sergiusonesimus.recreate.content.contraptions.relays.encased;
 
+import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntity;
-import su.sergiusonesimus.recreate.util.Direction;
 
 public class DirectionalShaftHalvesTileEntity extends KineticTileEntity {
 

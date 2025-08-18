@@ -1,6 +1,6 @@
 package su.sergiusonesimus.recreate.content.contraptions.relays.encased;
 
-import su.sergiusonesimus.recreate.util.Direction;
+import su.sergiusonesimus.metaworlds.util.Direction;
 
 public abstract class SplitShaftTileEntity extends DirectionalShaftHalvesTileEntity {
 

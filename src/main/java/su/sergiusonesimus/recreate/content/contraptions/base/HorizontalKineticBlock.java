@@ -5,10 +5,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
+import su.sergiusonesimus.metaworlds.util.Direction;
+import su.sergiusonesimus.metaworlds.util.Direction.Axis;
 import su.sergiusonesimus.recreate.foundation.utility.Iterate;
-import su.sergiusonesimus.recreate.util.Direction;
-import su.sergiusonesimus.recreate.util.Direction.Axis;
-import su.sergiusonesimus.recreate.util.Rotation;
+import su.sergiusonesimus.metaworlds.util.Rotation;
 
 public abstract class HorizontalKineticBlock extends KineticBlock {
 

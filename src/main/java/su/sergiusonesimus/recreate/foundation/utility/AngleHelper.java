@@ -1,7 +1,7 @@
 package su.sergiusonesimus.recreate.foundation.utility;
 
-import su.sergiusonesimus.recreate.util.Direction;
-import su.sergiusonesimus.recreate.util.Direction.Axis;
+import su.sergiusonesimus.metaworlds.util.Direction;
+import su.sergiusonesimus.metaworlds.util.Direction.Axis;
 import su.sergiusonesimus.recreate.util.ReCreateMath;
 
 public class AngleHelper {

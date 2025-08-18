@@ -3,10 +3,10 @@ package su.sergiusonesimus.recreate.content.contraptions.relays.gearbox;
 import net.minecraft.block.material.Material;
 import net.minecraft.world.IBlockAccess;
 
+import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.content.contraptions.relays.encased.AbstractEncasedShaftBlock;
 import su.sergiusonesimus.recreate.foundation.block.ITE;
-import su.sergiusonesimus.recreate.util.Direction;
 
 public class GearboxBlock extends AbstractEncasedShaftBlock implements ITE<GearboxTileEntity> {
 

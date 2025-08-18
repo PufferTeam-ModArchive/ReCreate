@@ -19,6 +19,9 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import su.sergiusonesimus.metaworlds.util.Direction;
+import su.sergiusonesimus.metaworlds.util.Direction.Axis;
+import su.sergiusonesimus.metaworlds.util.Direction.AxisDirection;
 import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.content.contraptions.KineticNetwork;
 import su.sergiusonesimus.recreate.content.contraptions.RotationPropagator;
@@ -35,9 +38,6 @@ import su.sergiusonesimus.recreate.foundation.sound.SoundScapes.AmbienceGroup;
 import su.sergiusonesimus.recreate.foundation.tileentity.SmartTileEntity;
 import su.sergiusonesimus.recreate.foundation.tileentity.TileEntityBehaviour;
 import su.sergiusonesimus.recreate.foundation.utility.Lang;
-import su.sergiusonesimus.recreate.util.Direction;
-import su.sergiusonesimus.recreate.util.Direction.Axis;
-import su.sergiusonesimus.recreate.util.Direction.AxisDirection;
 
 public class KineticTileEntity extends SmartTileEntity implements IHaveGoggleInformation, IHaveHoveringInformation {
 

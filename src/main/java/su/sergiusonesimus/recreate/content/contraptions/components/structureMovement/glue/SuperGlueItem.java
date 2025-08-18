@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import su.sergiusonesimus.recreate.util.Direction;
+import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.util.VecHelper;
 
 public class SuperGlueItem extends Item {

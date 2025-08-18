@@ -11,10 +11,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.content.contraptions.base.RotatedPillarKineticBlock;
 import su.sergiusonesimus.recreate.content.contraptions.wrench.IWrenchableWithBracket;
 import su.sergiusonesimus.recreate.foundation.tileentity.TileEntityBehaviour;
-import su.sergiusonesimus.recreate.util.Direction;
 
 public abstract class AbstractShaftBlock extends RotatedPillarKineticBlock implements IWrenchableWithBracket {
 

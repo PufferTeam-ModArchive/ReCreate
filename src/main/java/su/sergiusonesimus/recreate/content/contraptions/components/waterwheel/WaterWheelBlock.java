@@ -5,6 +5,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.content.contraptions.base.DirectionalKineticBlock;
 import su.sergiusonesimus.recreate.content.contraptions.base.GeneratingKineticTileEntity;
@@ -13,7 +14,6 @@ import su.sergiusonesimus.recreate.foundation.block.ITE;
 import su.sergiusonesimus.recreate.foundation.config.CKinetics;
 import su.sergiusonesimus.recreate.foundation.utility.FluidHelper;
 import su.sergiusonesimus.recreate.foundation.utility.Iterate;
-import su.sergiusonesimus.recreate.util.Direction;
 import su.sergiusonesimus.recreate.util.VecHelper;
 
 public class WaterWheelBlock extends DirectionalKineticBlock implements ITE<WaterWheelTileEntity> {

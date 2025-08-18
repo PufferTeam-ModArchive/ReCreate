@@ -29,15 +29,15 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import su.sergiusonesimus.metaworlds.api.SubWorld;
+import su.sergiusonesimus.metaworlds.util.Direction;
+import su.sergiusonesimus.metaworlds.util.Direction.Axis;
 import su.sergiusonesimus.recreate.AllItems;
 import su.sergiusonesimus.recreate.AllSounds;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.BlockMovementChecks;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.BearingBlock;
 import su.sergiusonesimus.recreate.foundation.networking.AllPackets;
 import su.sergiusonesimus.recreate.foundation.utility.BlockFace;
-import su.sergiusonesimus.recreate.util.Direction;
-import su.sergiusonesimus.recreate.util.Direction.Axis;
-import su.sergiusonesimus.recreate.util.Rotation;
+import su.sergiusonesimus.metaworlds.util.Rotation;
 
 public class SuperGlueEntity extends Entity implements IEntityAdditionalSpawnData {
 

@@ -5,8 +5,8 @@ import java.util.function.BiPredicate;
 import net.minecraft.block.Block;
 import net.minecraft.util.Vec3;
 
+import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.foundation.utility.Pair;
-import su.sergiusonesimus.recreate.util.Direction;
 import su.sergiusonesimus.recreate.util.VecHelper;
 
 public class CenteredSideValueBoxTransform extends ValueBoxTransform.Sided {

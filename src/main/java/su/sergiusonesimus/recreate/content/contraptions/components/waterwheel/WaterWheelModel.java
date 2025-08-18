@@ -4,8 +4,8 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
 
+import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.AllModelTextures;
-import su.sergiusonesimus.recreate.util.Direction;
 
 public class WaterWheelModel extends ModelBase {
 

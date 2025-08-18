@@ -2,9 +2,9 @@ package su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft
 
 import net.minecraft.client.model.ModelRenderer;
 
+import su.sergiusonesimus.metaworlds.util.Direction.AxisDirection;
 import su.sergiusonesimus.recreate.AllModelTextures;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftModel;
-import su.sergiusonesimus.recreate.util.Direction.AxisDirection;
 
 public class ShaftModel extends AbstractShaftModel {
 

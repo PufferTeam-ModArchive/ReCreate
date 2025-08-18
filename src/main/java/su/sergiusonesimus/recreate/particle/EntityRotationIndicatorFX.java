@@ -7,8 +7,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
+import su.sergiusonesimus.metaworlds.util.Direction.Axis;
 import su.sergiusonesimus.recreate.foundation.utility.Color;
-import su.sergiusonesimus.recreate.util.Direction.Axis;
 import su.sergiusonesimus.recreate.util.VecHelper;
 
 public class EntityRotationIndicatorFX extends EntityFX {

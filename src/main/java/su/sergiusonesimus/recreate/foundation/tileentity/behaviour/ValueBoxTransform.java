@@ -9,11 +9,11 @@ import net.minecraft.util.Vec3;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
+import su.sergiusonesimus.metaworlds.util.Direction;
+import su.sergiusonesimus.metaworlds.util.Direction.Axis;
 import su.sergiusonesimus.recreate.content.contraptions.base.DirectionalKineticBlock;
 import su.sergiusonesimus.recreate.content.contraptions.base.HorizontalAxisKineticBlock;
 import su.sergiusonesimus.recreate.foundation.utility.AngleHelper;
-import su.sergiusonesimus.recreate.util.Direction;
-import su.sergiusonesimus.recreate.util.Direction.Axis;
 import su.sergiusonesimus.recreate.util.VecHelper;
 
 public abstract class ValueBoxTransform {

@@ -13,10 +13,10 @@ import net.minecraft.util.Vec3;
 
 import org.lwjgl.opengl.GL11;
 
+import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.AllItems;
 import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.foundation.utility.AngleHelper;
-import su.sergiusonesimus.recreate.util.Direction;
 import su.sergiusonesimus.recreate.util.VecHelper;
 
 public class SuperGlueRenderer extends Render {

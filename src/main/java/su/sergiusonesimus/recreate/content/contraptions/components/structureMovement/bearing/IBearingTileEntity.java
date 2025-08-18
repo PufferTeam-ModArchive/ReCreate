@@ -2,11 +2,11 @@ package su.sergiusonesimus.recreate.content.contraptions.components.structureMov
 
 import net.minecraft.block.Block;
 
+import su.sergiusonesimus.metaworlds.util.Direction.Axis;
 import su.sergiusonesimus.recreate.content.contraptions.base.IRotate;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.DirectionalExtenderScrollOptionSlot;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.IControlContraption;
 import su.sergiusonesimus.recreate.foundation.tileentity.behaviour.ValueBoxTransform;
-import su.sergiusonesimus.recreate.util.Direction.Axis;
 
 public interface IBearingTileEntity extends IControlContraption {
 

@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import su.sergiusonesimus.metaworlds.util.Direction.Axis;
 import su.sergiusonesimus.recreate.AllBlocks;
 import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftBlock;
@@ -25,7 +26,6 @@ import su.sergiusonesimus.recreate.foundation.utility.Pair;
 import su.sergiusonesimus.recreate.foundation.utility.placement.IPlacementHelper;
 import su.sergiusonesimus.recreate.foundation.utility.placement.PlacementHelpers;
 import su.sergiusonesimus.recreate.foundation.utility.placement.util.PoleHelper;
-import su.sergiusonesimus.recreate.util.Direction.Axis;
 
 public class ShaftBlock extends AbstractShaftBlock implements ITE<ShaftTileEntity> {
 

@@ -10,6 +10,7 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 
+import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.AllItems;
 import su.sergiusonesimus.recreate.AllKeys;
 import su.sergiusonesimus.recreate.ClientProxy;
@@ -19,7 +20,6 @@ import su.sergiusonesimus.recreate.foundation.tileentity.behaviour.ValueBox;
 import su.sergiusonesimus.recreate.foundation.tileentity.behaviour.ValueBox.IconValueBox;
 import su.sergiusonesimus.recreate.foundation.tileentity.behaviour.ValueBox.TextValueBox;
 import su.sergiusonesimus.recreate.foundation.utility.Lang;
-import su.sergiusonesimus.recreate.util.Direction;
 
 public class ScrollValueRenderer {
 

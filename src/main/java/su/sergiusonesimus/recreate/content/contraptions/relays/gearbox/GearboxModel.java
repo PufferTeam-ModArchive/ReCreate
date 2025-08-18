@@ -2,9 +2,9 @@ package su.sergiusonesimus.recreate.content.contraptions.relays.gearbox;
 
 import net.minecraft.client.model.ModelRenderer;
 
+import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.AllModelTextures;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftModel;
-import su.sergiusonesimus.recreate.util.Direction;
 
 public class GearboxModel extends AbstractShaftModel {
 

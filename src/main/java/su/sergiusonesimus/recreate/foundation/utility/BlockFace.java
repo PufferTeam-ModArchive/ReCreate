@@ -3,7 +3,7 @@ package su.sergiusonesimus.recreate.foundation.utility;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 
-import su.sergiusonesimus.recreate.util.Direction;
+import su.sergiusonesimus.metaworlds.util.Direction;
 
 public class BlockFace extends Pair<ChunkCoordinates, Direction> {
 

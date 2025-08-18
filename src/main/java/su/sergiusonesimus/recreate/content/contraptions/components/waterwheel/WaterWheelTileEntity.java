@@ -5,10 +5,10 @@ import java.util.Map;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.content.contraptions.base.GeneratingKineticTileEntity;
 import su.sergiusonesimus.recreate.foundation.config.CKinetics;
 import su.sergiusonesimus.recreate.foundation.utility.Iterate;
-import su.sergiusonesimus.recreate.util.Direction;
 
 public class WaterWheelTileEntity extends GeneratingKineticTileEntity {
 

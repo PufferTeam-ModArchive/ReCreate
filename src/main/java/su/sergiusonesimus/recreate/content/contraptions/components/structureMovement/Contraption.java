@@ -33,6 +33,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import org.apache.commons.lang3.tuple.Pair;
 
 import su.sergiusonesimus.metaworlds.api.SubWorld;
+import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.metaworlds.world.SubWorldServer;
 import su.sergiusonesimus.metaworlds.zmixin.interfaces.minecraft.world.IMixinWorld;
 import su.sergiusonesimus.recreate.AllBlocks;
@@ -47,7 +48,6 @@ import su.sergiusonesimus.recreate.foundation.utility.BlockFace;
 import su.sergiusonesimus.recreate.foundation.utility.Iterate;
 import su.sergiusonesimus.recreate.foundation.utility.NBTHelper;
 import su.sergiusonesimus.recreate.foundation.utility.UniqueLinkedList;
-import su.sergiusonesimus.recreate.util.Direction;
 import su.sergiusonesimus.recreate.zmixin.interfaces.IMixinWorldReCreate;
 
 public abstract class Contraption {

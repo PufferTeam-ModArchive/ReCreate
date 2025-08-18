@@ -6,8 +6,8 @@ import java.util.List;
 
 import net.minecraft.util.ChunkCoordinates;
 
-import su.sergiusonesimus.recreate.util.Direction;
-import su.sergiusonesimus.recreate.util.Direction.Axis;
+import su.sergiusonesimus.metaworlds.util.Direction;
+import su.sergiusonesimus.metaworlds.util.Direction.Axis;
 
 public class Iterate {
 

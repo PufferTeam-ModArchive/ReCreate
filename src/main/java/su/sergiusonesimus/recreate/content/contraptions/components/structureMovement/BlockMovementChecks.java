@@ -25,10 +25,10 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
 import su.sergiusonesimus.metaworlds.block.BlockDummyReobfTracker;
+import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
 import su.sergiusonesimus.recreate.foundation.config.ContraptionMovementSetting;
-import su.sergiusonesimus.recreate.util.Direction;
 
 public class BlockMovementChecks {
 

@@ -7,8 +7,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import su.sergiusonesimus.metaworlds.util.Direction.Axis;
 import su.sergiusonesimus.recreate.AllSpecialTextures;
-import su.sergiusonesimus.recreate.util.Direction.Axis;
 
 public class AABBOutline extends Outline {
 

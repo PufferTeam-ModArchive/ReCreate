@@ -9,11 +9,11 @@ import java.util.Set;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
 
+import su.sergiusonesimus.metaworlds.util.Direction;
+import su.sergiusonesimus.metaworlds.util.Direction.Axis;
+import su.sergiusonesimus.metaworlds.util.Direction.AxisDirection;
 import su.sergiusonesimus.recreate.AllSpecialTextures;
 import su.sergiusonesimus.recreate.foundation.utility.Iterate;
-import su.sergiusonesimus.recreate.util.Direction;
-import su.sergiusonesimus.recreate.util.Direction.Axis;
-import su.sergiusonesimus.recreate.util.Direction.AxisDirection;
 import su.sergiusonesimus.recreate.util.VecHelper;
 
 public class BlockClusterOutline extends Outline {

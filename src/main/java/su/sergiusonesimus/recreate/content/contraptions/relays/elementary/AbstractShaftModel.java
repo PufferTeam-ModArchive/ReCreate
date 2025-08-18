@@ -3,8 +3,8 @@ package su.sergiusonesimus.recreate.content.contraptions.relays.elementary;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
+import su.sergiusonesimus.metaworlds.util.Direction.Axis;
 import su.sergiusonesimus.recreate.AllModelTextures;
-import su.sergiusonesimus.recreate.util.Direction.Axis;
 
 public abstract class AbstractShaftModel extends ModelBase {
 
