@@ -6,17 +6,24 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import su.sergiusonesimus.metaworlds.util.Direction;
+import su.sergiusonesimus.metaworlds.util.Direction.Axis;
 import su.sergiusonesimus.recreate.AllBlocks;
 import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.content.contraptions.RotationPropagator;
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.relays.gearbox.GearboxBlock;
 import su.sergiusonesimus.recreate.foundation.block.ITE;
 
 @ParametersAreNonnullByDefault
@@ -126,5 +133,37 @@ public class GearshiftBlock extends AbstractEncasedShaftBlock implements ITE<Spl
      */
     protected ItemStack createStackedBlock(int meta) {
         return new ItemStack(AllBlocks.unpowered_gearshift);
+    }
+
+    /**
+     * Gets the block's texture. Args: side, meta
+     */
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        Axis axis = this.getAxis(meta);
+        Direction dir = Direction.from3DDataValue(side);
+        if (dir.getAxis() == axis) return GearboxBlock.gearboxSide;
+        else return this.blockIcon;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister reg) {
+        this.blockIcon = reg.registerIcon(ReCreate.ID + ":gearshift_" + (this.isPowered ? "on" : "off"));
+    }
+
+    /**
+     * Checks if the block is a solid face on the given side, used by placement logic.
+     *
+     * @param world The current world
+     * @param x     X Position
+     * @param y     Y position
+     * @param z     Z position
+     * @param side  The side to check
+     * @return True if the block is solid on the specified side.
+     */
+    public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+        ForgeDirection dir = this.getDirection(world.getBlockMetadata(x, y, z))
+            .toForgeDirection();
+        return dir != side && dir.getOpposite() != side;
     }
 }

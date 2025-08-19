@@ -6,6 +6,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -78,5 +79,10 @@ public class ClutchBlock extends GearshiftBlock {
      */
     protected ItemStack createStackedBlock(int meta) {
         return new ItemStack(AllBlocks.unpowered_clutch);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister reg) {
+        this.blockIcon = reg.registerIcon(ReCreate.ID + ":clutch_" + (this.isPowered ? "on" : "off"));
     }
 }

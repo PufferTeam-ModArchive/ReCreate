@@ -1,14 +1,21 @@
 package su.sergiusonesimus.recreate.content.contraptions.relays.gearbox;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.content.contraptions.relays.encased.AbstractEncasedShaftBlock;
 import su.sergiusonesimus.recreate.foundation.block.ITE;
 
 public class GearboxBlock extends AbstractEncasedShaftBlock implements ITE<GearboxTileEntity> {
+
+    public static IIcon gearboxTop;
+    public static IIcon gearboxSide;
 
     public GearboxBlock(Material materialIn) {
         super(materialIn);
@@ -59,5 +66,11 @@ public class GearboxBlock extends AbstractEncasedShaftBlock implements ITE<Gearb
     @Override
     public int getRenderType() {
         return ReCreate.proxy.getGearboxBlockRenderID();
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister reg) {
+        gearboxTop = reg.registerIcon(ReCreate.ID + ":gearbox_top");
+        gearboxSide = reg.registerIcon(ReCreate.ID + ":gearbox");
     }
 }
