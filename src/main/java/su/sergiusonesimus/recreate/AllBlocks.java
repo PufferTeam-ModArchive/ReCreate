@@ -25,8 +25,10 @@ public class AllBlocks {
     public static Block cogwheel;
     public static Block large_cogwheel;
     public static Block mechanical_bearing;
-    public static Block clutch;
-    public static Block gearshift;
+    public static GearshiftBlock unpowered_gearshift;
+    public static GearshiftBlock powered_gearshift;
+    public static ClutchBlock unpowered_clutch;
+    public static ClutchBlock powered_clutch;
     public static Block gearbox;
     public static Block waterwheel;
 
@@ -43,13 +45,15 @@ public class AllBlocks {
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
         mechanical_bearing = new MechanicalBearingBlock(Material.piston).setBlockName("mechanical_bearing")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
-        clutch = new ClutchBlock(Material.piston).setBlockName("clutch")
+        unpowered_gearshift = (GearshiftBlock) new GearshiftBlock(Material.piston, false).setBlockName("gearshift")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
-        gearshift = new GearshiftBlock(Material.piston).setBlockName("gearshift")
+        powered_gearshift = (GearshiftBlock) new GearshiftBlock(Material.piston, true).setBlockName("gearshift");
+        unpowered_clutch = (ClutchBlock) new ClutchBlock(Material.piston, false).setBlockName("clutch")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
+        powered_clutch = (ClutchBlock) new ClutchBlock(Material.piston, true).setBlockName("clutch");
         gearbox = new GearboxBlock(Material.piston).setBlockName("gearbox")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
-        waterwheel = new WaterWheelBlock(Material.piston).setBlockName("water_wheel")
+        waterwheel = new WaterWheelBlock(Material.wood).setBlockName("water_wheel")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
 
         registerMyBlock(shaft);
@@ -58,8 +62,10 @@ public class AllBlocks {
         registerMyBlock(cogwheel, CogWheelItemBlock.class);
         registerMyBlock(large_cogwheel, CogWheelItemBlock.class);
         registerMyBlock(mechanical_bearing);
-        registerMyBlock(gearshift);
-        registerMyBlock(clutch);
+        GameRegistry.registerBlock(unpowered_gearshift, ItemBlock.class, "tile.unpowered_gearshift");
+        GameRegistry.registerBlock(powered_gearshift, ItemBlock.class, "tile.powered_gearshift");
+        GameRegistry.registerBlock(unpowered_clutch, ItemBlock.class, "tile.unpowered_clutch");
+        GameRegistry.registerBlock(powered_clutch, ItemBlock.class, "tile.powered_clutch");
         registerMyBlock(gearbox);
         registerMyBlock(waterwheel);
         BlockStressDefaults.setCapacity(waterwheel, 32.0);
