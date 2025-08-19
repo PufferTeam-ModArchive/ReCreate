@@ -1,41 +1,82 @@
 package su.sergiusonesimus.recreate.content.contraptions.relays.encased;
 
+import java.util.Random;
+
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import su.sergiusonesimus.recreate.AllBlocks;
 import su.sergiusonesimus.recreate.ReCreate;
-import su.sergiusonesimus.recreate.foundation.block.ITE;
 
 @ParametersAreNonnullByDefault
-public class ClutchBlock extends AbstractRedstoneShaftBlock implements ITE<ClutchTileEntity> {
+public class ClutchBlock extends GearshiftBlock {
 
-    public ClutchBlock(Material materialIn) {
-        super(materialIn);
-        this.setHardness(2.0F);
-        this.setResistance(5.0F);
-        this.setStepSound(soundTypeWood);
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        this.setBlockTextureName("planks_spruce");
+    public ClutchBlock(Material materialIn, boolean powered) {
+        super(materialIn, powered);
+    }
+
+    protected GearshiftBlock getBlockPowered() {
+        return AllBlocks.powered_clutch;
+    }
+
+    protected GearshiftBlock getBlockUnpowered() {
+        return AllBlocks.unpowered_clutch;
     }
 
     @Override
-    public Class<ClutchTileEntity> getTileEntityClass() {
+    public Class<? extends SplitShaftTileEntity> getTileEntityClass() {
         return ClutchTileEntity.class;
     }
 
-    @Override
-    public boolean isOpaqueCube() {
-        return false;
-    }
+    /**
+     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
+     * their own) Args: x, y, z, neighbor Block
+     */
+    public void onNeighborBlockChange(World worldIn, int x, int y, int z, Block neighbor) {
+        if (worldIn.isRemote) return;
 
-    @Override
-    public boolean renderAsNormalBlock() {
-        return false;
+        boolean isNowPowered = worldIn.isBlockIndirectlyGettingPowered(x, y, z);
+        if (this.isPowered != isNowPowered) {
+            detachKinetics(worldIn, x, y, z, this.isPowered);
+            worldIn.setBlock(
+                x,
+                y,
+                z,
+                isNowPowered ? this.getBlockPowered() : this.getBlockUnpowered(),
+                worldIn.getBlockMetadata(x, y, z),
+                2);
+        }
     }
 
     @Override
     public int getRenderType() {
         return ReCreate.proxy.getClutchBlockRenderID();
+    }
+
+    public Item getItemDropped(int meta, Random random, int fortune) {
+        return Item.getItemFromBlock(AllBlocks.unpowered_clutch);
+    }
+
+    /**
+     * Gets an item for the block being called on. Args: world, x, y, z
+     */
+    @SideOnly(Side.CLIENT)
+    public Item getItem(World worldIn, int x, int y, int z) {
+        return Item.getItemFromBlock(AllBlocks.unpowered_clutch);
+    }
+
+    /**
+     * Returns an item stack containing a single instance of the current block type. 'i' is the block's subtype/damage
+     * and is ignored for blocks which do not support subtypes. Blocks which cannot be harvested should return null.
+     */
+    protected ItemStack createStackedBlock(int meta) {
+        return new ItemStack(AllBlocks.unpowered_clutch);
     }
 }

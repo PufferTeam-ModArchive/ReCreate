@@ -5,7 +5,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
@@ -44,14 +43,14 @@ public class SplitShaftRenderBlock implements ISimpleBlockRenderingHandler {
 
         shaft1.setAxis(axis);
         shaft2.setAxis(axis);
-        if (block instanceof AbstractRedstoneShaftBlock) {
+        if (block instanceof GearshiftBlock) {
             this.unlit.setAxis(axis);
         }
 
         shaft1.render();
         shaft2.render();
 
-        if (block instanceof AbstractRedstoneShaftBlock) {
+        if (block instanceof GearshiftBlock) {
             this.unlit.render();
         }
 
@@ -70,8 +69,8 @@ public class SplitShaftRenderBlock implements ISimpleBlockRenderingHandler {
 
         shaft1.setAxis(axis);
         shaft2.setAxis(axis);
-        if (block instanceof AbstractRedstoneShaftBlock redstonete) {
-            if (redstonete.isPowered((World) world, x, y, z)) {
+        if (block instanceof GearshiftBlock gearshift) {
+            if (gearshift.isPowered) {
                 this.lit.setAxis(axis);
             } else {
                 this.unlit.setAxis(axis);
@@ -83,8 +82,8 @@ public class SplitShaftRenderBlock implements ISimpleBlockRenderingHandler {
 
         shaft1.render();
         shaft2.render();
-        if (block instanceof AbstractRedstoneShaftBlock redstonete) {
-            if (redstonete.isPowered((World) world, x, y, z)) {
+        if (block instanceof GearshiftBlock gearshift) {
+            if (gearshift.isPowered) {
                 this.lit.render();
             } else {
                 this.unlit.render();
