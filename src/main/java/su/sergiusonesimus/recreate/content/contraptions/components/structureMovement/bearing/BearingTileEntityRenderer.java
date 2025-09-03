@@ -6,8 +6,11 @@ import org.lwjgl.opengl.GL11;
 
 import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.AllModelTextures;
+import su.sergiusonesimus.recreate.ReCreate;
+import su.sergiusonesimus.recreate.compat.tebreaker.TileEntityBreakerIntegration;
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntityRenderer;
 import su.sergiusonesimus.recreate.foundation.utility.Color;
+import su.sergiusonesimus.tebreaker.TileEntityBreaker;
 
 public class BearingTileEntityRenderer extends KineticTileEntityRenderer {
 
@@ -30,7 +33,14 @@ public class BearingTileEntityRenderer extends KineticTileEntityRenderer {
         GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
         GL11.glColor4f(color.getRedAsFloat(), color.getGreenAsFloat(), color.getBlueAsFloat(), color.getAlphaAsFloat());
 
-        model.render(AllModelTextures.MECHANICAL_BEARING);
+        boolean damageTexture = ReCreate.isTileEntityBreakerLoaded
+            && TileEntityBreakerIntegration.shouldRenderDamageTexture(this);
+        model.shaft.render(this);
+        if (damageTexture) TileEntityBreakerIntegration.setBreakTexture(
+            this,
+            TileEntityBreakerIntegration.BEARING,
+            TileEntityBreaker.getTileEntityDestroyProgress(tileEntity));
+        model.render(AllModelTextures.MECHANICAL_BEARING, this);
 
         GL11.glPopMatrix();
     }

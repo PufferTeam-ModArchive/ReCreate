@@ -5,10 +5,13 @@ import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
 
 import su.sergiusonesimus.metaworlds.util.Direction.Axis;
+import su.sergiusonesimus.recreate.ReCreate;
+import su.sergiusonesimus.recreate.compat.tebreaker.TileEntityBreakerIntegration;
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntityRenderer;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftModel;
 import su.sergiusonesimus.recreate.foundation.utility.Color;
+import su.sergiusonesimus.tebreaker.TileEntityBreaker;
 
 public class CogWheelTileEntityRenderer extends KineticTileEntityRenderer {
 
@@ -42,11 +45,22 @@ public class CogWheelTileEntityRenderer extends KineticTileEntityRenderer {
         GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
         GL11.glColor4f(color.getRedAsFloat(), color.getGreenAsFloat(), color.getBlueAsFloat(), color.getAlphaAsFloat());
 
-        shaft.render();
+        boolean damageTexture = ReCreate.isTileEntityBreakerLoaded
+            && TileEntityBreakerIntegration.shouldRenderDamageTexture(this);
+
+        shaft.render(this);
         if (!block.isLarge) {
-            cogwheel.render();
+            if (damageTexture) TileEntityBreakerIntegration.setBreakTexture(
+                this,
+                TileEntityBreakerIntegration.COGWHEEL,
+                TileEntityBreaker.getTileEntityDestroyProgress(tileEntity));
+            cogwheel.render(this);
         } else {
-            largeCogwheel.render();
+            if (damageTexture) TileEntityBreakerIntegration.setBreakTexture(
+                this,
+                TileEntityBreakerIntegration.LARGE_COGWHEEL,
+                TileEntityBreaker.getTileEntityDestroyProgress(tileEntity));
+            largeCogwheel.render(this);
         }
 
         GL11.glPopMatrix();

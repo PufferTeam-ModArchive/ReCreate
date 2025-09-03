@@ -30,7 +30,7 @@ public class ShaftTileEntityRenderer extends KineticTileEntityRenderer {
         GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
         GL11.glColor4f(color.getRedAsFloat(), color.getGreenAsFloat(), color.getBlueAsFloat(), color.getAlphaAsFloat());
 
-        model.render();
+        model.render(this);
 
         GL11.glPopMatrix();
     }

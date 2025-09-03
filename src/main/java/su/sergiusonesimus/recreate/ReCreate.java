@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -23,6 +24,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.metaworlds.util.RotationHelper;
+import su.sergiusonesimus.recreate.compat.tebreaker.TileEntityBreakerIntegration;
 import su.sergiusonesimus.recreate.content.contraptions.TorquePropagator;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.AllSubWorldTypes;
@@ -53,6 +55,8 @@ public class ReCreate {
 
     public static int idEntitySuperGlue;
 
+    public static boolean isTileEntityBreakerLoaded = false;
+
     @Instance(ID)
     public static ReCreate instance;
 
@@ -82,6 +86,9 @@ public class ReCreate {
         idEntitySuperGlue = 500;
 
         AllSubWorldTypes.register();
+
+        // check if various integrations are required
+        isTileEntityBreakerLoaded = Loader.isModLoaded("tebreaker");
     }
 
     @EventHandler
@@ -123,6 +130,9 @@ public class ReCreate {
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
+
+        if (isTileEntityBreakerLoaded) TileEntityBreakerIntegration.registerTileEntities();
+
         registerRotators();
     }
 

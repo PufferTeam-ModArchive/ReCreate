@@ -2,6 +2,7 @@ package su.sergiusonesimus.recreate.content.contraptions.relays.elementary;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 
 import su.sergiusonesimus.metaworlds.util.Direction.Axis;
 import su.sergiusonesimus.recreate.AllModelTextures;
@@ -62,6 +63,11 @@ public abstract class AbstractShaftModel extends ModelBase {
 
     public void render() {
         texture.bind();
+        core.render(0.0625f);
+    }
+
+    public void render(TileEntitySpecialRenderer renderer) {
+        renderer.bindTexture(texture.getLocation());
         core.render(0.0625f);
     }
 

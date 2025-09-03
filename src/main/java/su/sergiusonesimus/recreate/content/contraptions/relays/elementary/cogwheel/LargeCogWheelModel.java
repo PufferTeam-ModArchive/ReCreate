@@ -7,11 +7,11 @@ import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.Abstra
 
 public class LargeCogWheelModel extends AbstractShaftModel {
 
-    ModelRenderer hub1;
-    ModelRenderer hub2;
-    ModelRenderer[] hubParts = new ModelRenderer[4];
-    ModelRenderer disk;
-    ModelRenderer[] cogs = new ModelRenderer[8];
+    public ModelRenderer hub1;
+    public ModelRenderer hub2;
+    public ModelRenderer[] hubParts = new ModelRenderer[4];
+    public ModelRenderer disk;
+    public ModelRenderer[] cogs = new ModelRenderer[8];
 
     public LargeCogWheelModel() {
         super(AllModelTextures.LARGE_COGWHEEL, 80, 48);
