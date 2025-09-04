@@ -20,13 +20,13 @@ public class RenderHelper {
         tessellator.setNormal(0.0F, 1.0F, 0.0F);
         renderblocks.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(1, meta));
         tessellator.setNormal(0.0F, 0.0F, -1.0F);
-        renderblocks.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(2, meta));
+        renderblocks.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(4, meta));
         tessellator.setNormal(0.0F, 0.0F, 1.0F);
-        renderblocks.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(3, meta));
+        renderblocks.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(5, meta));
         tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-        renderblocks.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(4, meta));
+        renderblocks.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(2, meta));
         tessellator.setNormal(1.0F, 0.0F, 0.0F);
-        renderblocks.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(5, meta));
+        renderblocks.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(3, meta));
         tessellator.draw();
 
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);

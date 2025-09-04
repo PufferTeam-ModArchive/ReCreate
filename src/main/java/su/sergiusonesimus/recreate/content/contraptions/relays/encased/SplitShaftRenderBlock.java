@@ -37,7 +37,8 @@ public class SplitShaftRenderBlock implements ISimpleBlockRenderingHandler {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         double pixel = 1D / 16D;
-        int correctMeta = ((IRotate) block).getMetaFromDirection(Direction.SOUTH);
+        Direction.Axis axis = Direction.Axis.X;
+        int correctMeta = ((AbstractEncasedShaftBlock) block).getMetaFromAxis(axis);
 
         renderer.setRenderBounds(0D, 0D, 0D, 1D, pixel, 1D);
         RenderHelper.renderInvBox(renderer, block, correctMeta);
@@ -49,8 +50,6 @@ public class SplitShaftRenderBlock implements ISimpleBlockRenderingHandler {
         RenderHelper.renderInvBox(renderer, block, correctMeta);
         renderer.setRenderBounds(0D, pixel, 1 - pixel, 1D, 1 - pixel, 1D);
         RenderHelper.renderInvBox(renderer, block, correctMeta);
-
-        Direction.Axis axis = Direction.Axis.X;
 
         shaft1.setAxis(axis);
         shaft2.setAxis(axis);
