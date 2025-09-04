@@ -3,6 +3,7 @@ package su.sergiusonesimus.recreate.content.contraptions.components.motor;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 import su.sergiusonesimus.metaworlds.util.Direction;
@@ -178,15 +179,22 @@ public class CreativeMotorModel extends ModelBase {
     }
 
     public CreativeMotorModel setRotation(float angle) {
-        shaft.setRotation(face.getAxis() == Axis.Z ? angle : -angle);
+        shaft.setRotation(angle);
         return this;
     }
 
     public void render() {
         shaft.render();
         AllModelTextures.CREATIVE_MOTOR.bind();
+
+        GL11.glPushMatrix();
+
+        GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
+
         motor.render(0.0625F);
         stand.render(0.0625F);
+
+        GL11.glPopMatrix();
     }
 
 }

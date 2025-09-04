@@ -356,9 +356,8 @@ public class RotationPropagator {
         if (!(neighbourBlock instanceof IRotate)) return null;
         TileEntity neighbourTE = currentTE.getWorldObj()
             .getTileEntity(neighbourX, neighbourY, neighbourZ);
-        if (neighbourTE == null || !(neighbourTE instanceof KineticTileEntity)) return null;
-        KineticTileEntity neighbourKTE = (KineticTileEntity) neighbourTE;
-        if (!(neighbourKTE.blockType instanceof IRotate)) return null;
+        if (neighbourTE == null || !(neighbourTE instanceof KineticTileEntity neighbourKTE)) return null;
+        if (!(neighbourKTE.getBlockType() instanceof IRotate)) return null;
         if (!isConnected(currentTE, neighbourKTE) && !isConnected(neighbourKTE, currentTE)) return null;
         return neighbourKTE;
     }

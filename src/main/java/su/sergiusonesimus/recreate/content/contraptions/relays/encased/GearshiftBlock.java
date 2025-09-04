@@ -90,9 +90,24 @@ public class GearshiftBlock extends AbstractEncasedShaftBlock implements ITE<Spl
      * Ticks the block if it's been scheduled
      */
     public void updateTick(World worldIn, int x, int y, int z, Random random) {
+        boolean isNowPowered = worldIn.isBlockIndirectlyGettingPowered(x, y, z);
+        if (this.isPowered != isNowPowered) {
+            worldIn.setBlock(
+                x,
+                y,
+                z,
+                isNowPowered ? this.getBlockPowered() : this.getBlockUnpowered(),
+                worldIn.getBlockMetadata(x, y, z),
+                2);
+        }
+
         TileEntity te = worldIn.getTileEntity(x, y, z);
         if (te == null || !(te instanceof KineticTileEntity kte)) return;
         RotationPropagator.handleAdded(worldIn, x, y, z, kte);
+    }
+
+    public boolean isAssociatedBlock(Block other) {
+        return other == this.getBlockPowered() || other == this.getBlockUnpowered();
     }
 
     @Override
@@ -112,7 +127,7 @@ public class GearshiftBlock extends AbstractEncasedShaftBlock implements ITE<Spl
 
     @Override
     public int getRenderType() {
-        return ReCreate.proxy.getGearshiftBlockRenderID();
+        return ReCreate.proxy.getSplitShaftBlockRenderID();
     }
 
     public Item getItemDropped(int meta, Random random, int fortune) {

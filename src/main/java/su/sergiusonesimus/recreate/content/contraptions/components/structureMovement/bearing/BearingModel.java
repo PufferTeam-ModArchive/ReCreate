@@ -89,9 +89,6 @@ public class BearingModel extends ModelBase {
     }
 
     public BearingModel setRotations(float shaftAngle, float topAngle) {
-        if (face.getAxis() != Axis.Z) {
-            shaftAngle *= -1;
-        }
         if (face.getAxis() != Axis.X) {
             topAngle *= -1;
         }

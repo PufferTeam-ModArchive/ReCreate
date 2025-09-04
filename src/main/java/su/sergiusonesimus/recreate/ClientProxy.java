@@ -42,8 +42,7 @@ public class ClientProxy extends CommonProxy {
     int creativeMotorRenderID;
     int cogwheelRenderID;
     int bearingRenderID;
-    int gearshiftRenderID;
-    int clutchRenderID;
+    int splitShaftRenderID;
     int gearboxRenderID;
     int waterWheelRenderID;
 
@@ -80,8 +79,9 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(CogWheelTileEntity.class, new CogWheelTileEntityRenderer());
         ClientRegistry
             .bindTileEntitySpecialRenderer(MechanicalBearingTileEntity.class, new BearingTileEntityRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(GearshiftTileEntity.class, new GearshiftTileEntityRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(ClutchTileEntity.class, new ClutchTileEntityRenderer());
+        SplitShaftTileEntityRenderer sster = new SplitShaftTileEntityRenderer();
+        ClientRegistry.bindTileEntitySpecialRenderer(GearshiftTileEntity.class, sster);
+        ClientRegistry.bindTileEntitySpecialRenderer(ClutchTileEntity.class, sster);
         ClientRegistry.bindTileEntitySpecialRenderer(GearboxTileEntity.class, new GearboxTileEntityRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(WaterWheelTileEntity.class, new WaterWheelTileEntityRenderer());
 
@@ -94,10 +94,10 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(new CogWheelRenderBlock(cogwheelRenderID));
         bearingRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new BearingRenderBlock(bearingRenderID));
-        gearshiftRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new GearshiftRenderBlock(gearshiftRenderID));
-        clutchRenderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new ClutchRenderBlock(clutchRenderID));
+        splitShaftRenderID = RenderingRegistry.getNextAvailableRenderId();
+        SplitShaftRenderBlock ssrb = new SplitShaftRenderBlock(splitShaftRenderID);
+        RenderingRegistry.registerBlockHandler(ssrb);
+        RenderingRegistry.registerBlockHandler(ssrb);
         gearboxRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new GearboxRenderBlock(gearboxRenderID));
         waterWheelRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -152,12 +152,8 @@ public class ClientProxy extends CommonProxy {
         return bearingRenderID;
     }
 
-    public int getGearshiftBlockRenderID() {
-        return gearshiftRenderID;
-    }
-
-    public int getClutchBlockRenderID() {
-        return clutchRenderID;
+    public int getSplitShaftBlockRenderID() {
+        return splitShaftRenderID;
     }
 
     public int getGearboxBlockRenderID() {

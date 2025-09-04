@@ -14,6 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.content.contraptions.base.DirectionalKineticBlock;
+import su.sergiusonesimus.recreate.content.contraptions.relays.gearbox.GearboxBlock;
 
 public abstract class BearingBlock extends DirectionalKineticBlock {
 

@@ -45,7 +45,6 @@ public class ClutchBlock extends GearshiftBlock {
 
         boolean isNowPowered = worldIn.isBlockIndirectlyGettingPowered(x, y, z);
         if (this.isPowered != isNowPowered) {
-            detachKinetics(worldIn, x, y, z, this.isPowered);
             worldIn.setBlock(
                 x,
                 y,
@@ -53,12 +52,13 @@ public class ClutchBlock extends GearshiftBlock {
                 isNowPowered ? this.getBlockPowered() : this.getBlockUnpowered(),
                 worldIn.getBlockMetadata(x, y, z),
                 2);
+            detachKinetics(worldIn, x, y, z, this.isPowered);
         }
     }
 
     @Override
     public int getRenderType() {
-        return ReCreate.proxy.getClutchBlockRenderID();
+        return ReCreate.proxy.getSplitShaftBlockRenderID();
     }
 
     public Item getItemDropped(int meta, Random random, int fortune) {

@@ -2,6 +2,7 @@ package su.sergiusonesimus.recreate.compat.tebreaker;
 
 import net.minecraft.client.renderer.DestroyBlockProgress;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.tileentity.TileEntity;
 
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.BearingModel;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
@@ -10,6 +11,7 @@ import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwhe
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.LargeCogWheelModel;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftModel;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.relays.encased.SplitShaftTileEntity;
 import su.sergiusonesimus.tebreaker.TileEntityBreaker;
 import su.sergiusonesimus.tebreaker.mixin.interfaces.IMixinTileEntitySpecialRenderer;
 
@@ -54,6 +56,8 @@ public class TileEntityBreakerIntegration {
             bearing.top,
             bearing.topIndicator);
         TileEntityBreaker.registerTileEntity(MechanicalBearingTileEntity.class, SHAFT);
+
+        TileEntityBreaker.registerTileEntity(SplitShaftTileEntity.class, SHAFT);
     }
 
     public static boolean shouldRenderDamageTexture(TileEntitySpecialRenderer renderer) {
@@ -64,6 +68,10 @@ public class TileEntityBreakerIntegration {
         DestroyBlockProgress destroyblockprogress) {
         ((IMixinTileEntitySpecialRenderer) renderer).setBreakTexture(
             TileEntityBreaker.getDestructionTexture(texture, destroyblockprogress.getPartialBlockDamage()));
+    }
+
+    public static DestroyBlockProgress getTileEntityDestroyProgress(TileEntity te) {
+        return TileEntityBreaker.getTileEntityDestroyProgress(te);
     }
 
 }
