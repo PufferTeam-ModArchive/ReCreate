@@ -4,24 +4,32 @@ import java.io.File;
 import java.util.Random;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import su.sergiusonesimus.metaworlds.util.Direction;
+import su.sergiusonesimus.metaworlds.util.RotationHelper;
+import su.sergiusonesimus.recreate.compat.tebreaker.TileEntityBreakerIntegration;
 import su.sergiusonesimus.recreate.content.contraptions.TorquePropagator;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.AllSubWorldTypes;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueHandler;
 import su.sergiusonesimus.recreate.content.contraptions.components.waterwheel.WaterWheelTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelTileEntity;
@@ -49,6 +57,13 @@ public class ReCreate {
 
     public static final ReCreateRegistrate REGISTRATE = new ReCreateRegistrate();
 
+    public static int idEntitySuperGlue;
+
+    public static boolean isTileEntityBreakerLoaded = false;
+
+    @Instance(ID)
+    public static ReCreate instance;
+
     @SidedProxy(
         clientSide = "su.sergiusonesimus.recreate.ClientProxy",
         serverSide = "su.sergiusonesimus.recreate.CommonProxy")
@@ -72,8 +87,12 @@ public class ReCreate {
 
         // Reading config file after registering blocks, because it needs a generated default stress list
         AllConfigs.init(new File(event.getModConfigurationDirectory(), "ReCreate.cfg"));
+        idEntitySuperGlue = 500;
 
         AllSubWorldTypes.register();
+
+        // check if various integrations are required
+        isTileEntityBreakerLoaded = Loader.isModLoaded("tebreaker");
     }
 
     @EventHandler
@@ -99,6 +118,9 @@ public class ReCreate {
             .bus()
             .register(superGlueHandler);
 
+        // entities
+        registerEntities();
+
         // tile entities
         registerTileEntities();
 
@@ -112,12 +134,21 @@ public class ReCreate {
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
+
+        if (isTileEntityBreakerLoaded) TileEntityBreakerIntegration.registerTileEntities();
+
+        registerRotators();
     }
 
     @EventHandler
     // register server commands in this event handler (Remove if not needed)
     public void serverStarting(FMLServerStartingEvent event) {
         proxy.serverStarting(event);
+    }
+
+    private void registerEntities() {
+        EntityRegistry
+            .registerModEntity(SuperGlueEntity.class, "Super Glue", idEntitySuperGlue, instance, 64, 1, false);
     }
 
     private void registerTileEntities() {
@@ -129,6 +160,44 @@ public class ReCreate {
         GameRegistry.registerTileEntity(ClutchTileEntity.class, "Clutch");
         GameRegistry.registerTileEntity(GearboxTileEntity.class, "Gearbox");
         GameRegistry.registerTileEntity(WaterWheelTileEntity.class, "Waterwheel");
+    }
+
+    private void registerRotators() {
+        // Directional kinetic blocks
+        RotationHelper.registerBlocks("3d_directional", AllBlocks.creative_motor, AllBlocks.mechanical_bearing);
+
+        // Rotated pillar kinetic blocks
+        RotationHelper.registerBlockRotator("rotated_pillar", (meta) -> {
+            Vec3 dir = Vec3.createVectorHelper(0, 0, 0);
+            switch (meta % 3) {
+                default:
+                case 0:
+                    dir.yCoord = 1;
+                    break;
+                case 1:
+                    dir.xCoord = 1;
+                    break;
+                case 2:
+                    dir.zCoord = 1;
+                    break;
+            }
+            return dir;
+        }, (originalMeta, vec) -> {
+            if (vec != null) {
+                Direction dir = Direction.getNearest(vec);
+                switch (dir.getAxis()) {
+                    default:
+                    case Y:
+                        return 0;
+                    case X:
+                        return 1;
+                    case Z:
+                        return 2;
+                }
+            }
+            return originalMeta;
+        });
+        RotationHelper.registerBlocks("rotated_pillar", AllBlocks.shaft, AllBlocks.cogwheel, AllBlocks.large_cogwheel);
     }
 
     public static ResourceLocation asResource(String path) {

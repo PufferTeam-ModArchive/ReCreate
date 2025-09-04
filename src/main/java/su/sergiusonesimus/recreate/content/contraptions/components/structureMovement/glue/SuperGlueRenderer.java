@@ -45,10 +45,15 @@ public class SuperGlueRenderer extends Render {
         ItemStack heldItem = player.getHeldItem();
         boolean holdingGlue = heldItem != null && heldItem.getItem() == AllItems.super_glue;
 
-        if (!visible && !holdingGlue) return;
+        if (!visible || !holdingGlue) return;
 
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);
+
+        double offset = 0.523D;
+        ChunkCoordinates normal = glueEntity.facingDirection.getOpposite()
+            .getNormal();
+        GL11.glTranslated(offset * normal.posX, offset * normal.posY, offset * normal.posZ);
 
         bindEntityTexture(glueEntity);
         int light = getBrightnessForRender(glueEntity);

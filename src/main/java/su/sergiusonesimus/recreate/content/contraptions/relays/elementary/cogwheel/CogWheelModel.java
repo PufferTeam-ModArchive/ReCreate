@@ -7,9 +7,9 @@ import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.Abstra
 
 public class CogWheelModel extends AbstractShaftModel {
 
-    ModelRenderer hub;
-    ModelRenderer disk;
-    ModelRenderer[] cogs = new ModelRenderer[4];
+    public ModelRenderer hub;
+    public ModelRenderer disk;
+    public ModelRenderer[] cogs = new ModelRenderer[4];
 
     public CogWheelModel() {
         super(AllModelTextures.COGWHEEL, 48, 32);

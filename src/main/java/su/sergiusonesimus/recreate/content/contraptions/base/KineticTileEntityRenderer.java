@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 
 import su.sergiusonesimus.metaworlds.util.Direction.Axis;
 import su.sergiusonesimus.recreate.content.contraptions.KineticDebugger;
+import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.ICogWheel;
 import su.sergiusonesimus.recreate.foundation.utility.Color;
 import su.sergiusonesimus.recreate.util.AnimationTickHolder;
 
@@ -19,7 +20,7 @@ public abstract class KineticTileEntityRenderer extends TileEntitySpecialRendere
     }
 
     protected static float getRotationOffsetForPosition(KineticTileEntity te, int x, int y, int z, final Axis axis) {
-        float offset = /* ICogWheel.isLargeCog(te.getBlockType()) ? 11.25f : */0;
+        float offset = ICogWheel.isLargeCog(te.getBlockType()) ? 11.25f : 0;
         if (shouldOffset(x, y, z, axis)) offset = 22.5f;
         return offset;
     }

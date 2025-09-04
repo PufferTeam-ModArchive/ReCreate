@@ -8,7 +8,7 @@ import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.Abstra
 
 public class ShaftModel extends AbstractShaftModel {
 
-    protected ModelRenderer shaft;
+    public final ModelRenderer shaft;
 
     public ShaftModel() {
         super(AllModelTextures.SHAFT, 32, 32);

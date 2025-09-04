@@ -2,6 +2,7 @@ package su.sergiusonesimus.recreate.content.contraptions.components.structureMov
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 
 import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.metaworlds.util.Direction.Axis;
@@ -14,11 +15,11 @@ public class BearingModel extends ModelBase {
     Direction face;
 
     ShaftModel shaft;
-    ModelRenderer bearing;
-    ModelRenderer[] sides = new ModelRenderer[4];
-    ModelRenderer blockIndicator;
-    ModelRenderer top;
-    ModelRenderer topIndicator;
+    public ModelRenderer bearing;
+    public ModelRenderer[] sides = new ModelRenderer[4];
+    public ModelRenderer blockIndicator;
+    public ModelRenderer top;
+    public ModelRenderer topIndicator;
 
     public BearingModel() {
         final int textureWidth = 64;
@@ -102,6 +103,11 @@ public class BearingModel extends ModelBase {
     public void render(AllModelTextures bearingTexture) {
         shaft.render();
         bearingTexture.bind();
+        bearing.render(0.0625F);
+    }
+
+    public void render(AllModelTextures bearingTexture, TileEntitySpecialRenderer renderer) {
+        renderer.bindTexture(bearingTexture.getLocation());
         bearing.render(0.0625F);
     }
 

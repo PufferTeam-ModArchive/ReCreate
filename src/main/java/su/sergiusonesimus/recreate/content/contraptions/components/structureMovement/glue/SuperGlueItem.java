@@ -51,8 +51,8 @@ public class SuperGlueItem extends Item {
         if (!entity.onValidSurface()) return false;
 
         if (!world.isRemote) {
-            entity.playPlaceSound();
             world.spawnEntityInWorld(entity);
+            entity.playPlaceSound();
         }
         item.damageItem(1, player);
 

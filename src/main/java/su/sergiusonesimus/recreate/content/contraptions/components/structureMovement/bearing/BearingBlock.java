@@ -14,7 +14,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.content.contraptions.base.DirectionalKineticBlock;
-import su.sergiusonesimus.recreate.content.contraptions.relays.gearbox.GearboxBlock;
 
 public abstract class BearingBlock extends DirectionalKineticBlock {
 
@@ -23,9 +22,8 @@ public abstract class BearingBlock extends DirectionalKineticBlock {
 
     public BearingBlock(Material materialIn) {
         super(materialIn);
-        this.setHardness(2.0F);
-        this.setResistance(5.0F);
-        this.setStepSound(soundTypeWood);
+        this.setStepSound(soundTypePiston);
+        this.setHardness(0.5F);
     }
 
     @Override

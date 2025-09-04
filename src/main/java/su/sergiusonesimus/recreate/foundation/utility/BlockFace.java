@@ -42,11 +42,12 @@ public class BlockFace extends Pair<ChunkCoordinates, Direction> {
 
     public ChunkCoordinates getConnectedPos() {
         ChunkCoordinates pos = getPos();
+        ChunkCoordinates result = new ChunkCoordinates(pos.posX, pos.posY, pos.posZ);
         ChunkCoordinates normal = getFace().getNormal();
-        pos.posX += normal.posX;
-        pos.posY += normal.posY;
-        pos.posZ += normal.posZ;
-        return pos;
+        result.posX += normal.posX;
+        result.posY += normal.posY;
+        result.posZ += normal.posZ;
+        return result;
     }
 
     public NBTTagCompound serializeNBT() {
