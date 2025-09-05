@@ -5,6 +5,8 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
+import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorModel;
+import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.BearingModel;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelModel;
@@ -20,6 +22,7 @@ import su.sergiusonesimus.tebreaker.mixin.interfaces.IMixinTileEntitySpecialRend
 public class TileEntityBreakerIntegration {
 
     public static final String SHAFT = "shaft";
+    public static final String CREATIVE_MOTOR = "creative_motor";
     public static final String COGWHEEL = "cogwheel";
     public static final String LARGE_COGWHEEL = "large_cogwheel";
     public static final String BEARING = "bearing";
@@ -29,6 +32,20 @@ public class TileEntityBreakerIntegration {
         shaft.shaft.rotationPointY += 8;
         TileEntityBreaker.registerModel(SHAFT, 32, 32, shaft.shaft);
         TileEntityBreaker.registerTileEntity(ShaftTileEntity.class, SHAFT);
+
+        CreativeMotorModel creativeMotor = new CreativeMotorModel();
+        TileEntityBreaker.registerModel(
+            CREATIVE_MOTOR,
+            64,
+            48,
+            creativeMotor.sideCover1,
+            creativeMotor.bottomCover,
+            creativeMotor.rod1,
+            creativeMotor.motor,
+            creativeMotor.stand,
+            creativeMotor.coiling,
+            creativeMotor.wiper1);
+        TileEntityBreaker.registerTileEntity(CreativeMotorTileEntity.class, SHAFT);
 
         CogWheelModel cogwheel = new CogWheelModel();
         TileEntityBreaker.registerModel(COGWHEEL, 48, 32, cogwheel.hub, cogwheel.disk, cogwheel.cogs[0]);

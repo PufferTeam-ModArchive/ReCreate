@@ -23,6 +23,9 @@ public class CreativeMotorRenderBlock implements ISimpleBlockRenderingHandler {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         model.setFace(Direction.EAST);
+
+        model.shaft.render();
+
         model.render();
 
         block.setBlockBoundsForItemRender();
