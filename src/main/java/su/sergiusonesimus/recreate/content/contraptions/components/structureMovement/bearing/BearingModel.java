@@ -101,7 +101,6 @@ public class BearingModel extends ModelBase {
     }
 
     public void render(AllModelTextures bearingTexture) {
-        shaft.render();
         bearingTexture.bind();
         bearing.render(0.0625F);
     }

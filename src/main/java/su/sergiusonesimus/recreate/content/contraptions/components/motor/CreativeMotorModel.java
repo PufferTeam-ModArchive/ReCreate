@@ -15,7 +15,7 @@ public class CreativeMotorModel extends ModelBase {
 
     Direction face;
 
-    ShaftModel shaft;
+    public ShaftModel shaft;
     ModelRenderer sideCover1;
     ModelRenderer sideCover2;
     ModelRenderer bottomCover;
@@ -183,7 +183,6 @@ public class CreativeMotorModel extends ModelBase {
     }
 
     public void render() {
-        shaft.render();
         AllModelTextures.CREATIVE_MOTOR.bind();
         motor.render(0.0625F);
         stand.render(0.0625F);

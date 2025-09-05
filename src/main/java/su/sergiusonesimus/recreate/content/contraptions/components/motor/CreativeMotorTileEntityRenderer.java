@@ -32,6 +32,10 @@ public class CreativeMotorTileEntityRenderer extends KineticTileEntityRenderer {
         GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
         GL11.glColor4f(color.getRedAsFloat(), color.getGreenAsFloat(), color.getBlueAsFloat(), color.getAlphaAsFloat());
 
+        model.shaft.render();
+
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
         model.render();
 
         GL11.glPopMatrix();

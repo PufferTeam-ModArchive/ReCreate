@@ -36,6 +36,10 @@ public class BearingTileEntityRenderer extends KineticTileEntityRenderer {
         boolean damageTexture = ReCreate.isTileEntityBreakerLoaded
             && TileEntityBreakerIntegration.shouldRenderDamageTexture(this);
         model.shaft.render(this);
+
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
+
         if (damageTexture) TileEntityBreakerIntegration.setBreakTexture(
             this,
             TileEntityBreakerIntegration.BEARING,

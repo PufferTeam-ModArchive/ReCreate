@@ -22,9 +22,12 @@ public class BearingRenderBlock implements ISimpleBlockRenderingHandler {
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
 
         model.setFace(Direction.UP);
+        model.shaft.render();
+
+        GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
+
         model.render(AllModelTextures.MECHANICAL_BEARING);
 
         block.setBlockBoundsForItemRender();
