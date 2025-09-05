@@ -24,7 +24,8 @@ public abstract class BearingBlock extends DirectionalKineticBlock {
     public BearingBlock(Material materialIn) {
         super(materialIn);
         this.setStepSound(soundTypePiston);
-        this.setHardness(0.5F);
+        this.setHardness(1.5F);
+        this.setResistance(10.0F);
     }
 
     @Override

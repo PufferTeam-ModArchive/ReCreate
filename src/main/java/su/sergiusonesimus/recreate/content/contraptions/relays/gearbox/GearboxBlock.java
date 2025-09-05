@@ -24,8 +24,8 @@ public class GearboxBlock extends RotatedPillarKineticBlock implements ITE<Gearb
 
     public GearboxBlock(Material materialIn) {
         super(materialIn);
-        this.setHardness(2.0F);
-        this.setResistance(5.0F);
+        this.setHardness(1.5F);
+        this.setResistance(10.0F);
         this.setStepSound(soundTypeWood);
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         this.setBlockTextureName("planks_spruce");

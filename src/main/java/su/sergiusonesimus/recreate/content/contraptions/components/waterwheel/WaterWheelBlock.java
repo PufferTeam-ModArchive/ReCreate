@@ -23,7 +23,6 @@ public class WaterWheelBlock extends DirectionalKineticBlock implements ITE<Wate
         this.setHardness(2.0F);
         this.setResistance(5.0F);
         this.setStepSound(soundTypeWood);
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         this.setBlockTextureName("planks_spruce");
     }
 
