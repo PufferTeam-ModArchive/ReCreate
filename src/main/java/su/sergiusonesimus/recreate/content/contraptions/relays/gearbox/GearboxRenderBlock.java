@@ -1,90 +1,86 @@
 package su.sergiusonesimus.recreate.content.contraptions.relays.gearbox;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import su.sergiusonesimus.metaworlds.util.Direction;
-import su.sergiusonesimus.recreate.AllModelTextures;
-import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftBlock;
-import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftModel;
+import su.sergiusonesimus.metaworlds.util.Direction.Axis;
+import su.sergiusonesimus.recreate.content.contraptions.base.IRotate;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftModel;
+import su.sergiusonesimus.recreate.util.RenderHelper;
 
 public class GearboxRenderBlock implements ISimpleBlockRenderingHandler {
 
     final int renderID;
-    ShaftModel shaft1 = new ShaftModel(Direction.AxisDirection.POSITIVE);
-    ShaftModel shaft2 = new ShaftModel(Direction.AxisDirection.NEGATIVE);
-    ShaftModel shaft3 = new ShaftModel(Direction.AxisDirection.POSITIVE);
-    ShaftModel shaft4 = new ShaftModel(Direction.AxisDirection.NEGATIVE);
-    AbstractShaftModel normal = getModel();
+    ShaftModel[] shafts = { new ShaftModel(Direction.AxisDirection.POSITIVE),
+        new ShaftModel(Direction.AxisDirection.NEGATIVE) };
 
     public GearboxRenderBlock(int blockComplexRenderID) {
         this.renderID = blockComplexRenderID;
     }
 
-    public AbstractShaftModel getModel() {
-        return new GearboxModel(AllModelTextures.GEARBOX);
-    }
-
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
 
-        Direction.Axis axis = Direction.Axis.X;
+        double pixel = 1D / 16D;
 
-        this.shaft1.setAxis(axis);
-        this.shaft2.setAxis(axis);
+        int correctMeta = ((GearboxBlock) block).getMetaFromAxis(Axis.Y);
 
-        if (block instanceof GearboxBlock gearboxte) {
-            this.normal.setAxis(axis);
-            this.shaft3.setAxis(gearboxte.getSecondAxis(gearboxte.getMetaFromAxis(axis)));
-            this.shaft4.setAxis(gearboxte.getSecondAxis(gearboxte.getMetaFromAxis(axis)));
+        renderer.setRenderBounds(pixel, pixel, pixel, 1 - pixel, 1 - pixel, 1 - pixel);
+        RenderHelper.renderInvBox(renderer, block, correctMeta);
+
+        renderer.setRenderBounds(0, 0, 0, 1D, 2 * pixel, 1D);
+        RenderHelper.renderInvBox(renderer, block, correctMeta);
+        renderer.setRenderBounds(0, 1 - 2 * pixel, 0, 1D, 1D, 1D);
+        RenderHelper.renderInvBox(renderer, block, correctMeta);
+
+        Axis[] axes = { Axis.X, Axis.Z };
+
+        for (Axis axis : axes) {
+            for (ShaftModel shaft : shafts) {
+                shaft.setAxis(axis);
+                shaft.render();
+            }
         }
-
-        this.normal.render();
-        shaft1.render();
-        shaft2.render();
-        shaft3.render();
-        shaft4.render();
-
-        block.setBlockBoundsForItemRender();
     }
 
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
         RenderBlocks renderer) {
-        if (world == null || world.getTileEntity(x, y, z) != null) return false;
-        MovingObjectPosition mop = Minecraft.getMinecraft().objectMouseOver;
-        if (mop == null || mop.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK
-            || !(world.getBlock(mop.blockX, mop.blockY, mop.blockZ) instanceof AbstractShaftBlock)) return false;
-        Direction.Axis axis = ((AbstractShaftBlock) block)
-            .getAxis(world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ));
 
-        this.shaft1.setAxis(axis);
-        this.shaft2.setAxis(axis);
-        if (block instanceof GearboxBlock gearboxte) {
-            this.normal.setAxis(axis);
-            this.shaft3.setAxis(gearboxte.getSecondAxis(gearboxte.getMetaFromAxis(axis)));
-            this.shaft4.setAxis(gearboxte.getSecondAxis(gearboxte.getMetaFromAxis(axis)));
+        double pixel = 1D / 16D;
+
+        Axis axis = ((IRotate) block).getAxis(world.getBlockMetadata(x, y, z));
+
+        renderer.setRenderBounds(pixel, pixel, pixel, 1 - pixel, 1 - pixel, 1 - pixel);
+        renderer.renderStandardBlock(block, x, y, z);
+
+        double borderX = 1;
+        double borderY = 1;
+        double borderZ = 1;
+
+        switch (axis) {
+            case X:
+                borderX = 2 * pixel;
+                break;
+            case Y:
+                borderY = 2 * pixel;
+                break;
+            case Z:
+                borderZ = 2 * pixel;
+                break;
         }
 
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
+        renderer.setRenderBounds(0, 0, 0, borderX, borderY, borderZ);
+        renderer.renderStandardBlock(block, x, y, z);
+        renderer.setRenderBounds(1 - borderX, 1 - borderY, 1 - borderZ, 1D, 1D, 1D);
+        renderer.renderStandardBlock(block, x, y, z);
 
-        this.normal.render();
-        shaft1.render();
-        shaft2.render();
-        shaft3.render();
-        shaft4.render();
-
-        GL11.glPopMatrix();
         return true;
     }
 

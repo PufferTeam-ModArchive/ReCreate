@@ -3,6 +3,7 @@ package su.sergiusonesimus.recreate.compat.tebreaker;
 import net.minecraft.client.renderer.DestroyBlockProgress;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.BearingModel;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
@@ -12,6 +13,7 @@ import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwhe
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftModel;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.encased.SplitShaftTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.relays.gearbox.GearboxTileEntity;
 import su.sergiusonesimus.tebreaker.TileEntityBreaker;
 import su.sergiusonesimus.tebreaker.mixin.interfaces.IMixinTileEntitySpecialRenderer;
 
@@ -58,6 +60,8 @@ public class TileEntityBreakerIntegration {
         TileEntityBreaker.registerTileEntity(MechanicalBearingTileEntity.class, SHAFT);
 
         TileEntityBreaker.registerTileEntity(SplitShaftTileEntity.class, SHAFT);
+
+        TileEntityBreaker.registerTileEntity(GearboxTileEntity.class, SHAFT);
     }
 
     public static boolean shouldRenderDamageTexture(TileEntitySpecialRenderer renderer) {
@@ -68,6 +72,10 @@ public class TileEntityBreakerIntegration {
         DestroyBlockProgress destroyblockprogress) {
         ((IMixinTileEntitySpecialRenderer) renderer).setBreakTexture(
             TileEntityBreaker.getDestructionTexture(texture, destroyblockprogress.getPartialBlockDamage()));
+    }
+
+    public static void setBreakTexture(TileEntitySpecialRenderer renderer, ResourceLocation texture) {
+        ((IMixinTileEntitySpecialRenderer) renderer).setBreakTexture(texture);
     }
 
     public static DestroyBlockProgress getTileEntityDestroyProgress(TileEntity te) {
