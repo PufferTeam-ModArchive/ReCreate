@@ -159,7 +159,7 @@ public class ReCreate {
         GameRegistry.registerTileEntity(GearshiftTileEntity.class, "Gearshift");
         GameRegistry.registerTileEntity(ClutchTileEntity.class, "Clutch");
         GameRegistry.registerTileEntity(GearboxTileEntity.class, "Gearbox");
-        GameRegistry.registerTileEntity(WaterWheelTileEntity.class, "Waterwheel");
+        GameRegistry.registerTileEntity(WaterWheelTileEntity.class, "Water Wheel");
     }
 
     private void registerRotators() {
