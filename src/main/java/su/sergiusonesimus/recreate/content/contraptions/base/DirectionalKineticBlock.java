@@ -38,7 +38,7 @@ public abstract class DirectionalKineticBlock extends KineticBlock {
         int meta) {
         Direction preferredFacing = getPreferredFacing(worldIn, x, y, z);
         int localMeta = preferredFacing == null ? 0 : this.getMetaFromDirection(preferredFacing.getOpposite());
-        worldIn.setBlockMetadataWithNotify(x, y, z, localMeta, 24);
+        worldIn.setBlockMetadataWithNotify(x, y, z, localMeta, 2 | 4);
         return localMeta;
     }
 

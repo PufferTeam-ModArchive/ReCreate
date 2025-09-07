@@ -36,7 +36,7 @@ public class CogWheelBlock extends AbstractShaftBlock implements ITE<CogWheelTil
         this.setHardness(1.5F);
         this.setResistance(10.0F);
         this.setStepSound(soundTypeWood);
-        this.setBlockTextureName("planks_oak");
+        this.setBlockTextureName("planks_spruce");
         isLarge = large;
     }
 

@@ -30,6 +30,7 @@ import su.sergiusonesimus.recreate.content.contraptions.base.IRotate.StressImpac
 import su.sergiusonesimus.recreate.content.contraptions.goggles.IHaveGoggleInformation;
 import su.sergiusonesimus.recreate.content.contraptions.goggles.IHaveHoveringInformation;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.ICogWheel;
+import su.sergiusonesimus.recreate.content.contraptions.relays.gearbox.GearboxBlock;
 import su.sergiusonesimus.recreate.foundation.block.BlockStressValues;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
 import su.sergiusonesimus.recreate.foundation.item.TooltipHelper;
@@ -598,7 +599,7 @@ public class KineticTileEntity extends SmartTileEntity implements IHaveGoggleInf
         if (isNoisy()) SoundScapes.play(AmbienceGroup.KINETIC, xCoord, yCoord, zCoord, pitch);
 
         Block block = this.blockType;
-        if (ICogWheel.isSmallCog(block) || ICogWheel.isLargeCog(block)/* || block instanceof GearboxBlock */)
+        if (ICogWheel.isSmallCog(block) || ICogWheel.isLargeCog(block) || block instanceof GearboxBlock)
             SoundScapes.play(AmbienceGroup.COG, xCoord, yCoord, zCoord, pitch);
     }
 

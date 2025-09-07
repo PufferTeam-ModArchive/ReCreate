@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 
 import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.content.contraptions.base.GeneratingKineticTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.base.IRotate;
 import su.sergiusonesimus.recreate.foundation.config.CKinetics;
 import su.sergiusonesimus.recreate.foundation.utility.Iterate;
 
@@ -15,6 +17,7 @@ public class WaterWheelTileEntity extends GeneratingKineticTileEntity {
     private Map<Direction, Float> flows;
 
     public WaterWheelTileEntity() {
+        super();
         flows = new HashMap<>();
         for (Direction d : Iterate.directions) setFlow(d, 0);
         setLazyTickRate(20);
@@ -41,9 +44,11 @@ public class WaterWheelTileEntity extends GeneratingKineticTileEntity {
     }
 
     public void setFlow(Direction direction, float speed) {
-        flows.put(direction, speed);
-        this.updateSpeed = true;
-        // setChanged();
+        Float currentSpeed = flows.get(direction);
+        if (currentSpeed == null || currentSpeed != speed) {
+            flows.put(direction, speed);
+            this.notifyUpdate();
+        }
     }
 
     @Override
@@ -57,11 +62,34 @@ public class WaterWheelTileEntity extends GeneratingKineticTileEntity {
     @Override
     public void lazyTick() {
         super.lazyTick();
-        WaterWheelBlock ww = (WaterWheelBlock) this.blockType;
-        if (ww != null) {
-            ww.updateAllSides(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+        if (this.getBlockType() instanceof WaterWheelBlock block)
+            block.updateAllSides(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+    }
+
+    @Override
+    protected AxisAlignedBB makeRenderBoundingBox() {
+        float borderX = 0;
+        float borderY = 0;
+        float borderZ = 0;
+        float f = 2F;
+        switch (((IRotate) this.getBlockType()).getAxis(this.getBlockMetadata())) {
+            case X:
+                borderY = borderZ = f;
+                break;
+            case Y:
+                borderX = borderZ = f;
+                break;
+            case Z:
+                borderX = borderY = f;
+                break;
         }
-        this.reActivateSource = true;
+        return AxisAlignedBB.getBoundingBox(
+            xCoord - borderX,
+            yCoord - borderY,
+            zCoord - borderZ,
+            xCoord + borderX,
+            yCoord + borderY,
+            zCoord + borderZ);
     }
 
 }

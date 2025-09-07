@@ -1,132 +1,89 @@
 package su.sergiusonesimus.recreate.content.contraptions.components.waterwheel;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
 
-import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.AllModelTextures;
+import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftModel;
 
-public class WaterWheelModel extends ModelBase {
+public class WaterWheelModel extends AbstractShaftModel {
 
-    protected ModelRenderer core;
-    protected Direction.Axis axis;
-    private final ModelRenderer innerSegment_r1;
-    private final ModelRenderer connector_r1;
-    private final ModelRenderer connector_r2;
-    private final ModelRenderer innerSegment_r2;
-    AllModelTextures texture = AllModelTextures.WATER_WHEEL;
+    public ModelRenderer[] outerSegments = new ModelRenderer[16];
+    public ModelRenderer[] innerSegments = new ModelRenderer[8];
+    public ModelRenderer[] connectors = new ModelRenderer[4];
+    public ModelRenderer[] rims = new ModelRenderer[2];
+    public ModelRenderer axisCoat;
 
     public WaterWheelModel() {
-        textureWidth = 256;
-        textureHeight = 256;
-        this.axis = Direction.Axis.Y;
-        core = new ModelRenderer(this);
+        super(AllModelTextures.WATER_WHEEL, 80, 48);
 
-        setRotation(0);
-
-        // core.setRotationPoint(0.0F, 24.0F, 0.0F);
-        core.setRotationPoint(0.0F, 0.0F, 0.0F);
-        core.cubeList.add(new ModelBox(core, 60, 97, 5.0F, -18.0F + 9F, 8.0F, 1, 18, 8, 0.0F));
-        core.cubeList.add(new ModelBox(core, 96, 102, -6.0F, -18.0F + 9F, -16.0F, 1, 18, 8, 0.0F));
-        core.cubeList.add(new ModelBox(core, 122, 57, -16.0F, -18.0F + 9F, 5.0F, 8, 18, 1, 0.0F));
-        core.cubeList.add(new ModelBox(core, 132, 76, 8.0F, -18.0F + 9F, -6.0F, 8, 18, 1, 0.0F));
-        core.cubeList.add(new ModelBox(core, 84, 52, -10.0F, -17.5F + 9F, -4.0F, 2, 17, 8, 0.0F));
-        core.cubeList.add(new ModelBox(core, 84, 77, 7.9F, -17.5F + 9F, -4.0F, 2, 17, 8, 0.0F));
-        core.cubeList.add(new ModelBox(core, 122, 19, -4.0F, -17.5F + 9F, -10.0F, 8, 17, 2, 0.0F));
-        core.cubeList.add(new ModelBox(core, 0, 122, -4.0F, -17.5F + 9F, 7.9F, 8, 17, 2, 0.0F));
-        core.cubeList.add(new ModelBox(core, 114, 104, -3.0F, -16.0F + 9F, -3.0F, 6, 14, 6, 0.0F));
-        core.cubeList.add(new ModelBox(core, 132, 124, -2.0F, -17.0F + 9F, -2.0F, 4, 16, 4, 0.0F));
-        core.cubeList.add(new ModelBox(core, 0, 26, -13.0F, -0.4F + 9F, -13.0F, 26, 0, 26, 0.0F));
-        core.cubeList.add(new ModelBox(core, 0, 0, -13.0F, -17.7F + 9F, -13.0F, 26, 0, 26, 0.0F));
-
-        innerSegment_r1 = new ModelRenderer(this);
-        innerSegment_r1.setRotationPoint(0.0F, -9.1F, 0.0F);
-        core.addChild(innerSegment_r1);
-        setRotationAngle(innerSegment_r1, 0.0F, 0.7854F, 0.0F);
-        innerSegment_r1.cubeList.add(new ModelBox(innerSegment_r1, 40, 97, -10.0F, -8.4F + 9F, -4.0F, 2, 17, 8, 0.0F));
-        innerSegment_r1.cubeList.add(new ModelBox(innerSegment_r1, 20, 97, 7.9F, -8.4F + 9F, -4.0F, 2, 17, 8, 0.0F));
-        innerSegment_r1.cubeList.add(new ModelBox(innerSegment_r1, 122, 0, -4.0F, -8.4F + 9F, 7.9F, 8, 17, 2, 0.0F));
-        innerSegment_r1.cubeList.add(new ModelBox(innerSegment_r1, 92, 128, -16.0F, -8.9F + 9F, 5.0F, 8, 18, 1, 0.0F));
-        innerSegment_r1.cubeList.add(new ModelBox(innerSegment_r1, 78, 102, 5.0F, -8.9F + 9F, 8.0F, 1, 18, 8, 0.0F));
-        innerSegment_r1.cubeList.add(new ModelBox(innerSegment_r1, 122, 38, 8.0F, -8.9F + 9F, -6.0F, 8, 18, 1, 0.0F));
-
-        connector_r1 = new ModelRenderer(this);
-        connector_r1.setRotationPoint(0.0F, -9.0F, 0.0F);
-        core.addChild(connector_r1);
-        setRotationAngle(connector_r1, 0.0F, -0.3927F, 0.0F);
-        connector_r1.cubeList.add(new ModelBox(connector_r1, 0, 82, -9.0F, -6.0F + 9F, -1.5F, 18, 12, 3, 0.0F));
-        connector_r1.cubeList.add(new ModelBox(connector_r1, 0, 52, -1.5F, -6.0F + 9F, -9.0F, 3, 12, 18, 0.0F));
-        connector_r1.cubeList.add(new ModelBox(connector_r1, 74, 128, -16.0F, -9.0F + 9F, 5.0F, 8, 18, 1, 0.0F));
-        connector_r1.cubeList.add(new ModelBox(connector_r1, 114, 78, -6.0F, -9.0F + 9F, -16.0F, 1, 18, 8, 0.0F));
-        connector_r1.cubeList.add(new ModelBox(connector_r1, 104, 0, 5.0F, -9.0F + 9F, 8.0F, 1, 18, 8, 0.0F));
-        connector_r1.cubeList.add(new ModelBox(connector_r1, 38, 122, 8.0F, -9.0F + 9F, -6.0F, 8, 18, 1, 0.0F));
-
-        connector_r2 = new ModelRenderer(this);
-        connector_r2.setRotationPoint(0.0F, -9.0F, 0.0F);
-        core.addChild(connector_r2);
-        setRotationAngle(connector_r2, 0.0F, 0.3927F, 0.0F);
-        connector_r2.cubeList.add(new ModelBox(connector_r2, 42, 82, -9.0F, -5.9F + 9F, -1.5F, 18, 11, 3, 0.0F));
-        connector_r2.cubeList.add(new ModelBox(connector_r2, 42, 52, -1.5F, -5.9F + 9F, -9.0F, 3, 11, 18, 0.0F));
-        connector_r2.cubeList.add(new ModelBox(connector_r2, 104, 52, 5.0F, -9.0F + 9F, 8.0F, 1, 18, 8, 0.0F));
-        connector_r2.cubeList.add(new ModelBox(connector_r2, 104, 26, -6.0F, -9.0F + 9F, -16.0F, 1, 18, 8, 0.0F));
-        connector_r2.cubeList.add(new ModelBox(connector_r2, 114, 124, 8.0F, -9.0F + 9F, -6.0F, 8, 18, 1, 0.0F));
-        connector_r2.cubeList.add(new ModelBox(connector_r2, 56, 123, -16.0F, -9.0F + 9F, 5.0F, 8, 18, 1, 0.0F));
-
-        innerSegment_r2 = new ModelRenderer(this);
-        innerSegment_r2.setRotationPoint(0.0F, -9.1F, 0.0F);
-        core.addChild(innerSegment_r2);
-        setRotationAngle(innerSegment_r2, 0.0F, -0.7854F, 0.0F);
-        innerSegment_r2.cubeList.add(new ModelBox(innerSegment_r2, 0, 97, -10.0F, -8.4F + 9F, -4.0F, 2, 17, 8, 0.0F));
-        innerSegment_r2.cubeList.add(new ModelBox(innerSegment_r2, 20, 122, -16.0F, -8.9F + 9F, 5.0F, 8, 18, 1, 0.0F));
-
-    }
-
-    public WaterWheelModel setAxis(Direction.Axis axis) {
-        this.axis = axis;
-        switch (this.axis) {
-            case X:
-                core.rotateAngleX = (float) (-Math.PI);
-                core.rotateAngleY = 0;
-                core.rotateAngleZ = (float) (-Math.PI / 2);
-                break;
-            default:
-            case Y:
-                core.rotateAngleX = 0;
-                core.rotateAngleY = 0;
-                core.rotateAngleZ = 0;
-                break;
-            case Z:
-                core.rotateAngleX = (float) (-Math.PI / 2);
-                core.rotateAngleY = 0;
-                core.rotateAngleZ = (float) (-Math.PI);
-                break;
+        int sizeX = 18;
+        int sizeY = 8;
+        int sizeZ = 1;
+        float originX = -sizeX / 2F;
+        float originY = -16F;
+        float originZ = -6F;
+        for (int i = 0; i < outerSegments.length; i++) {
+            outerSegments[i] = new ModelRenderer(this, 0, 0).setTextureSize(textureWidth, textureHeight);
+            outerSegments[i].addBox(originX, originY, originZ, sizeX, sizeY, sizeZ, 0F);
+            outerSegments[i].setRotationPoint(0F, 0F, 0F);
+            outerSegments[i].rotateAngleZ = (float) (Math.PI / 2F);
+            outerSegments[i].rotateAngleX = (float) (2 * Math.PI * i) / outerSegments.length;
+            core.addChild(outerSegments[i]);
         }
-        return this;
-    }
 
-    public WaterWheelModel setRotation(float angle) {
-        switch (axis) {
-            default:
-            case X:
-            case Y:
-                core.rotateAngleY = angle;
-                break;
-            case Z:
-                core.rotateAngleZ = angle;
-                break;
+        sizeX = 17;
+        sizeY = 8;
+        sizeZ = 2;
+        originX = -sizeX / 2F;
+        originY = -sizeY / 2F;
+        originZ = -10F;
+        for (int i = 0; i < innerSegments.length; i++) {
+            innerSegments[i] = new ModelRenderer(this, 0, 9).setTextureSize(textureWidth, textureHeight);
+            innerSegments[i].addBox(originX, originY, originZ, sizeX, sizeY, sizeZ, 0F);
+            innerSegments[i].setRotationPoint(0F, 0F, 0F);
+            innerSegments[i].rotateAngleZ = (float) (Math.PI / 2F);
+            innerSegments[i].rotateAngleX = (float) (2 * Math.PI * i) / innerSegments.length;
+            core.addChild(innerSegments[i]);
         }
-        return this;
-    }
 
-    public void render() {
-        texture.bind();
-        core.render(0.0625f);
-    }
+        sizeX = 18;
+        sizeY = 12;
+        sizeZ = 3;
+        originX = -sizeX / 2F;
+        originY = -sizeY / 2F;
+        originZ = -sizeZ / 2F;
+        for (int i = 0; i < connectors.length; i++) {
+            connectors[i] = new ModelRenderer(this, 38, 0).setTextureSize(textureWidth, textureHeight);
+            connectors[i].addBox(originX, originY, originZ, sizeX, sizeY, sizeZ, 0F);
+            connectors[i].setRotationPoint(0F, 0F, 0F);
+            connectors[i].rotateAngleY = (float) (Math.PI * (i + 0.5F)) / connectors.length;
+            core.addChild(connectors[i]);
+        }
 
-    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
+        sizeX = 26;
+        sizeY = 26;
+        sizeZ = 0;
+        originX = -sizeX / 2F;
+        originY = -sizeY / 2F;
+        originZ = 8.67F;
+        for (int i = 0; i < rims.length; i++) {
+            rims[i] = new ModelRenderer(this, 0, 19).setTextureSize(textureWidth, textureHeight);
+            rims[i].addBox(originX, originY, originZ, sizeX, sizeY, sizeZ, 0F);
+            rims[i].setRotationPoint(0F, 0F, 0F);
+            rims[i].rotateAngleX = (float) (Math.PI * (i + 0.5F));
+            core.addChild(rims[i]);
+        }
+
+        sizeX = 6;
+        sizeY = 14;
+        sizeZ = 6;
+        originX = -sizeX / 2F;
+        originY = -sizeY / 2F;
+        originZ = -sizeZ / 2F;
+        axisCoat = new ModelRenderer(this, 52, 15).setTextureSize(textureWidth, textureHeight);
+        axisCoat.addBox(originX, originY, originZ, sizeX, sizeY, sizeZ, 0F);
+        axisCoat.setRotationPoint(0F, 0F, 0F);
+        core.addChild(axisCoat);
+
     }
 }

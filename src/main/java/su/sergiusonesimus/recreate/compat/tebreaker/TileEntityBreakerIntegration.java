@@ -9,6 +9,7 @@ import su.sergiusonesimus.recreate.content.contraptions.components.motor.Creativ
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.BearingModel;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.components.waterwheel.WaterWheelTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelModel;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.LargeCogWheelModel;
@@ -21,11 +22,14 @@ import su.sergiusonesimus.tebreaker.mixin.interfaces.IMixinTileEntitySpecialRend
 
 public class TileEntityBreakerIntegration {
 
+    public static final String TEBREAKER = "tebreaker";
+
     public static final String SHAFT = "shaft";
     public static final String CREATIVE_MOTOR = "creative_motor";
     public static final String COGWHEEL = "cogwheel";
     public static final String LARGE_COGWHEEL = "large_cogwheel";
     public static final String BEARING = "bearing";
+    public static final String WATER_WHEEL = "water_wheel";
 
     public static void registerTileEntities() {
         ShaftModel shaft = new ShaftModel();
@@ -79,6 +83,9 @@ public class TileEntityBreakerIntegration {
         TileEntityBreaker.registerTileEntity(SplitShaftTileEntity.class, SHAFT);
 
         TileEntityBreaker.registerTileEntity(GearboxTileEntity.class, SHAFT);
+
+        TileEntityBreaker.registerModel(WATER_WHEEL, TEBREAKER);
+        TileEntityBreaker.registerTileEntity(WaterWheelTileEntity.class, SHAFT);
     }
 
     public static boolean shouldRenderDamageTexture(TileEntitySpecialRenderer renderer) {
