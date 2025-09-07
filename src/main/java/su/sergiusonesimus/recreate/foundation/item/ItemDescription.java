@@ -32,6 +32,7 @@ import su.sergiusonesimus.recreate.AllItems;
 import su.sergiusonesimus.recreate.content.contraptions.base.IRotate;
 import su.sergiusonesimus.recreate.content.contraptions.base.IRotate.SpeedLevel;
 import su.sergiusonesimus.recreate.content.contraptions.base.IRotate.StressImpact;
+import su.sergiusonesimus.recreate.content.contraptions.components.waterwheel.WaterWheelBlock;
 import su.sergiusonesimus.recreate.foundation.block.BlockStressValues;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
 import su.sergiusonesimus.recreate.foundation.config.CKinetics;
@@ -318,16 +319,17 @@ public class ItemDescription {
         return linesOnShift;
     }
 
+    @SuppressWarnings("static-access")
     private static IChatComponent generatorSpeed(Block block, IChatComponent unitRPM) {
         String value = "";
 
+        if (block instanceof WaterWheelBlock) {
+            int baseSpeed = AllConfigs.SERVER.kinetics.waterWheelBaseSpeed;
+            int speedmod = AllConfigs.SERVER.kinetics.waterWheelFlowSpeed;
+            value = (speedmod + baseSpeed) + "-" + (baseSpeed + (speedmod * 3));
+        }
+
         // TODO
-        // if (block instanceof WaterWheelBlock) {
-        // int baseSpeed = AllConfigs.SERVER.kinetics.waterWheelBaseSpeed;
-        // int speedmod = AllConfigs.SERVER.kinetics.waterWheelFlowSpeed;
-        // value = (speedmod + baseSpeed) + "-" + (baseSpeed + (speedmod * 3));
-        // }
-        //
         // else if (block instanceof EncasedFanBlock)
         // value = AllConfigs.SERVER.kinetics.generatingFanSpeed
         // .toString();
