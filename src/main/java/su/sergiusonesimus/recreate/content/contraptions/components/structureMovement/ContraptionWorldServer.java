@@ -10,11 +10,15 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.storage.ISaveHandler;
 
+import su.sergiusonesimus.metaworlds.api.SubWorld;
+import su.sergiusonesimus.metaworlds.compat.packet.SubWorldUpdatePacket;
 import su.sergiusonesimus.metaworlds.world.SubWorldServer;
 
 public class ContraptionWorldServer extends SubWorldServer implements ContraptionWorld {
 
     private Contraption contraption;
+
+    private boolean stalled = false;
 
     public ContraptionWorldServer(WorldServer parentWorld, int newSubWorldID, MinecraftServer par1MinecraftServer,
         ISaveHandler par2ISaveHandler, String par3Str, int par4, WorldSettings par5WorldSettings, Profiler par6Profiler,
@@ -32,6 +36,20 @@ public class ContraptionWorldServer extends SubWorldServer implements Contraptio
     }
 
     @Override
+    protected SubWorldUpdatePacket getUpdatePacket(SubWorldServer par1SubWorldServer, int updateFlags) {
+        return new ContraptionWorldUpdatePacket((ContraptionWorldServer) par1SubWorldServer, updateFlags);
+    }
+
+    @Override
+    public void removeSubWorld() {
+        if (contraption != null) {
+            if (!contraption.ticking) contraption.stop(this.getParentWorld());
+            contraption.onRemoved();
+        }
+        super.removeSubWorld();
+    }
+
+    @Override
     public Contraption getContraption() {
         return contraption;
     }
@@ -43,14 +61,14 @@ public class ContraptionWorldServer extends SubWorldServer implements Contraptio
 
     @Override
     public void tick() {
-        contraption.tick();
         super.tick();
+        contraption.tick();
     }
 
     @Override
-    public void handleStallInformation(float x, float y, float z, float angle) {
-        // TODO Auto-generated method stub
-
+    public boolean getIsInMotion() {
+        return super.getIsInMotion()
+            || (contraption.parentWorld instanceof SubWorld subworld && subworld.getIsInMotion());
     }
 
     @Override
@@ -78,12 +96,6 @@ public class ContraptionWorldServer extends SubWorldServer implements Contraptio
     }
 
     @Override
-    public void tickActors() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
     public void ejectPassengers() {
         // TODO Auto-generated method stub
 
@@ -91,20 +103,12 @@ public class ContraptionWorldServer extends SubWorldServer implements Contraptio
 
     @Override
     public boolean isStalled() {
-        // TODO Auto-generated method stub
-        return false;
+        return stalled;
     }
 
     @Override
     public void setStalled(boolean isStalled) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public float getStalledAngle() {
-        // TODO Auto-generated method stub
-        return 0;
+        stalled = isStalled;
     }
 
     @Override

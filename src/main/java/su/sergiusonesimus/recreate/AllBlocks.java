@@ -35,7 +35,7 @@ public class AllBlocks {
     public static void registerBlocks() {
         shaft = new ShaftBlock(Material.rock).setBlockName("shaft")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
-        creative_motor = new CreativeMotorBlock(Material.piston).setBlockName("creative_motor")
+        creative_motor = new CreativeMotorBlock(Material.rock).setBlockName("creative_motor")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
         cogwheel = CogWheelBlock.small(Material.wood)
             .setBlockName("cogwheel")
@@ -43,15 +43,15 @@ public class AllBlocks {
         large_cogwheel = CogWheelBlock.large(Material.wood)
             .setBlockName("large_cogwheel")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
-        mechanical_bearing = new MechanicalBearingBlock(Material.piston).setBlockName("mechanical_bearing")
+        mechanical_bearing = new MechanicalBearingBlock(Material.wood).setBlockName("mechanical_bearing")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
-        unpowered_gearshift = (GearshiftBlock) new GearshiftBlock(Material.piston, false).setBlockName("gearshift")
+        unpowered_gearshift = (GearshiftBlock) new GearshiftBlock(Material.wood, false).setBlockName("gearshift")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
-        powered_gearshift = (GearshiftBlock) new GearshiftBlock(Material.piston, true).setBlockName("gearshift");
-        unpowered_clutch = (ClutchBlock) new ClutchBlock(Material.piston, false).setBlockName("clutch")
+        powered_gearshift = (GearshiftBlock) new GearshiftBlock(Material.wood, true).setBlockName("gearshift");
+        unpowered_clutch = (ClutchBlock) new ClutchBlock(Material.wood, false).setBlockName("clutch")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
-        powered_clutch = (ClutchBlock) new ClutchBlock(Material.piston, true).setBlockName("clutch");
-        gearbox = new GearboxBlock(Material.piston).setBlockName("gearbox")
+        powered_clutch = (ClutchBlock) new ClutchBlock(Material.wood, true).setBlockName("clutch");
+        gearbox = new GearboxBlock(Material.wood).setBlockName("gearbox")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
         waterwheel = new WaterWheelBlock(Material.wood).setBlockName("water_wheel")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);

@@ -99,7 +99,7 @@ public class MechanicalBearingTileEntity extends GeneratingKineticTileEntity
     @Override
     public float getInterpolatedAngle(float partialTicks) {
         if (isVirtual()) return ReCreateMath.lerp(partialTicks + .5f, prevAngle, angle);
-        if (movedContraption == null || movedContraption.isStalled() || !running) partialTicks = 0;
+        if (movedContraption == null || movedContraption.stalled || !running) partialTicks = 0;
         return ReCreateMath.lerp(partialTicks, angle, angle + getAngularSpeed());
     }
 
@@ -138,8 +138,8 @@ public class MechanicalBearingTileEntity extends GeneratingKineticTileEntity
         if (!(block instanceof BearingBlock)) return;
 
         Direction direction = ((IRotate) block).getDirection(meta);
-        movedContraption = new BearingContraption(isWindmill(), direction);
-        movedContraption.anchorWorld = this.getWorld();
+        movedContraption = new BearingContraption(this.getWorld(), this, isWindmill(), direction);
+        movedContraption.parentWorld = this.getWorld();
         try {
             if (!movedContraption.assemble(worldObj, xCoord, yCoord, zCoord)) return;
 
@@ -158,7 +158,6 @@ public class MechanicalBearingTileEntity extends GeneratingKineticTileEntity
 
         movedContraption.removeBlocksFromWorld(worldObj);
         movedContraption.preInit();
-        // movedContraption = ControlledContraptionEntity.create(worldObj, this, contraption);
         ChunkCoordinates offset = direction.getNormal();
         movedContraption.anchorX = xCoord + offset.posX;
         movedContraption.anchorY = yCoord + offset.posY;
@@ -199,7 +198,7 @@ public class MechanicalBearingTileEntity extends GeneratingKineticTileEntity
         if (movedContraption == null && contraptionWorldID != null) {
             ContraptionWorld contraptionWorld = (ContraptionWorld) ((IMixinWorld) this.getWorldObj())
                 .getSubWorld(contraptionWorldID);
-            if (contraptionWorld != null) {
+            if (contraptionWorld != null && contraptionWorld.getContraption() != null) {
                 this.attach(contraptionWorld.getContraption());
                 movedContraption.tick();
             } else {

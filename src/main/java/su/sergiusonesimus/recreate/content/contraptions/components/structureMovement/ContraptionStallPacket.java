@@ -43,7 +43,7 @@ public class ContraptionStallPacket implements IMessage {
 
         @Override
         public IMessage onMessage(ContraptionStallPacket message, MessageContext ctx) {
-            ContraptionWorld.handleStallPacket(message);
+            Contraption.handleStallPacket(message);
             return null;
         }
     }

@@ -13,10 +13,13 @@ import su.sergiusonesimus.recreate.zmixin.interfaces.IMixinWorldReCreate;
 public class AllSubWorldTypes {
 
     public static final String SUBWORLD_TYPE_CONTRAPTION_BEARING = "bearing_contraption";
+    public static final String SUBWORLD_TYPE_CONTRAPTION_STABILIZED = "stabilized_contraption";
+
+    public static final ContraptionWorldInfoProvider CONTRAPTION_INFO_PROVIDER = new ContraptionWorldInfoProvider();
 
     public static void register() {
-        ContraptionWorldInfoProvider contraptionProvider = new ContraptionWorldInfoProvider();
-        SubWorldTypeManager.registerSubWorldType(SUBWORLD_TYPE_CONTRAPTION_BEARING, contraptionProvider);
+        SubWorldTypeManager.registerSubWorldType(SUBWORLD_TYPE_CONTRAPTION_BEARING, CONTRAPTION_INFO_PROVIDER);
+        SubWorldTypeManager.registerSubWorldType(SUBWORLD_TYPE_CONTRAPTION_STABILIZED, CONTRAPTION_INFO_PROVIDER);
     }
 
     public static class ContraptionWorldInfoProvider extends SubWorldInfoProvider {

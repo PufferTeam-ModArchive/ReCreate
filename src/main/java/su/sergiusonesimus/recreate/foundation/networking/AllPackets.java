@@ -8,6 +8,7 @@ import cpw.mods.fml.relauncher.Side;
 import su.sergiusonesimus.metaworlds.network.MetaMagicNetwork;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.ContraptionStallPacket;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.ContraptionWorldCreatePacket;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.ContraptionWorldUpdatePacket;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.GlueEffectPacket;
 import su.sergiusonesimus.recreate.foundation.tileentity.behaviour.scrollvalue.ScrollValueUpdatePacket;
 import su.sergiusonesimus.recreate.foundation.utility.ServerSpeedProvider;
@@ -31,6 +32,10 @@ public class AllPackets {
         MetaMagicNetwork.registerPacket(
             ContraptionWorldCreatePacket.Handler.class,
             ContraptionWorldCreatePacket.class,
+            Side.CLIENT);
+        MetaMagicNetwork.registerPacket(
+            ContraptionWorldUpdatePacket.Handler.class,
+            ContraptionWorldUpdatePacket.class,
             Side.CLIENT);
     }
 

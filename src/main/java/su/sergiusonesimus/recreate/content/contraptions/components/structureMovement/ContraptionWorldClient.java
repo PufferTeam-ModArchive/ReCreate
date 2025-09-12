@@ -10,17 +10,28 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.WorldSettings;
 
+import su.sergiusonesimus.metaworlds.api.SubWorld;
 import su.sergiusonesimus.metaworlds.client.multiplayer.SubWorldClient;
 
 public class ContraptionWorldClient extends SubWorldClient implements ContraptionWorld {
 
     private Contraption contraption;
 
+    private boolean stalled = false;
+
     public ContraptionWorldClient(WorldClient parentWorld, int newSubWorldID, NetHandlerPlayClient par1NetClientHandler,
         WorldSettings par2WorldSettings, int par3, EnumDifficulty par4, Profiler par5Profiler,
         Contraption contraption) {
         super(parentWorld, newSubWorldID, par1NetClientHandler, par2WorldSettings, par3, par4, par5Profiler);
         this.contraption = contraption;
+    }
+
+    @Override
+    public void removeSubWorld() {
+        if (contraption != null) {
+            contraption.onRemoved();
+        }
+        super.removeSubWorld();
     }
 
     @Override
@@ -35,14 +46,21 @@ public class ContraptionWorldClient extends SubWorldClient implements Contraptio
 
     @Override
     public void tick() {
-        if (contraption != null) contraption.tick();
         super.tick();
+        if (contraption != null) contraption.tick();
     }
 
     @Override
-    public void handleStallInformation(float x, float y, float z, float angle) {
-        // TODO Auto-generated method stub
+    public void doTickPartial(double interpolationFactor) {
+        super.doTickPartial(interpolationFactor);
+        if (contraption != null) contraption.doTickPartial(interpolationFactor);
+    }
 
+    @Override
+    public boolean getIsInMotion() {
+        return super.getIsInMotion() || (contraption != null && contraption.parentWorld != null
+            && contraption.parentWorld instanceof SubWorld subworld
+            && subworld.getIsInMotion());
     }
 
     @Override
@@ -70,12 +88,6 @@ public class ContraptionWorldClient extends SubWorldClient implements Contraptio
     }
 
     @Override
-    public void tickActors() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
     public void ejectPassengers() {
         // TODO Auto-generated method stub
 
@@ -83,20 +95,12 @@ public class ContraptionWorldClient extends SubWorldClient implements Contraptio
 
     @Override
     public boolean isStalled() {
-        // TODO Auto-generated method stub
-        return false;
+        return stalled;
     }
 
     @Override
     public void setStalled(boolean isStalled) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public float getStalledAngle() {
-        // TODO Auto-generated method stub
-        return 0;
+        stalled = isStalled;
     }
 
     @Override

@@ -11,6 +11,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 
 import javax.annotation.Nullable;
 
@@ -35,8 +36,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
+import codechicken.lib.math.MathHelper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import su.sergiusonesimus.metaworlds.api.SubWorld;
 import su.sergiusonesimus.metaworlds.util.BlockVolatilityMap;
 import su.sergiusonesimus.metaworlds.util.Direction;
@@ -44,6 +49,7 @@ import su.sergiusonesimus.metaworlds.util.RotationHelper;
 import su.sergiusonesimus.metaworlds.world.SubWorldServer;
 import su.sergiusonesimus.metaworlds.zmixin.interfaces.minecraft.world.IMixinWorld;
 import su.sergiusonesimus.recreate.AllBlocks;
+import su.sergiusonesimus.recreate.AllMovementBehaviours;
 import su.sergiusonesimus.recreate.AllSounds;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.StabilizedContraption;
@@ -51,69 +57,63 @@ import su.sergiusonesimus.recreate.content.contraptions.components.structureMove
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueHandler;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
 import su.sergiusonesimus.recreate.foundation.fluid.CombinedTankWrapper;
+import su.sergiusonesimus.recreate.foundation.networking.AllPackets;
 import su.sergiusonesimus.recreate.foundation.utility.BlockFace;
 import su.sergiusonesimus.recreate.foundation.utility.Iterate;
 import su.sergiusonesimus.recreate.foundation.utility.NBTHelper;
 import su.sergiusonesimus.recreate.foundation.utility.UniqueLinkedList;
+import su.sergiusonesimus.recreate.util.VecHelper;
 import su.sergiusonesimus.recreate.zmixin.interfaces.IMixinWorldReCreate;
 
 public abstract class Contraption {
 
-    public Optional<List<AxisAlignedBB>> simplifiedEntityColliders;
+    public Optional<List<AxisAlignedBB>> simplifiedEntityColliders = Optional.empty();
     public ContraptionInvWrapper inventory;
     public CombinedTankWrapper fluidInventory;
-    public int anchorX;
-    public int anchorY;
-    public int anchorZ;
-    private int anchorWorldID;
-    public World anchorWorld;
+    public Integer anchorX;
+    public Integer anchorY;
+    public Integer anchorZ;
+    private int parentWorldID;
+    public World parentWorld;
     public boolean stalled;
     public boolean hasUniversalCreativeCrate;
 
-    protected List<ChunkCoordinates> blocks;
-    protected Map<ChunkCoordinates, IInventory> storage;
-    protected Map<ChunkCoordinates, IFluidHandler> fluidStorage;
-    protected Set<Pair<ChunkCoordinates, Direction>> superglue;
-    protected List<ChunkCoordinates> seats;
-    protected Map<UUID, Integer> seatMapping;
-    private Map<Integer, BlockFace> stabilizedSubContraptionsIDs;
-    protected Map<Contraption, BlockFace> stabilizedSubContraptions;
+    protected List<ChunkCoordinates> blocks = new ArrayList<ChunkCoordinates>();
+    protected Map<ChunkCoordinates, IInventory> storage = new HashMap<ChunkCoordinates, IInventory>();
+    protected Map<ChunkCoordinates, IFluidHandler> fluidStorage = new HashMap<ChunkCoordinates, IFluidHandler>();
+    protected List<MutablePair<ChunkCoordinates, MovementContext>> actors = new ArrayList<MutablePair<ChunkCoordinates, MovementContext>>();
+    protected Set<Pair<ChunkCoordinates, Direction>> superglue = new HashSet<Pair<ChunkCoordinates, Direction>>();
+    protected List<ChunkCoordinates> seats = new ArrayList<ChunkCoordinates>();
+    protected Map<UUID, Integer> seatMapping = new HashMap<UUID, Integer>();
+    private Map<Integer, BlockFace> stabilizedSubContraptionsIDs = new HashMap<Integer, BlockFace>();
+    protected Map<Contraption, BlockFace> stabilizedSubContraptions = new HashMap<Contraption, BlockFace>();
 
-    private List<SuperGlueEntity> glueToRemove;
-    private Map<ChunkCoordinates, Entity> initialPassengers;
-    private List<BlockFace> pendingSubContraptions;
+    private List<SuperGlueEntity> glueToRemove = new ArrayList<SuperGlueEntity>();
+    private Map<ChunkCoordinates, Entity> initialPassengers = new HashMap<ChunkCoordinates, Entity>();
+    private List<BlockFace> pendingSubContraptions = new ArrayList<BlockFace>();
 
     private CompletableFuture<Void> simplifiedEntityColliderProvider;
 
     // Client
-    public Map<ChunkCoordinates, TileEntity> presentTileEntities;
-    public List<TileEntity> maybeInstancedTileEntities;
-    public List<TileEntity> specialRenderedTileEntities;
+    public Map<ChunkCoordinates, TileEntity> presentTileEntities = new HashMap<ChunkCoordinates, TileEntity>();
+    public List<TileEntity> maybeInstancedTileEntities = new ArrayList<TileEntity>();
+    public List<TileEntity> specialRenderedTileEntities = new ArrayList<TileEntity>();
 
     protected World contraptionWorld;
 
-    public Contraption() {
-        blocks = new ArrayList<>();
-        storage = new HashMap<>();
-        seats = new ArrayList<>();
-        superglue = new HashSet<>();
-        seatMapping = new HashMap<>();
-        fluidStorage = new HashMap<>();
-        glueToRemove = new ArrayList<>();
-        initialPassengers = new HashMap<>();
-        presentTileEntities = new HashMap<>();
-        maybeInstancedTileEntities = new ArrayList<>();
-        specialRenderedTileEntities = new ArrayList<>();
-        pendingSubContraptions = new ArrayList<>();
-        stabilizedSubContraptions = new HashMap<>();
-        stabilizedSubContraptionsIDs = new HashMap<>();
-        simplifiedEntityColliders = Optional.empty();
+    protected boolean initialized;
+    boolean ticking;
+
+    public Contraption() {}
+
+    public Contraption(World parentWorld) {
+        this.parentWorld = parentWorld;
     }
 
     public World getWorld() {
-        if (anchorWorld == null) return null;
+        if (parentWorld == null) return null;
         if (contraptionWorld == null)
-            contraptionWorld = ((IMixinWorldReCreate) anchorWorld).createContraptionWorld(this);
+            contraptionWorld = ((IMixinWorldReCreate) parentWorld).createContraptionWorld(this);
         return contraptionWorld;
     }
 
@@ -126,8 +126,8 @@ public abstract class Contraption {
     public abstract boolean assemble(World world, int x, int y, int z) throws AssemblyException;
 
     public void disassemble() {
-        if (contraptionWorld == null || anchorWorld == null) return;
-        World mainWorld = ((IMixinWorld) anchorWorld).getParentWorld();
+        if (contraptionWorld == null || parentWorld == null) return;
+        World mainWorld = ((IMixinWorld) parentWorld).getParentWorld();
 
         addBlocksToWorld(mainWorld);
         // TODO
@@ -190,15 +190,24 @@ public abstract class Contraption {
         // Create subcontraptions
         for (BlockFace blockFace : pendingSubContraptions) {
             Direction face = blockFace.getFace();
-            StabilizedContraption subContraption = new StabilizedContraption(face);
             ChunkCoordinates pos = blockFace.getPos();
+            StabilizedContraption subContraption = new StabilizedContraption(
+                this.getWorld(),
+                (IControlContraption) this.getWorld()
+                    .getTileEntity(pos.posX, pos.posY, pos.posZ),
+                face);
             try {
-                if (!subContraption.assemble(contraptionWorld, pos.posX, pos.posY, pos.posZ)) continue;
+                if (!subContraption.assemble(parentWorld, pos.posX, pos.posY, pos.posZ)) continue;
             } catch (AssemblyException e) {
                 continue;
             }
-            subContraption.removeBlocksFromWorld(contraptionWorld);
+            subContraption.removeBlocksFromWorld(parentWorld);
             subContraption.preInit();
+            ChunkCoordinates offset = face.getNormal();
+            subContraption.anchorX = pos.posX + offset.posX;
+            subContraption.anchorY = pos.posY + offset.posY;
+            subContraption.anchorZ = pos.posZ + offset.posZ;
+            subContraption.init();
             stabilizedSubContraptions.put(subContraption, new BlockFace(toLocalPos(pos), face));
         }
 
@@ -227,7 +236,7 @@ public abstract class Contraption {
     }
 
     public void init() {
-        if (anchorWorld.isRemote) return;
+        if (parentWorld.isRemote) return;
 
         // TODO
         // for (ChunkCoordinates seatPos : getSeats()) {
@@ -241,54 +250,55 @@ public abstract class Contraption {
         // }
     }
 
+    public Vec3 toGlobalVector(Vec3 localVec) {
+        return this.getContraptionWorld()
+            .transformToGlobal(localVec);
+    }
+
+    public Vec3 toLocalVector(Vec3 globalVec) {
+        return this.getContraptionWorld()
+            .transformToLocal(globalVec);
+    }
+
     public void tick() {
-        if (anchorWorld == null) {
-            anchorWorld = ((IMixinWorld) (this.contraptionWorld.isRemote ? Minecraft.getMinecraft().theWorld
-                : DimensionManager.getWorld(0))).getSubWorld(anchorWorldID);
-            // if (this instanceof BearingContraption) {
-            // ChunkCoordinates normal = ((BearingContraption) this).getFacing()
-            // .getOpposite()
-            // .getNormal();
-            // ReCreate.LOGGER.info("Looking for tile entity on coordinates: " + (anchorX + normal.posX) + ", " +
-            // (anchorY + normal.posY) + ", " + (anchorZ + normal.posZ));
-            // TileEntity anchorTE = anchorWorld
-            // .getTileEntity(anchorX + normal.posX, anchorY + normal.posY, anchorZ + normal.posZ);
-            // ReCreate.LOGGER.info(anchorTE == null? "Found none" : "Tile entity found");
-            // if (anchorTE instanceof MechanicalBearingTileEntity)
-            // ((MechanicalBearingTileEntity) anchorTE).attach(this);
-            // }
+        if (parentWorld == null) {
+            parentWorld = ((IMixinWorld) (this.contraptionWorld.isRemote ? Minecraft.getMinecraft().theWorld
+                : DimensionManager.getWorld(0))).getSubWorld(parentWorldID);
         }
         if (stabilizedSubContraptionsIDs.size() > stabilizedSubContraptions.size()) {
             for (Map.Entry<Integer, BlockFace> entry : stabilizedSubContraptionsIDs.entrySet()) {
                 SubWorld subWorld = (SubWorld) ((IMixinWorld) DimensionManager.getWorld(0)).getSubWorld(entry.getKey());
-                if (!(subWorld instanceof ContraptionWorld)) continue;
-                ContraptionWorld contraptionWorld = (ContraptionWorld) subWorld;
+                if (!(subWorld instanceof ContraptionWorld contraptionWorld)) continue;
                 if (stabilizedSubContraptions.containsKey(contraptionWorld.getContraption())) continue;
                 stabilizedSubContraptions.put(contraptionWorld.getContraption(), entry.getValue());
             }
         }
-        if (anchorWorld instanceof SubWorld && !anchorWorld.isRemote) {
-            SubWorld subworld = (SubWorld) anchorWorld;
-            if (subworld.getMotionX() != 0 || subworld.getMotionY() != 0
-                || subworld.getMotionZ() != 0
-                || subworld.getRotationPitchSpeed() != 0
-                || subworld.getRotationYawSpeed() != 0
-                || subworld.getRotationRollSpeed() != 0) {
-                Vec3 anchor = Vec3.createVectorHelper(anchorX + 0.5d, anchorY + 0.5d, anchorZ + 0.5d);
-                Vec3 globalAnchor = subworld.transformToGlobal(anchor);
-                Vec3 translation = anchor.subtract(globalAnchor);
-                SubWorld contraptionSubworld = (SubWorld) contraptionWorld;
-                contraptionSubworld.setTranslation(translation);
-                contraptionSubworld.setRotationPitch(subworld.getRotationPitch());
-                contraptionSubworld.setRotationYaw(subworld.getRotationYaw());
-                contraptionSubworld.setRotationRoll(subworld.getRotationRoll());
-            }
-        }
+        if (parentWorld != null && !parentWorld.isRemote
+            && parentWorld instanceof SubWorld subworld
+            && subworld.getIsInMotion()) processSubContraptionPosition(subworld);
         // TODO Most likely not needed
         // fluidStorage.forEach((pos, mfs) -> mfs.tick(entity, pos, world.isRemote));
     }
 
+    @SideOnly(Side.CLIENT)
+    public void doTickPartial(double interpolationFactor) {
+        if (parentWorld != null && parentWorld instanceof SubWorld subworld && subworld.getIsInMotion())
+            processSubContraptionPosition(subworld);
+    }
+
+    protected void processSubContraptionPosition(SubWorld anchorWorld) {
+        Vec3 anchor = Vec3.createVectorHelper(anchorX + 0.5d, anchorY + 0.5d, anchorZ + 0.5d);
+        Vec3 globalAnchor = anchorWorld.transformToGlobal(anchor);
+        Vec3 translation = anchor.subtract(globalAnchor);
+        SubWorld contraptionSubworld = this.getContraptionWorld();
+        contraptionSubworld.setTranslation(translation);
+        contraptionSubworld.setRotationPitch(anchorWorld.getRotationPitch());
+        contraptionSubworld.setRotationYaw(anchorWorld.getRotationYaw());
+        contraptionSubworld.setRotationRoll(anchorWorld.getRotationRoll());
+    }
+
     /** move the first block in frontier queue */
+    @SuppressWarnings("static-access")
     protected boolean moveBlock(World world, @Nullable Direction forcedDirection, Queue<ChunkCoordinates> frontier,
         Set<ChunkCoordinates> visited) throws AssemblyException {
         ChunkCoordinates pos = frontier.poll();
@@ -342,7 +352,8 @@ public abstract class Contraption {
         }
 
         // Bearings potentially create stabilized sub-contraptions
-        if (block == AllBlocks.mechanical_bearing) moveBearing(posX, posY, posZ, frontier, visited, block, meta);
+        if (block == AllBlocks.mechanical_bearing)
+            moveBearing(posX, posY, posZ, frontier, visited, (MechanicalBearingBlock) block, meta);
 
         // TODO
         // // WM Bearings attach their structure when moved
@@ -441,7 +452,8 @@ public abstract class Contraption {
     // frontier.add(attached);
     // }
     // }
-    //
+
+    // TODO
     // protected void movePistonPole(World world, int x, int y, int z, Queue<ChunkCoordinates> frontier,
     // Set<ChunkCoordinates> visited,
     // Block block, int meta) {
@@ -465,7 +477,8 @@ public abstract class Contraption {
     // }
     // }
     // }
-    //
+
+    // TODO
     // protected void moveGantryPinion(World world, int x, int y, int z, Queue<ChunkCoordinates> frontier,
     // Set<ChunkCoordinates> visited,
     // Block block, int meta) {
@@ -482,7 +495,8 @@ public abstract class Contraption {
     // frontier.add(offset);
     // }
     // }
-    //
+
+    // TODO
     // protected void moveGantryShaft(World world, int x, int y, int z, Queue<ChunkCoordinates> frontier,
     // Set<ChunkCoordinates> visited,
     // Block block, int meta) {
@@ -500,7 +514,8 @@ public abstract class Contraption {
     // }
     // }
     // }
-    //
+
+    // TODO
     // private void moveWindmillBearing(int x, int y, int z, Queue<ChunkCoordinates> frontier,
     // Set<ChunkCoordinates> visited, Block block, int meta) {
     // Direction facing = state.getValue(WindmillBearingBlock.FACING);
@@ -510,9 +525,9 @@ public abstract class Contraption {
     // }
 
     private void moveBearing(int x, int y, int z, Queue<ChunkCoordinates> frontier, Set<ChunkCoordinates> visited,
-        Block block, int meta) {
-        Direction facing = ((MechanicalBearingBlock) block).getDirection(meta);
-        if (!canBeStabilized(facing, x - anchorX, y - anchorY, z - anchorZ)) {
+        MechanicalBearingBlock block, int meta) {
+        Direction facing = block.getDirection(meta);
+        if (!canBeStabilized(facing, x, y, z)) {
             ChunkCoordinates normal = facing.getNormal();
             ChunkCoordinates offset = new ChunkCoordinates(x + normal.posX, y + normal.posY, z + normal.posZ);
             if (!visited.contains(offset)) frontier.add(offset);
@@ -520,6 +535,7 @@ public abstract class Contraption {
         }
         pendingSubContraptions.add(new BlockFace(x, y, z, facing));
     }
+
     // TODO
     // private void moveBelt(int x, int y, int z, Queue<ChunkCoordinates> frontier, Set<ChunkCoordinates> visited,
     // Block block, int meta) {
@@ -530,7 +546,8 @@ public abstract class Contraption {
     // if (prevPos != null && !visited.contains(prevPos))
     // frontier.add(prevPos);
     // }
-    //
+
+    // TODO
     // private void moveSeat(World world, int x, int y, int z) {
     // BlockPos local = toLocalPos(pos);
     // getSeats().add(local);
@@ -542,7 +559,8 @@ public abstract class Contraption {
     // initialPassengeputTag(local, passengers.get(0));
     // }
     // }
-    //
+
+    // TODO
     // private void movePulley(World world, int x, int y, int z, Queue<ChunkCoordinates> frontier,
     // Set<ChunkCoordinates> visited) {
     // int limit = AllConfigs.SERVER.kinetics.maxRopeLength.get();
@@ -561,7 +579,8 @@ public abstract class Contraption {
     // addBlock(ropePos, capture(world, ropePos));
     // }
     // }
-    //
+
+    // TODO
     // private boolean moveMechanicalPiston(World world, int x, int y, int z, Queue<ChunkCoordinates> frontier,
     // Set<ChunkCoordinates> visited,
     // Block block, int meta) throws AssemblyException {
@@ -586,7 +605,8 @@ public abstract class Contraption {
     //
     // return true;
     // }
-    //
+
+    // TODO
     // private boolean moveChassis(World world, int x, int y, int z, Direction movementDirection,
     // Queue<ChunkCoordinates> frontier,
     // Set<ChunkCoordinates> visited) {
@@ -617,8 +637,10 @@ public abstract class Contraption {
         // storage.put(localPos, new MountedStorage(te));
         // if (te != null && MountedFluidStorage.canUseAsStorage(te))
         // fluidStorage.put(localPos, new MountedFluidStorage(te));
-        // if (AllMovementBehaviours.contains(captured.state.getBlock()))
-        // actors.add(MutablePair.of(StructureBlockInfo, null));
+
+        if (AllMovementBehaviours.contains(block)) actors.add(MutablePair.of(new ChunkCoordinates(x, y, z), null));
+
+        // TODO
         // if (AllInteractionBehaviours.contains(captured.state.getBlock()))
         // interactors.put(localPos, AllInteractionBehaviours.of(captured.state.getBlock()));
         // if (te instanceof CreativeCrateTileEntity
@@ -655,6 +677,39 @@ public abstract class Contraption {
         Direction direction = entity.getFacingDirection();
         this.superglue.add(Pair.of(pos, direction));
         glueToRemove.add(entity);
+    }
+
+    public ChunkCoordinates getCenterBlock() {
+        if (this.contraptionWorld == null) return null;
+        ContraptionWorld contraption = this.getContraptionWorld();
+        return new ChunkCoordinates(
+            MathHelper.floor_double(contraption.getCenterX()),
+            MathHelper.floor_double(contraption.getCenterY()),
+            MathHelper.floor_double(contraption.getCenterZ()));
+    }
+
+    public Vec3 getPosition() {
+        if (this.contraptionWorld == null) return null;
+        return this.getContraptionWorld()
+            .transformToGlobal(anchorX + 0.5D, anchorY + 0.5D, anchorZ + 0.5D);
+    }
+
+    public void setPosition(float x, float y, float z) {
+        setPosition(Vec3.createVectorHelper(x, y, z));
+    }
+
+    public void setPosition(Vec3 newPos) {
+        if (this.contraptionWorld == null) return;
+        ContraptionWorld contraption = this.getContraptionWorld();
+        contraption.setTranslation(
+            Vec3.createVectorHelper(contraption.getCenterX(), contraption.getCenterY(), contraption.getCenterZ())
+                .subtract(newPos));
+    }
+
+    public Vec3 getMotion() {
+        if (this.contraptionWorld == null) return null;
+        ContraptionWorld contraption = this.getContraptionWorld();
+        return Vec3.createVectorHelper(contraption.getMotionX(), contraption.getMotionY(), contraption.getMotionZ());
     }
 
     protected ChunkCoordinates toLocalPos(ChunkCoordinates globalPos) {
@@ -698,6 +753,13 @@ public abstract class Contraption {
 
         NBTTagCompound blocks = nbt.getCompoundTag("Blocks");
         readBlocksCompound(blocks);
+
+        actors.clear();
+        NBTHelper.iterateCompoundList(nbt.getTagList("Actors", 10), c -> {
+            ChunkCoordinates pos = NBTHelper.readChunkCoordinates(c.getCompoundTag("Pos"));
+            MovementContext context = MovementContext.readNBT(parentWorld, pos.posX, pos.posY, pos.posZ, c, this);
+            getActors().add(MutablePair.of(pos, context));
+        });
 
         superglue.clear();
         NBTHelper.iterateCompoundList(
@@ -766,7 +828,7 @@ public abstract class Contraption {
         anchorX = anchor[0];
         anchorY = anchor[1];
         anchorZ = anchor[2];
-        if (nbt.hasKey("AnchorWorld")) anchorWorldID = nbt.getInteger("AnchorWorld");
+        if (nbt.hasKey("AnchorWorld")) parentWorldID = nbt.getInteger("AnchorWorld");
     }
 
     public NBTTagCompound writeNBT(boolean spawnPacket) {
@@ -775,16 +837,15 @@ public abstract class Contraption {
 
         NBTTagCompound blocksNBT = writeBlocksCompound();
 
-        // TODO
-        // NBTTagList actorsNBT = new NBTTagList();
-        // for (MutablePair<StructureBlockInfo, MovementContext> actor : getActors()) {
-        // NBTTagCompound compound = new NBTTagCompound();
-        // compound.setTag("Pos", NBTHelper.writeChunkCoordinates(actor.left.pos));
-        // AllMovementBehaviours.of(actor.left.state)
-        // .writeExtraData(actor.right);
-        // actor.right.writeToNBT(compound);
-        // actorsNBT.appendTag(compound);
-        // }
+        NBTTagList actorsNBT = new NBTTagList();
+        for (MutablePair<ChunkCoordinates, MovementContext> actor : actors) {
+            NBTTagCompound compound = new NBTTagCompound();
+            compound.setTag("Pos", NBTHelper.writeChunkCoordinates(actor.left));
+            AllMovementBehaviours.of(actor.right.block)
+                .writeExtraData(actor.right);
+            actor.right.writeToNBT(compound);
+            actorsNBT.appendTag(compound);
+        }
 
         NBTTagList superglueNBT = new NBTTagList();
         if (!spawnPacket) {
@@ -850,15 +911,15 @@ public abstract class Contraption {
         }));
 
         nbt.setTag("Blocks", blocksNBT);
+        nbt.setTag("Actors", actorsNBT);
         // TODO
-        // nbt.setTag("Actors", actorsNBT);
         // nbt.setTag("Interactors", interactorNBT);
         nbt.setTag("Superglue", superglueNBT);
         // TODO
         // nbt.setTag("Storage", storageNBT);
         // nbt.setTag("FluidStorage", fluidStorageNBT);
         nbt.setIntArray("Anchor", new int[] { anchorX, anchorY, anchorZ });
-        if (anchorWorld != null) nbt.setInteger("AnchorWorld", ((IMixinWorld) anchorWorld).getSubWorldID());
+        if (parentWorld != null) nbt.setInteger("AnchorWorld", ((IMixinWorld) parentWorld).getSubWorldID());
         nbt.setBoolean("Stalled", stalled);
         nbt.setBoolean("BottomlessSupply", hasUniversalCreativeCrate);
 
@@ -1012,7 +1073,7 @@ public abstract class Contraption {
         subWorldPar.setRotationRollSpeed(0.0D);
         subWorldPar.setScaleChangeRate(0.0D);
 
-        for (Contraption subContraption : stabilizedSubContraptions.keySet()) subContraption.addBlocksToWorld(world);
+        // for (Contraption subContraption : stabilizedSubContraptions.keySet()) subContraption.addBlocksToWorld(world);
 
         Block block;
         int oldMeta;
@@ -1114,10 +1175,6 @@ public abstract class Contraption {
         for (Pair<ChunkCoordinates, Direction> pair : superglue) {
             ChunkCoordinates pos = this.toGlobalPos(pair.getKey());
             Direction facing = RotationHelper.getRotatedDirection(contraptionWorld, pair.getValue());
-            // TODO Apply transformations later
-            // ChunkCoordinates targetPos = transform.apply(pair.getKey());
-            // Direction targetFacing = transform.transformFacing(pair.getValue());
-
             SuperGlueEntity entity = new SuperGlueEntity(world, pos.posX, pos.posY, pos.posZ, facing);
             if (entity.onValidSurface()) {
                 if (!world.isRemote) world.spawnEntityInWorld(entity);
@@ -1143,31 +1200,28 @@ public abstract class Contraption {
     // }
 
     public void startMoving(World world) {
-        // TODO
-        // for (MutablePair<StructureBlockInfo, MovementContext> pair : actors) {
-        // MovementContext context = new MovementContext(world, pair.left, this);
-        // AllMovementBehaviours.of(pair.left.state)
-        // .startMoving(context);
-        // pair.setRight(context);
-        // }
+        for (MutablePair<ChunkCoordinates, MovementContext> pair : actors) {
+            MovementContext context = new MovementContext(world, pair.left.posX, pair.left.posY, pair.left.posZ, this);
+            AllMovementBehaviours.of(pair.right.block)
+                .startMoving(context);
+            pair.setRight(context);
+        }
     }
 
     public void stop(World world) {
-        // TODO
-        // foreachActor(world, (behaviour, ctx) -> {
-        // behaviour.stopMoving(ctx);
-        // ctx.position = null;
-        // ctx.motion = Vec3.ZERO;
-        // ctx.relativeMotion = Vec3.ZERO;
-        // ctx.rotation = v -> v;
-        // });
+        foreachActor(world, (behaviour, ctx) -> {
+            behaviour.stopMoving(ctx);
+            ctx.position = null;
+            ctx.motion = VecHelper.ZERO;
+            ctx.relativeMotion = VecHelper.ZERO;
+            ctx.rotation = v -> v;
+        });
     }
 
-    // TODO
-    // public void foreachActor(World world, BiConsumer<MovementBehaviour, MovementContext> callBack) {
-    // for (MutablePair<StructureBlockInfo, MovementContext> pair : actors)
-    // callBack.accept(AllMovementBehaviours.of(pair.getLeft().state), pair.getRight());
-    // }
+    public void foreachActor(World world, BiConsumer<MovementBehaviour, MovementContext> callBack) {
+        for (MutablePair<ChunkCoordinates, MovementContext> pair : actors)
+            callBack.accept(AllMovementBehaviours.of(pair.getRight().block), pair.getRight());
+    }
 
     // TODO
     // protected boolean shouldUpdateAfterMovement(StructureBlockInfo info) {
@@ -1202,10 +1256,113 @@ public abstract class Contraption {
         return blocks;
     }
 
+    public List<MutablePair<ChunkCoordinates, MovementContext>> getActors() {
+        return actors;
+    }
+
     // TODO
     // public void updateContainedFluid(int localX, int localY, int localZ, FluidStack containedFluid) {
     // MountedFluidStorage mountedFluidStorage = fluidStorage.get(localPos);
     // if (mountedFluidStorage != null)
     // mountedFluidStorage.updateFluid(containedFluid);
     // }
+
+    public abstract Vec3 applyRotation(Vec3 localPos, float partialTicks);
+
+    public abstract Vec3 reverseRotation(Vec3 localPos, float partialTicks);
+
+    public void tickActors() {
+        if (parentWorld == null) return;
+        boolean stalledPreviously = stalled;
+
+        if (!parentWorld.isRemote) stalled = false;
+
+        ticking = true;
+        for (MutablePair<ChunkCoordinates, MovementContext> pair : actors) {
+            MovementContext context = pair.right;
+            ChunkCoordinates blockPos = pair.left;
+            MovementBehaviour actor = AllMovementBehaviours.of(context.block);
+
+            Vec3 oldMotion = context.motion;
+            Vec3 activeAreaOffset = actor.getActiveAreaOffset(context);
+            Vec3 actorPosition = toGlobalVector(
+                VecHelper.getCenterOf(blockPos)
+                    .addVector(activeAreaOffset.xCoord, activeAreaOffset.yCoord, activeAreaOffset.zCoord));
+            int gridX = MathHelper.floor_double(actorPosition.xCoord);
+            int gridY = MathHelper.floor_double(actorPosition.yCoord);
+            int gridZ = MathHelper.floor_double(actorPosition.zCoord);
+            boolean newPosVisited = !context.stall
+                && shouldActorTrigger(context, blockPos, actor, actorPosition, gridX, gridY, gridZ);
+
+            context.rotation = v -> applyRotation(v, 1);
+            context.position = actorPosition;
+            if (!actor.isActive(context)) continue;
+            if (newPosVisited && !context.stall) {
+                actor.visitNewPosition(context, gridX, gridY, gridZ);
+                context.firstMovement = false;
+            }
+            if (!oldMotion.equals(context.motion)) {
+                actor.onSpeedChanged(context, oldMotion, context.motion);
+            }
+            actor.tick(context);
+            stalled |= context.stall;
+        }
+        ticking = false;
+
+        // TODO
+        // for (Contraption subContraption : stabilizedSubContraptions.keySet()) {
+        // if (!(subContraption instanceof OrientedContraption orientedContraption)) continue;
+        // if (orientedContraption.stalled) {
+        // stalled = true;
+        // break;
+        // }
+        // }
+
+        if (!parentWorld.isRemote) {
+            if (!stalledPreviously && stalled) onContraptionStalled();
+            getContraptionWorld().setStalled(stalled);
+            return;
+        }
+
+        stalled = getContraptionWorld().isStalled();
+    }
+
+    protected void onContraptionStalled() {
+        if (this.getWorld().isRemote) return;
+        ContraptionWorld contraption = this.getContraptionWorld();
+        AllPackets.CHANNEL.sendToAll(
+            new ContraptionStallPacket(
+                contraption.getSubWorldID(),
+                contraption.getTranslationX(),
+                contraption.getTranslationY(),
+                contraption.getTranslationZ(),
+                getStalledAngle()));
+    }
+
+    protected boolean shouldActorTrigger(MovementContext context, ChunkCoordinates blockPos, MovementBehaviour actor,
+        Vec3 actorPosition, int gridX, int gridY, int gridZ) {
+        Vec3 previousPosition = context.position;
+        if (previousPosition == null) return false;
+
+        context.motion = actorPosition.subtract(previousPosition);
+        Vec3 relativeMotion = context.motion;
+        relativeMotion = reverseRotation(relativeMotion, 1);
+        context.relativeMotion = relativeMotion;
+        return MathHelper.floor_double(previousPosition.xCoord) != gridX
+            || MathHelper.floor_double(previousPosition.yCoord) != gridY
+            || MathHelper.floor_double(previousPosition.zCoord) != gridZ
+            || context.relativeMotion.lengthVector() > 0 && context.firstMovement;
+    }
+
+    @SideOnly(Side.CLIENT)
+    static void handleStallPacket(ContraptionStallPacket packet) {
+        World subworld = ((IMixinWorld) Minecraft.getMinecraft().theWorld).getSubWorld(packet.subworldID);
+        if (!(subworld instanceof ContraptionWorld contraptionWorld)) return;
+        contraptionWorld.getContraption()
+            .handleStallInformation(packet.x, packet.y, packet.z, packet.angle);
+    }
+
+    protected abstract float getStalledAngle();
+
+    protected abstract void handleStallInformation(float x, float y, float z, float angle);
 }

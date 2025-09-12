@@ -9,28 +9,28 @@ import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.AllTags.AllBlockTags;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.AllSubWorldTypes;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.AssemblyException;
-import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.Contraption;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.ContraptionType;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.ContraptionWorld;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.ControlledContraption;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.IControlContraption;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
 
-public class BearingContraption extends Contraption {
+public class BearingContraption extends ControlledContraption {
 
     protected int sailBlocks;
     protected Direction facing;
 
     private boolean isWindmill;
 
-    public BearingContraption() {
-        super();
-    }
+    public BearingContraption() {}
 
-    public BearingContraption(boolean isWindmill, Direction facing) {
-        super();
+    public BearingContraption(World world, IControlContraption controller, boolean isWindmill, Direction facing) {
+        super(world, controller, facing.getAxis());
         this.isWindmill = isWindmill;
         this.facing = facing;
     }
 
+    @SuppressWarnings("static-access")
     @Override
     public boolean assemble(World world, int x, int y, int z) throws AssemblyException {
         ChunkCoordinates normal = facing.getNormal();
@@ -76,9 +76,9 @@ public class BearingContraption extends Contraption {
 
     @Override
     public void readNBT(NBTTagCompound tag, boolean spawnData) {
+        super.readNBT(tag, spawnData);
         sailBlocks = tag.getInteger("Sails");
         facing = Direction.from3DDataValue(tag.getInteger("Facing"));
-        super.readNBT(tag, spawnData);
     }
 
     public int getSailBlocks() {
@@ -95,56 +95,11 @@ public class BearingContraption extends Contraption {
 
     @Override
     public boolean canBeStabilized(Direction facing, int localX, int localY, int localZ) {
-        if (facing.getOpposite() == this.facing && localX == 0 && localY == 0 && localZ == 0) return false;
+        ChunkCoordinates center = this.getCenterBlock();
+        if (facing.getOpposite() == this.facing && localX == center.posX
+            && localY == center.posY
+            && localZ == center.posZ) return false;
         return facing.getAxis() == this.facing.getAxis();
-    }
-
-    public boolean isStalled() {
-        return getContraptionWorld().isStalled();
-    }
-
-    public void setAngle(float angle) {
-        ContraptionWorld contraption = this.getContraptionWorld();
-        double currentAngle = 0;
-        switch (facing.getAxis()) {
-            case X:
-                currentAngle = contraption.getRotationRoll();
-                break;
-            case Y:
-                currentAngle = contraption.getRotationYaw();
-                break;
-            case Z:
-                currentAngle = contraption.getRotationPitch();
-                break;
-        }
-        // A small fix to marry Create's 360 degree system with MetaWorlds' unlimited system
-        if (Math.abs(currentAngle) > 360 || (currentAngle * angle <= 0))
-            angle += Math.floor(currentAngle / 360 + (angle < 0 ? 1 : 0)) * 360;
-        switch (facing.getAxis()) {
-            case X:
-                contraption.setRotationRoll(angle);
-                break;
-            case Y:
-                contraption.setRotationYaw(angle);
-                break;
-            case Z:
-                contraption.setRotationPitch(angle);
-                break;
-        }
-    }
-
-    public double getAngle() {
-        ContraptionWorld contraption = this.getContraptionWorld();
-        switch (facing.getAxis()) {
-            case X:
-                return contraption.getRotationRoll();
-            case Y:
-                return contraption.getRotationYaw();
-            case Z:
-                return contraption.getRotationPitch();
-            default:
-                return 0;
-        }
     }
 
     public void setSpeed(float speed) {

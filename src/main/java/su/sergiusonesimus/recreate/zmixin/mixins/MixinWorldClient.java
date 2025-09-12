@@ -15,6 +15,7 @@ import su.sergiusonesimus.metaworlds.zmixin.interfaces.minecraft.world.IMixinWor
 import su.sergiusonesimus.metaworlds.zmixin.interfaces.minecraft.world.IMixinWorldIntermediate;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.Contraption;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.ContraptionWorldFactory;
+import su.sergiusonesimus.recreate.zmixin.interfaces.IMixinWorldReCreate;
 
 @Mixin(WorldClient.class)
 public class MixinWorldClient extends MixinWorld {
@@ -23,7 +24,8 @@ public class MixinWorldClient extends MixinWorld {
     private Minecraft mc;
 
     public World createContraptionWorld(Contraption contraption) {
-        return this.createContraptionWorld(((IMixinWorld) this).getUnoccupiedSubworldID(), contraption);
+        return ((IMixinWorldReCreate) ((IMixinWorld) this).getParentWorld())
+            .createContraptionWorld(((IMixinWorld) this).getUnoccupiedSubworldID(), contraption);
     }
 
     public World createContraptionWorld(int newSubWorldID, Contraption contraption) {
