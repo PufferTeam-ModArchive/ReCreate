@@ -57,6 +57,11 @@ public class GearboxBlock extends RotatedPillarKineticBlock implements ITE<Gearb
         return ReCreate.proxy.getGearboxBlockRenderID();
     }
 
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockAccess worldIn, int x, int y, int z, int side) {
+        return true;
+    }
+
     /**
      * Gets the block's texture. Args: side, meta
      */

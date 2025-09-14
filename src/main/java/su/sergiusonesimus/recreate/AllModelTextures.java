@@ -5,17 +5,22 @@ import net.minecraft.util.ResourceLocation;
 
 public enum AllModelTextures {
 
+    // Kinetics
     SHAFT("axis.png"),
-    CREATIVE_MOTOR("creative_motor.png"),
     COGWHEEL("cogwheel.png"),
     LARGE_COGWHEEL("large_cogwheel.png"),
-    MECHANICAL_BEARING("mechanical_bearing.png"),
-    GEARSHIFT("gearshift.png"),
-    LIT_GEARSHIFT("lit_gearshift.png"),
+
+    GEARBOX("gearbox.png"),
     CLUTCH("clutch.png"),
     LIT_CLUTCH("lit_clutch.png"),
-    GEARBOX("gearbox.png"),
+    GEARSHIFT("gearshift.png"),
+    LIT_GEARSHIFT("lit_gearshift.png"),
+
+    CREATIVE_MOTOR("creative_motor.png"),
     WATER_WHEEL("water_wheel.png"),
+
+    // Contraptions
+    MECHANICAL_BEARING("mechanical_bearing.png"),
 
     WRENCH("wrench.png"),
 

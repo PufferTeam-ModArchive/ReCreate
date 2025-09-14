@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,6 +22,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -62,6 +64,7 @@ public class SailBlock extends WrenchableDirectionalBlock {
         super(Material.cloth);
         this.setHardness(2.0F);
         this.setResistance(5.0F);
+        this.setStepSound(soundTypeWood);
         this.frame = frame;
         this.color = color;
     }
@@ -72,6 +75,24 @@ public class SailBlock extends WrenchableDirectionalBlock {
 
     public int getRenderType() {
         return ReCreate.proxy.getSailBlockRenderID();
+    }
+
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockAccess worldIn, int x, int y, int z, int side) {
+        return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
+        IIcon defaultIcon = this.getIcon(side, world.getBlockMetadata(x, y, z));
+        if (world.getBlock(x, y, z) instanceof SailBlock) return defaultIcon;
+        else {
+            MovingObjectPosition mop = Minecraft.getMinecraft().objectMouseOver;
+            if (mop == null || mop.typeOfHit != MovingObjectType.BLOCK
+                || !(world.getBlock(mop.blockX, mop.blockY, mop.blockZ) instanceof SailBlock)) return defaultIcon;
+            return this.getIcon(side, world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ));
+        }
+
     }
 
     @SideOnly(Side.CLIENT)
@@ -161,7 +182,7 @@ public class SailBlock extends WrenchableDirectionalBlock {
                             x + 1.0D - 3 * pixel,
                             y + 1.0D,
                             z + 1.0D));
-                    list.add(
+                    if (!frame) list.add(
                         AxisAlignedBB.getBoundingBox(
                             x + 2 * pixel,
                             y + 1.0D - pixel,
@@ -231,7 +252,7 @@ public class SailBlock extends WrenchableDirectionalBlock {
                             x + 1.0D - 3 * pixel,
                             y + 3 * pixel,
                             z + 1.0D));
-                    list.add(
+                    if (!frame) list.add(
                         AxisAlignedBB.getBoundingBox(
                             x + 2 * pixel,
                             y + 0.0D,
@@ -306,7 +327,7 @@ public class SailBlock extends WrenchableDirectionalBlock {
                             x + 1.0D,
                             y + 1.0D - 3 * pixel,
                             z + 1.0D));
-                    list.add(
+                    if (!frame) list.add(
                         AxisAlignedBB.getBoundingBox(
                             x + 1.0D - pixel,
                             y + 2 * pixel,
@@ -376,7 +397,7 @@ public class SailBlock extends WrenchableDirectionalBlock {
                             x + 3 * pixel,
                             y + 1.0D - 3 * pixel,
                             z + 1.0D));
-                    list.add(
+                    if (!frame) list.add(
                         AxisAlignedBB.getBoundingBox(
                             x + 0.0D,
                             y + 2 * pixel,
@@ -451,7 +472,7 @@ public class SailBlock extends WrenchableDirectionalBlock {
                             x + 1.0D - 3 * pixel,
                             y + 1.0D,
                             z + 1.0D));
-                    list.add(
+                    if (!frame) list.add(
                         AxisAlignedBB.getBoundingBox(
                             x + 2 * pixel,
                             y + 2 * pixel,
@@ -521,7 +542,7 @@ public class SailBlock extends WrenchableDirectionalBlock {
                             x + 1.0D - 3 * pixel,
                             y + 1.0D,
                             z + 3 * pixel));
-                    list.add(
+                    if (!frame) list.add(
                         AxisAlignedBB.getBoundingBox(
                             x + 2 * pixel,
                             y + 2 * pixel,
@@ -656,11 +677,11 @@ public class SailBlock extends WrenchableDirectionalBlock {
     }
 
     public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
-        return getDirection(world.getBlockMetadata(x, y, z)) == Direction.fromForgeDirection(side);
+        return !frame && getDirection(world.getBlockMetadata(x, y, z)) == Direction.fromForgeDirection(side);
     }
 
     public boolean recolourBlock(World world, int x, int y, int z, ForgeDirection side, int colour) {
-        return this.applyDye(world, x, y, z, color);
+        return this.applyDye(world, x, y, z, colour);
     }
 
     protected boolean applyDye(World world, int x, int y, int z, Integer color) {
@@ -704,9 +725,9 @@ public class SailBlock extends WrenchableDirectionalBlock {
             for (Direction d : Iterate.directions) {
                 if (d.getAxis() == blockAxis) continue;
                 ChunkCoordinates normal = d.getNormal();
-                int adjacentX = x + normal.posX;
-                int adjacentY = y + normal.posY;
-                int adjacentZ = z + normal.posZ;
+                int adjacentX = currentPos.posX + normal.posX;
+                int adjacentY = currentPos.posY + normal.posY;
+                int adjacentZ = currentPos.posZ + normal.posZ;
                 ChunkCoordinates adjacentPos = new ChunkCoordinates(adjacentX, adjacentY, adjacentZ);
                 if (visited.contains(adjacentPos)) continue;
                 Block adjacentBlock = world.getBlock(adjacentX, adjacentY, adjacentZ);
@@ -734,8 +755,9 @@ public class SailBlock extends WrenchableDirectionalBlock {
 
     private void bounce(Entity entity) {
         if (entity.motionY < 0.0D) {
-            double d0 = entity instanceof EntityLivingBase ? 1.0D : 0.8D;
-            entity.motionY = -entity.motionY * (double) 0.26F * d0;
+            double bounceFactor = entity instanceof EntityLivingBase ? 1.0D : 0.8D;
+            entity.motionY = -entity.motionY * (double) 0.26F * bounceFactor;
+            entity.velocityChanged = true;
         }
 
     }
@@ -750,6 +772,19 @@ public class SailBlock extends WrenchableDirectionalBlock {
 
     public MapColor getMapColor(int meta) {
         return frame ? MapColor.woodColor : MapColor.getMapColorForBlockColored(color);
+    }
+
+    public MovingObjectPosition collisionRayTrace(World worldIn, int x, int y, int z, Vec3 startVec, Vec3 endVec) {
+        MovingObjectPosition result = super.collisionRayTrace(worldIn, x, y, z, startVec, endVec);
+        if (result != null && frame) {
+            double frame = 3.0D / 16.0D;
+            int counter = 0
+                + ((result.hitVec.xCoord % 1.0D) > frame && (result.hitVec.xCoord % 1.0D) < (1 - frame) ? 1 : 0)
+                + ((result.hitVec.yCoord % 1.0D) > frame && (result.hitVec.yCoord % 1.0D) < (1 - frame) ? 1 : 0)
+                + ((result.hitVec.zCoord % 1.0D) > frame && (result.hitVec.zCoord % 1.0D) < (1 - frame) ? 1 : 0);
+            if (counter >= 2) return null;
+        }
+        return result;
     }
 
     private static class PlacementHelper implements IPlacementHelper {

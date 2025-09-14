@@ -1,7 +1,6 @@
 package su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -9,17 +8,16 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import su.sergiusonesimus.metaworlds.util.Direction;
+import su.sergiusonesimus.recreate.AllModelTextures;
 import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.content.contraptions.base.DirectionalKineticBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.gearbox.GearboxBlock;
 
 public abstract class BearingBlock extends DirectionalKineticBlock {
 
-    public static IIcon bearingTop;
-    public static IIcon bearingSide;
+    public IIcon bearingTop;
+    public IIcon bearingSide;
 
     public BearingBlock(Material materialIn) {
         super(materialIn);
@@ -77,12 +75,7 @@ public abstract class BearingBlock extends DirectionalKineticBlock {
         }
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister iconRegister) {
-        BearingBlock.bearingTop = iconRegister.registerIcon(ReCreate.ID + ":bearing_top");
-        BearingBlock.bearingSide = iconRegister.registerIcon(ReCreate.ID + ":mechanical_bearing_side");
-    }
+    public abstract AllModelTextures getTexture();
 
     /**
      * Checks if the block is a solid face on the given side, used by placement logic.

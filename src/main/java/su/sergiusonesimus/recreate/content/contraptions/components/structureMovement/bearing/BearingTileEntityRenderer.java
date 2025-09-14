@@ -3,7 +3,6 @@ package su.sergiusonesimus.recreate.content.contraptions.components.structureMov
 import org.lwjgl.opengl.GL11;
 
 import su.sergiusonesimus.metaworlds.util.Direction;
-import su.sergiusonesimus.recreate.AllModelTextures;
 import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.compat.tebreaker.TileEntityBreakerIntegration;
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntity;
@@ -16,7 +15,8 @@ public class BearingTileEntityRenderer extends KineticTileEntityRenderer {
 
     @Override
     public void renderSafe(KineticTileEntity tileEntity, double x, double y, double z, float partialTicks) {
-        Direction direction = ((BearingBlock) tileEntity.getBlockType()).getDirection(tileEntity.getBlockMetadata());
+        BearingBlock block = (BearingBlock) tileEntity.getBlockType();
+        Direction direction = block.getDirection(tileEntity.getBlockMetadata());
         model.setFace(direction);
         MechanicalBearingTileEntity mbte = (MechanicalBearingTileEntity) tileEntity;
         float topAngle = mbte.movedContraption == null ? mbte.getInterpolatedAngle(partialTicks - 1f)
@@ -40,7 +40,7 @@ public class BearingTileEntityRenderer extends KineticTileEntityRenderer {
             this,
             TileEntityBreakerIntegration.BEARING,
             TileEntityBreakerIntegration.getTileEntityDestroyProgress(tileEntity));
-        model.render(AllModelTextures.MECHANICAL_BEARING, this);
+        model.render(block.getTexture(), this);
 
         GL11.glPopMatrix();
     }

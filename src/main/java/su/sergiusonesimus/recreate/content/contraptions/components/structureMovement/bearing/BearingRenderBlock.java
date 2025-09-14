@@ -8,7 +8,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import su.sergiusonesimus.metaworlds.util.Direction;
-import su.sergiusonesimus.recreate.AllModelTextures;
 
 public class BearingRenderBlock implements ISimpleBlockRenderingHandler {
 
@@ -24,7 +23,7 @@ public class BearingRenderBlock implements ISimpleBlockRenderingHandler {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         model.setFace(Direction.UP);
-        model.render(AllModelTextures.MECHANICAL_BEARING);
+        model.render(((BearingBlock) block).getTexture());
 
         block.setBlockBoundsForItemRender();
     }

@@ -149,6 +149,11 @@ public class GearshiftBlock extends AbstractEncasedShaftBlock implements ITE<Spl
         return new ItemStack(AllBlocks.unpowered_gearshift);
     }
 
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockAccess worldIn, int x, int y, int z, int side) {
+        return true;
+    }
+
     /**
      * Gets the block's texture. Args: side, meta
      */

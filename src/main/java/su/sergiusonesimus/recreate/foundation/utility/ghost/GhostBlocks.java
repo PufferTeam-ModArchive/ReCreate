@@ -14,7 +14,7 @@ public class GhostBlocks {
         return 0.55d - 0.2d * offset;
     }
 
-    final Map<Object, Entry> ghosts;
+    final Map<Object, Entry> ghosts = new HashMap<Object, Entry>();
 
     public GhostBlockParams showGhostState(Object slot, Block block, int meta) {
         return showGhostState(slot, block, meta, 1);
@@ -38,10 +38,6 @@ public class GhostBlocks {
         e.params = params;
         e.ghost = ghost;
         return e;
-    }
-
-    public GhostBlocks() {
-        ghosts = new HashMap<>();
     }
 
     public void tickGhosts() {

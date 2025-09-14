@@ -29,6 +29,7 @@ import su.sergiusonesimus.recreate.content.contraptions.TorquePropagator;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.AllSubWorldTypes;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.WindmillBearingTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueHandler;
 import su.sergiusonesimus.recreate.content.contraptions.components.waterwheel.WaterWheelTileEntity;
@@ -152,14 +153,20 @@ public class ReCreate {
     }
 
     private void registerTileEntities() {
+        // Kinetics
         GameRegistry.registerTileEntity(ShaftTileEntity.class, "Shaft");
-        GameRegistry.registerTileEntity(CreativeMotorTileEntity.class, "Creative Motor");
         GameRegistry.registerTileEntity(CogWheelTileEntity.class, "Cogwheel");
-        GameRegistry.registerTileEntity(MechanicalBearingTileEntity.class, "Mechanical Bearing");
-        GameRegistry.registerTileEntity(GearshiftTileEntity.class, "Gearshift");
-        GameRegistry.registerTileEntity(ClutchTileEntity.class, "Clutch");
+
         GameRegistry.registerTileEntity(GearboxTileEntity.class, "Gearbox");
+        GameRegistry.registerTileEntity(ClutchTileEntity.class, "Clutch");
+        GameRegistry.registerTileEntity(GearshiftTileEntity.class, "Gearshift");
+
+        GameRegistry.registerTileEntity(CreativeMotorTileEntity.class, "Creative Motor");
         GameRegistry.registerTileEntity(WaterWheelTileEntity.class, "Water Wheel");
+
+        // Contraptions
+        GameRegistry.registerTileEntity(WindmillBearingTileEntity.class, "Windmill Bearing");
+        GameRegistry.registerTileEntity(MechanicalBearingTileEntity.class, "Mechanical Bearing");
     }
 
     private void registerRotators() {
@@ -202,5 +209,9 @@ public class ReCreate {
 
     public static ResourceLocation asResource(String path) {
         return new ResourceLocation(ID, path);
+    }
+
+    public static void breakpoint() {
+        int x = 0;
     }
 }

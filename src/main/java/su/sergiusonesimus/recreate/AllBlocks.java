@@ -7,10 +7,12 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemDye;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import su.sergiusonesimus.recreate.AllTags.AllBlockTags;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorItemBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.SailBlock;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.WindmillBearingBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.waterwheel.WaterWheelBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelItemBlock;
@@ -99,11 +101,14 @@ public class AllBlocks {
         sail_frame = SailBlock.frame()
             .setBlockName("sail_frame")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
+        AllBlockTags.SAILS.add(sail_frame);
+        AllBlockTags.FAN_TRANSPARENT.add(sail_frame);
         registerMyBlock(sail_frame);
         for (int i = 0; i < ItemDye.field_150921_b.length; i++) {
             sails[i] = SailBlock.withCanvas(i)
                 .setBlockName(ItemDye.field_150921_b[i] + "_sail")
                 .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
+            AllBlockTags.SAILS.add(sails[i]);
             registerMyBlock(sails[i]);
         }
     }

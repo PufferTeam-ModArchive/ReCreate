@@ -4,6 +4,8 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.DestroyBlockProgress;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
@@ -61,6 +63,13 @@ public class SailRenderBlock implements ISimpleBlockRenderingHandler {
         renderer.setRenderBounds(1.0D - 3 * pixel, 3 * pixel, 1.0D - 2 * pixel, 1.0D - min, 1.0D - 3 * pixel, 1.0D);
         RenderHelper.renderInvBox(renderer, block, correctMeta);
 
+        renderer.uvRotateBottom = 0;
+        renderer.uvRotateTop = 0;
+        renderer.uvRotateNorth = 0;
+        renderer.uvRotateSouth = 0;
+        renderer.uvRotateWest = 0;
+        renderer.uvRotateEast = 0;
+
         block.setBlockBoundsForItemRender();
     }
 
@@ -70,7 +79,14 @@ public class SailRenderBlock implements ISimpleBlockRenderingHandler {
         double pixel = 1.0D / 16D;
         SailBlock sail = (SailBlock) block;
         double min = sail.frame ? 0.0D : pixel;
-        int meta = world.getBlockMetadata(x, y, z);
+        int meta;
+        if (world.getBlock(x, y, z) instanceof SailBlock) meta = world.getBlockMetadata(x, y, z);
+        else {
+            MovingObjectPosition mop = Minecraft.getMinecraft().objectMouseOver;
+            if (mop == null || mop.typeOfHit != MovingObjectType.BLOCK
+                || !(world.getBlock(mop.blockX, mop.blockY, mop.blockZ) instanceof SailBlock)) return false;
+            meta = world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ);
+        }
         Direction dir = sail.getDirection(meta);
         boolean damageTexture = false;
         for (Object object : Minecraft.getMinecraft().renderGlobal.damagedBlocks.values()) {
@@ -275,6 +291,13 @@ public class SailRenderBlock implements ISimpleBlockRenderingHandler {
                 renderer.renderStandardBlock(block, x, y, z);
                 break;
         }
+
+        renderer.uvRotateBottom = 0;
+        renderer.uvRotateTop = 0;
+        renderer.uvRotateNorth = 0;
+        renderer.uvRotateSouth = 0;
+        renderer.uvRotateWest = 0;
+        renderer.uvRotateEast = 0;
 
         return true;
     }
