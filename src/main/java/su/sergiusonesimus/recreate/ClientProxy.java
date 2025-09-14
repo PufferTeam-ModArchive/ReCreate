@@ -15,6 +15,7 @@ import su.sergiusonesimus.recreate.content.contraptions.components.motor.Creativ
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.BearingRenderBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.BearingTileEntityRenderer;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.SailRenderBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueRenderer;
 import su.sergiusonesimus.recreate.content.contraptions.components.waterwheel.WaterWheelRenderBlock;
@@ -45,6 +46,7 @@ public class ClientProxy extends CommonProxy {
     int splitShaftRenderID;
     int gearboxRenderID;
     int waterWheelRenderID;
+    int sailRenderID;
 
     ModelBiped gogglesArmorModel;
 
@@ -102,6 +104,8 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(new GearboxRenderBlock(gearboxRenderID));
         waterWheelRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new WaterWheelRenderBlock(waterWheelRenderID));
+        sailRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new SailRenderBlock(sailRenderID));
 
         // armor model
         gogglesArmorModel = new GogglesModel();
@@ -162,6 +166,10 @@ public class ClientProxy extends CommonProxy {
 
     public int getWaterWheelBlockRenderID() {
         return waterWheelRenderID;
+    }
+
+    public int getSailBlockRenderID() {
+        return sailRenderID;
     }
 
     public ModelBiped getGogglesArmorModel() {

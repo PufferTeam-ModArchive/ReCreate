@@ -36,6 +36,8 @@ public class CreativeMotorTileEntityRenderer extends KineticTileEntityRenderer {
             TileEntityBreakerIntegration.CREATIVE_MOTOR,
             TileEntityBreakerIntegration.getTileEntityDestroyProgress(tileEntity));
 
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
         model.render(this);
 
         GL11.glPopMatrix();

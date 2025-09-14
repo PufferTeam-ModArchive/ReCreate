@@ -52,23 +52,11 @@ public interface IWrenchable {
         AllSounds.WRENCH_ROTATE.playOnServer(world, x, y, z, 1, ReCreate.RANDOM.nextFloat() + .5f);
     }
 
-    public Axis getAxis(int meta);
-
-    /**
-     * @param meta - Metadata of current block
-     * @return Positive direction of current block's axis
-     */
-    public default Direction getDirection(int meta) {
-        switch (getAxis(meta)) {
-            default:
-            case X:
-                return Direction.EAST;
-            case Y:
-                return Direction.UP;
-            case Z:
-                return Direction.SOUTH;
-        }
+    public default Axis getAxis(int meta) {
+        return getDirection(meta).getAxis();
     }
+
+    public Direction getDirection(int meta);
 
     public int getMetaFromDirection(Direction direction);
 

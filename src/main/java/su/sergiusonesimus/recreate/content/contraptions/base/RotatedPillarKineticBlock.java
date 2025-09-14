@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 
 import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.metaworlds.util.Direction.Axis;
+import su.sergiusonesimus.metaworlds.util.Direction.AxisDirection;
 import su.sergiusonesimus.metaworlds.util.Rotation;
 import su.sergiusonesimus.recreate.foundation.utility.Iterate;
 
@@ -16,6 +17,11 @@ public abstract class RotatedPillarKineticBlock extends KineticBlock {
 
     public RotatedPillarKineticBlock(Material materialIn) {
         super(materialIn);
+    }
+
+    @Override
+    public Direction getDirection(int meta) {
+        return Direction.get(AxisDirection.POSITIVE, getAxis(meta));
     }
 
     @Override

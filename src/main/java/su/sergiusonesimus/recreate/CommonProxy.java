@@ -56,6 +56,10 @@ public class CommonProxy {
         return 0;
     }
 
+    public int getSailBlockRenderID() {
+        return 0;
+    }
+
     public int registerArmorRenderID(String prefix) {
         return 0;
     }

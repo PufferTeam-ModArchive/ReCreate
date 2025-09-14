@@ -158,7 +158,7 @@ public abstract class ControlledContraption extends Contraption {
     }
 
     protected IControlContraption getController() {
-        if (controllerX == null || controllerY == null || controllerZ == null) return null;
+        if (parentWorld == null || controllerX == null || controllerY == null || controllerZ == null) return null;
         if (!parentWorld.blockExists(controllerX, controllerY, controllerZ)) return null;
         TileEntity te = parentWorld.getTileEntity(controllerX, controllerY, controllerZ);
         if (!(te instanceof IControlContraption controller)) return null;

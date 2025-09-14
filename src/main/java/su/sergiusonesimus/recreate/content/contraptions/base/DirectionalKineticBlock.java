@@ -8,7 +8,6 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
 import su.sergiusonesimus.metaworlds.util.Direction;
-import su.sergiusonesimus.metaworlds.util.Direction.Axis;
 import su.sergiusonesimus.metaworlds.util.Rotation;
 import su.sergiusonesimus.recreate.foundation.utility.Iterate;
 
@@ -16,11 +15,6 @@ public abstract class DirectionalKineticBlock extends KineticBlock {
 
     public DirectionalKineticBlock(Material materialIn) {
         super(materialIn);
-    }
-
-    @Override
-    public Axis getAxis(int meta) {
-        return getDirection(meta).getAxis();
     }
 
     @Override
@@ -77,7 +71,6 @@ public abstract class DirectionalKineticBlock extends KineticBlock {
         return prefferedSide;
     }
 
-    @Override
     public int rotate(World world, int x, int y, int z, Rotation rot) {
         int meta = world.getBlockMetadata(x, y, z);
         int newMeta = this.getMetaFromDirection(rot.rotate(this.getDirection(meta)));
