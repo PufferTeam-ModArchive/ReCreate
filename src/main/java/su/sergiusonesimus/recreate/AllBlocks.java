@@ -53,32 +53,40 @@ public class AllBlocks {
         shaft = new ShaftBlock(Material.rock).setBlockName("shaft")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
         registerMyBlock(shaft);
+        BlockStressDefaults.setNoImpact(shaft);
 
         cogwheel = CogWheelBlock.small(Material.wood)
             .setBlockName("cogwheel")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
         registerMyBlock(cogwheel, CogWheelItemBlock.class);
+        BlockStressDefaults.setNoImpact(cogwheel);
 
         large_cogwheel = CogWheelBlock.large(Material.wood)
             .setBlockName("large_cogwheel")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
         registerMyBlock(large_cogwheel, CogWheelItemBlock.class);
+        BlockStressDefaults.setNoImpact(large_cogwheel);
 
         gearbox = new GearboxBlock(Material.wood).setBlockName("gearbox")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
         registerMyBlock(gearbox);
+        BlockStressDefaults.setNoImpact(gearbox);
 
         unpowered_clutch = (ClutchBlock) new ClutchBlock(Material.wood, false).setBlockName("clutch")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
         GameRegistry.registerBlock(unpowered_clutch, ItemBlock.class, "tile.unpowered_clutch");
+        BlockStressDefaults.setNoImpact(unpowered_clutch);
         powered_clutch = (ClutchBlock) new ClutchBlock(Material.wood, true).setBlockName("clutch");
         GameRegistry.registerBlock(powered_clutch, ItemBlock.class, "tile.powered_clutch");
+        BlockStressDefaults.setNoImpact(powered_clutch);
 
         unpowered_gearshift = (GearshiftBlock) new GearshiftBlock(Material.wood, false).setBlockName("gearshift")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
         GameRegistry.registerBlock(unpowered_gearshift, ItemBlock.class, "tile.unpowered_gearshift");
+        BlockStressDefaults.setNoImpact(unpowered_gearshift);
         powered_gearshift = (GearshiftBlock) new GearshiftBlock(Material.wood, true).setBlockName("gearshift");
         GameRegistry.registerBlock(powered_gearshift, ItemBlock.class, "tile.powered_gearshift");
+        BlockStressDefaults.setNoImpact(powered_gearshift);
 
         creative_motor = new CreativeMotorBlock(Material.rock).setBlockName("creative_motor")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
@@ -97,6 +105,7 @@ public class AllBlocks {
         mechanical_bearing = new MechanicalBearingBlock(Material.wood).setBlockName("mechanical_bearing")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
         registerMyBlock(mechanical_bearing);
+        BlockStressDefaults.setImpact(mechanical_bearing, 4.0);
 
         sail_frame = SailBlock.frame()
             .setBlockName("sail_frame")
