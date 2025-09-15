@@ -171,7 +171,13 @@ public class ReCreate {
 
     private void registerRotators() {
         // Directional kinetic blocks
-        RotationHelper.registerBlocks("3d_directional", AllBlocks.creative_motor, AllBlocks.mechanical_bearing);
+        RotationHelper.registerBlocks(
+            "3d_directional",
+            AllBlocks.creative_motor,
+            AllBlocks.mechanical_bearing,
+            AllBlocks.sail_frame,
+            AllBlocks.waterwheel);
+        RotationHelper.registerBlocks("3d_directional", AllBlocks.sails);
 
         // Rotated pillar kinetic blocks
         RotationHelper.registerBlockRotator("rotated_pillar", (meta) -> {
@@ -204,14 +210,19 @@ public class ReCreate {
             }
             return originalMeta;
         });
-        RotationHelper.registerBlocks("rotated_pillar", AllBlocks.shaft, AllBlocks.cogwheel, AllBlocks.large_cogwheel);
+        RotationHelper.registerBlocks(
+            "rotated_pillar",
+            AllBlocks.shaft,
+            AllBlocks.cogwheel,
+            AllBlocks.large_cogwheel,
+            AllBlocks.gearbox,
+            AllBlocks.powered_clutch,
+            AllBlocks.unpowered_clutch,
+            AllBlocks.powered_gearshift,
+            AllBlocks.unpowered_gearshift);
     }
 
     public static ResourceLocation asResource(String path) {
         return new ResourceLocation(ID, path);
-    }
-
-    public static void breakpoint() {
-        int x = 0;
     }
 }
