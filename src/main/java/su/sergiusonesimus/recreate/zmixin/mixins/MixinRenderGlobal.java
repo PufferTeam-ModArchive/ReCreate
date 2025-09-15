@@ -30,7 +30,6 @@ public class MixinRenderGlobal {
     @Shadow(remap = true)
     public static void drawOutlinedBoundingBox(AxisAlignedBB p_147590_0_, int p_147590_1_) {}
 
-    private EntityPlayer storedEntityPlayer;
     private MovingObjectPosition storedRayTraceHit;
     private Block storedBlock;
     private float storedF1;
@@ -48,7 +47,6 @@ public class MixinRenderGlobal {
     private void saveVariables(EntityPlayer entityPlayer, MovingObjectPosition rayTraceHit, int i,
         float partialTickTime, CallbackInfo ci, @Local(name = "block") Block block, @Local(name = "f1") float f1,
         @Local(name = "d0") double d0, @Local(name = "d1") double d1, @Local(name = "d2") double d2) {
-        storedEntityPlayer = entityPlayer;
         storedRayTraceHit = rayTraceHit;
         storedBlock = block;
         storedF1 = f1;
@@ -65,7 +63,7 @@ public class MixinRenderGlobal {
             opcode = Opcodes.INVOKESTATIC))
     private void wrapDrawOutlinedBoundingBox(AxisAlignedBB aabb, int localI, Operation<Void> original) {
         List<AxisAlignedBB> bbList = ((IMixinBlock) storedBlock).getSelectedBoundingBoxesList(
-            storedEntityPlayer.worldObj,
+            ((IMixinMovingObjectPosition) storedRayTraceHit).getWorld(),
             storedRayTraceHit.blockX,
             storedRayTraceHit.blockY,
             storedRayTraceHit.blockZ);
