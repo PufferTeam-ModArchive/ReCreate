@@ -103,6 +103,7 @@ public abstract class Contraption {
 
     protected boolean initialized;
     boolean ticking;
+    boolean beingRemoved = false;
 
     public Contraption() {}
 
@@ -236,6 +237,7 @@ public abstract class Contraption {
     }
 
     public void onRemoved() {
+        beingRemoved = true;
         if (simplifiedEntityColliderProvider != null) {
             simplifiedEntityColliderProvider.cancel(false);
             simplifiedEntityColliderProvider = null;

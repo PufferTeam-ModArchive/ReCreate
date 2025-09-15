@@ -62,7 +62,7 @@ public class ContraptionWorldServer extends SubWorldServer implements Contraptio
     @Override
     public void tick() {
         super.tick();
-        contraption.tick();
+        if (!contraption.beingRemoved) contraption.tick();
     }
 
     @Override
