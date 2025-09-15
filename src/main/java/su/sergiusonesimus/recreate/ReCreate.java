@@ -175,6 +175,7 @@ public class ReCreate {
             "3d_directional",
             AllBlocks.creative_motor,
             AllBlocks.mechanical_bearing,
+            AllBlocks.windmill_bearing,
             AllBlocks.sail_frame,
             AllBlocks.waterwheel);
         RotationHelper.registerBlocks("3d_directional", AllBlocks.sails);

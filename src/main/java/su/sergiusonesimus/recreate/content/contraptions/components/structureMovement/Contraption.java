@@ -53,6 +53,7 @@ import su.sergiusonesimus.recreate.AllMovementBehaviours;
 import su.sergiusonesimus.recreate.AllSounds;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.StabilizedContraption;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.WindmillBearingBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueHandler;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
@@ -364,10 +365,11 @@ public abstract class Contraption {
         if (block == AllBlocks.mechanical_bearing)
             moveBearing(posX, posY, posZ, frontier, visited, (MechanicalBearingBlock) block, meta);
 
+        // WM Bearings attach their structure when moved
+        if (block == AllBlocks.windmill_bearing)
+            moveWindmillBearing(posX, posY, posZ, frontier, visited, (WindmillBearingBlock) block, meta);
+
         // TODO
-        // // WM Bearings attach their structure when moved
-        // if (AllBlocks.WINDMILL_BEARING.has(state)) moveWindmillBearing(posX, posY, posZ, frontier, visited, state);
-        //
         // // Seats transfer their passenger to the contraption
         // if (block instanceof SeatBlock) moveSeat(world, posX, posY, posZ);
         //
@@ -524,14 +526,15 @@ public abstract class Contraption {
     // }
     // }
 
-    // TODO
-    // private void moveWindmillBearing(int x, int y, int z, Queue<ChunkCoordinates> frontier,
-    // Set<ChunkCoordinates> visited, Block block, int meta) {
-    // Direction facing = state.getValue(WindmillBearingBlock.FACING);
-    // BlockPos offset = pos.relative(facing);
-    // if (!visited.contains(offset))
-    // frontier.add(offset);
-    // }
+    private void moveWindmillBearing(int x, int y, int z, Queue<ChunkCoordinates> frontier,
+        Set<ChunkCoordinates> visited, WindmillBearingBlock block, int meta) {
+        Direction facing = block.getDirection(meta);
+        ChunkCoordinates offset = facing.getNormal();
+        offset.posX += x;
+        offset.posY += y;
+        offset.posZ += z;
+        if (!visited.contains(offset)) frontier.add(offset);
+    }
 
     private void moveBearing(int x, int y, int z, Queue<ChunkCoordinates> frontier, Set<ChunkCoordinates> visited,
         MechanicalBearingBlock block, int meta) {

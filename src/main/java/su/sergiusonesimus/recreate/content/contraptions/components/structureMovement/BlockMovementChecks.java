@@ -26,6 +26,9 @@ import su.sergiusonesimus.metaworlds.util.BlockVolatilityMap;
 import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.SailBlock;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.WindmillBearingBlock;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.WindmillBearingTileEntity;
 import su.sergiusonesimus.recreate.foundation.config.ContraptionMovementSetting;
 
 public class BlockMovementChecks {
@@ -145,11 +148,11 @@ public class BlockMovementChecks {
             TileEntity te = world.getTileEntity(x, y, z);
             if (te instanceof MechanicalBearingTileEntity) return !((MechanicalBearingTileEntity) te).isRunning();
         }
+        if (block instanceof WindmillBearingBlock
+            && world.getTileEntity(x, y, z) instanceof WindmillBearingTileEntity windmill) {
+            return !windmill.isRunning();
+        }
         // TODO
-        // if (block instanceof WindmillBearingBlock) {
-        // TileEntity te = world.getTileEntity(x, y, z);
-        // if (te instanceof WindmillBearingTileEntity) return !((WindmillBearingTileEntity) te).isRunning();
-        // }
         // if (block instanceof ClockworkBearingBlock) {
         // TileEntity te = world.getTileEntity(x, y, z);
         // if (te instanceof ClockworkBearingTileEntity) return !((ClockworkBearingTileEntity) te).isRunning();
@@ -244,9 +247,8 @@ public class BlockMovementChecks {
         // return direction == Direction.UP;
         // return direction == state.getValue(HorizontalDirectionalBlock.FACING);
         // }
-        // if (block instanceof SailBlock)
-        // return direction.getAxis() != state.getValue(SailBlock.FACING)
-        // .getAxis();
+        if (block instanceof SailBlock sail) return direction.getAxis() != sail.getAxis(meta);
+        // TODO
         // if (block instanceof FluidTankBlock)
         // return FluidTankConnectivityHandler.isConnected(world, x, y, z, pos.relative(direction));
         // if (block instanceof ItemVaultBlock)
@@ -275,10 +277,8 @@ public class BlockMovementChecks {
         // if (AllBlocks.ROPE_PULLEY.has(state))
         // return facing == Direction.DOWN;
         if (block instanceof BlockCarpet) return facing == Direction.UP;
+        if (block instanceof SailBlock sail) return facing.getAxis() == sail.getAxis(meta);
         // TODO
-        // if (block instanceof SailBlock)
-        // return facing.getAxis() == state.getValue(SailBlock.FACING)
-        // .getAxis();
         // if (AllBlocks.PISTON_EXTENSION_POLE.has(state))
         // return facing.getAxis() != state.getValue(BlockStateProperties.FACING)
         // .getAxis();

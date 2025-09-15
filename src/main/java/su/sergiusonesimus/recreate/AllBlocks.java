@@ -41,6 +41,7 @@ public class AllBlocks {
     // Fluids
 
     // Contraptions
+    public static Block windmill_bearing;
     public static Block mechanical_bearing;
 
     public static Block sail_frame;
@@ -102,6 +103,11 @@ public class AllBlocks {
 
         // Contraptions
 
+        windmill_bearing = new WindmillBearingBlock(Material.wood).setBlockName("windmill_bearing")
+            .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
+        registerMyBlock(windmill_bearing);
+        BlockStressDefaults.setCapacity(windmill_bearing, 512.0);
+
         mechanical_bearing = new MechanicalBearingBlock(Material.wood).setBlockName("mechanical_bearing")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
         registerMyBlock(mechanical_bearing);
@@ -111,6 +117,7 @@ public class AllBlocks {
             .setBlockName("sail_frame")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
         AllBlockTags.SAILS.add(sail_frame);
+        AllBlockTags.WINDMILL_SAILS.add(sail_frame);
         AllBlockTags.FAN_TRANSPARENT.add(sail_frame);
         registerMyBlock(sail_frame);
         for (int i = 0; i < ItemDye.field_150921_b.length; i++) {
@@ -118,6 +125,7 @@ public class AllBlocks {
                 .setBlockName(ItemDye.field_150921_b[i] + "_sail")
                 .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
             AllBlockTags.SAILS.add(sails[i]);
+            AllBlockTags.WINDMILL_SAILS.add(sails[i]);
             registerMyBlock(sails[i]);
         }
     }

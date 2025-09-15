@@ -12,7 +12,6 @@ import su.sergiusonesimus.metaworlds.zmixin.interfaces.minecraft.world.IMixinWor
 import su.sergiusonesimus.recreate.AllSounds;
 import su.sergiusonesimus.recreate.content.contraptions.base.DirectionalKineticBlock;
 import su.sergiusonesimus.recreate.content.contraptions.base.GeneratingKineticTileEntity;
-import su.sergiusonesimus.recreate.content.contraptions.base.IRotate;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.AssemblyException;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.Contraption;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.ContraptionWorld;
@@ -135,11 +134,10 @@ public class MechanicalBearingTileEntity extends GeneratingKineticTileEntity
     public void assemble() {
         Block block = this.getBlockType();
         int meta = this.getBlockMetadata();
-        if (!(block instanceof BearingBlock)) return;
+        if (!(block instanceof BearingBlock bearing)) return;
 
-        Direction direction = ((IRotate) block).getDirection(meta);
+        Direction direction = bearing.getDirection(meta);
         movedContraption = new BearingContraption(this.getWorld(), this, isWindmill(), direction);
-        movedContraption.parentWorld = this.getWorld();
         try {
             if (!movedContraption.assemble(worldObj, xCoord, yCoord, zCoord)) return;
 

@@ -20,6 +20,7 @@ public enum AllModelTextures {
     WATER_WHEEL("water_wheel.png"),
 
     // Contraptions
+    WINDMILL_BEARING("windmill_bearing.png"),
     MECHANICAL_BEARING("mechanical_bearing.png"),
 
     WRENCH("wrench.png"),
