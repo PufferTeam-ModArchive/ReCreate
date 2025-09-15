@@ -405,7 +405,7 @@ public class KineticTileEntity extends SmartTileEntity implements IHaveGoggleInf
         }
 
         if (notFastEnough) {
-            IChatComponent speedRequirement = Lang.translate("tooltip.speedRequirement");
+            IChatComponent speedRequirement = Lang.translate("tooltip.speedRequirement", "");
             speedRequirement.getChatStyle()
                 .setColor(EnumChatFormatting.GOLD);
             tooltip.add(
@@ -434,7 +434,7 @@ public class KineticTileEntity extends SmartTileEntity implements IHaveGoggleInf
             tooltip.add(
                 componentSpacing.createCopy()
                     .appendSibling(Lang.translate("gui.goggles.kinetic_stats")));
-            IChatComponent stressImpact = Lang.translate("tooltip.stressImpact");
+            IChatComponent stressImpact = Lang.translate("tooltip.stressImpact", "");
             stressImpact.getChatStyle()
                 .setColor(EnumChatFormatting.GRAY);
             tooltip.add(
