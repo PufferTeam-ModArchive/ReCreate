@@ -129,11 +129,18 @@ public abstract class Contraption {
         if (contraptionWorld == null || parentWorld == null) return;
         World mainWorld = ((IMixinWorld) parentWorld).getParentWorld();
 
+        alignContraption();
+
+        // We are disassembling subcontraptions first, since some of them might want to modify blocks from current
+        // contraption
+        for (Contraption subContraption : stabilizedSubContraptions.keySet()) {
+            subContraption.processSubContraptionPosition(getContraptionWorld());
+            subContraption.disassemble();
+        }
+
         addBlocksToWorld(mainWorld);
         // TODO
         // addPassengersToWorld(level, transform, getPassengers());
-
-        for (Contraption subContraption : stabilizedSubContraptions.keySet()) subContraption.disassemble();
 
         this.getContraptionWorld()
             .ejectPassengers();
@@ -308,7 +315,7 @@ public abstract class Contraption {
         int posY = pos.posY;
         int posZ = pos.posZ;
 
-        if (posX >= world.getHeight()) return true;
+        if (posY >= world.getHeight()) return true;
         if (!world.blockExists(posX, posY, posZ)) throw AssemblyException.unloadedChunk(pos);
         if (isAnchoringBlockAt(posX, posY, posZ)) return true;
         Block block = world.getBlock(posX, posY, posZ);
@@ -1052,29 +1059,34 @@ public abstract class Contraption {
         contraption.setCenter((double) offsetX + 0.5D, (double) offsetY + 0.5D, (double) offsetZ + 0.5D);
     }
 
+    private double oldCenterX;
+    private double oldCenterY;
+    private double oldCenterZ;
+
+    public void alignContraption() {
+        ContraptionWorld subworld = (ContraptionWorld) contraptionWorld;
+        oldCenterX = subworld.getCenterX();
+        oldCenterY = subworld.getCenterY();
+        oldCenterZ = subworld.getCenterZ();
+        subworld.setRotationYaw((double) Math.round(subworld.getRotationYaw() / 90.0D) * 90.0D);
+        subworld.setRotationPitch(0.0D);
+        subworld.setRotationRoll(0.0D);
+        subworld.setTranslation(
+            (double) Math.round(subworld.getTranslationX()),
+            (double) Math.round(subworld.getTranslationY()),
+            (double) Math.round(subworld.getTranslationZ()));
+        subworld.setScaling(1.0D);
+        subworld.setCenter(0.0D, 0.0D, 0.0D);
+        subworld.setMotion(0.0D, 0.0D, 0.0D);
+        subworld.setRotationYawSpeed(0.0D);
+        subworld.setRotationPitchSpeed(0.0D);
+        subworld.setRotationRollSpeed(0.0D);
+        subworld.setScaleChangeRate(0.0D);
+    }
+
     @SuppressWarnings("unchecked")
     public void addBlocksToWorld(World world) {
-        ContraptionWorld subWorldPar = (ContraptionWorld) contraptionWorld;
-        double oldCenterX = subWorldPar.getCenterX();
-        double oldCenterY = subWorldPar.getCenterY();
-        double oldCenterZ = subWorldPar.getCenterZ();
-        subWorldPar.setRotationYaw((double) Math.round(subWorldPar.getRotationYaw() / 90.0D) * 90.0D);
-        subWorldPar.setRotationPitch(0.0D);
-        subWorldPar.setRotationRoll(0.0D);
-        subWorldPar.setTranslation(
-            (double) Math.round(subWorldPar.getTranslationX()),
-            (double) Math.round(subWorldPar.getTranslationY()),
-            (double) Math.round(subWorldPar.getTranslationZ()));
-        subWorldPar.setScaling(1.0D);
-        subWorldPar.setCenter(0.0D, 0.0D, 0.0D);
-        subWorldPar.setMotion(0.0D, 0.0D, 0.0D);
-        subWorldPar.setRotationYawSpeed(0.0D);
-        subWorldPar.setRotationPitchSpeed(0.0D);
-        subWorldPar.setRotationRollSpeed(0.0D);
-        subWorldPar.setScaleChangeRate(0.0D);
-
-        // for (Contraption subContraption : stabilizedSubContraptions.keySet()) subContraption.addBlocksToWorld(world);
-
+        ContraptionWorld subworld = (ContraptionWorld) contraptionWorld;
         Block block;
         int oldMeta;
         int newMeta;
@@ -1162,9 +1174,8 @@ public abstract class Contraption {
             }
         }
 
-        subWorldPar.setCenter(oldCenterX, oldCenterY, oldCenterZ);
-        if (subWorldPar instanceof SubWorldServer && ((SubWorldServer) subWorldPar).isEmpty()) {
-            SubWorldServer subWorldServer = ((SubWorldServer) subWorldPar);
+        subworld.setCenter(oldCenterX, oldCenterY, oldCenterZ);
+        if (subworld instanceof SubWorldServer subWorldServer/* && subWorldServer.isEmpty() */) {
             ((IMixinWorld) subWorldServer.getParentWorld()).getSubWorldsMap()
                 .remove(subWorldServer.getSubWorldID());
             subWorldServer.removeSubWorld();

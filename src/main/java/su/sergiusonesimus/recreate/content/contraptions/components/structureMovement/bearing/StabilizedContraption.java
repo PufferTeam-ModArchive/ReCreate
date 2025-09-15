@@ -40,6 +40,13 @@ public class StabilizedContraption extends ControlledContraption {
         return true;
     }
 
+    @Override
+    public void disassemble() {
+        super.disassemble();
+        IBearingTileEntity controller = (IBearingTileEntity) this.getController();
+        if (controller != null) controller.setAngle(0);
+    }
+
     @SideOnly(Side.CLIENT)
     public void doTickPartial(double interpolationFactor) {
         super.doTickPartial(interpolationFactor);
