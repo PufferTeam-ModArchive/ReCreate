@@ -65,7 +65,7 @@ public abstract class DirectionalKineticBlock extends KineticBlock {
                         prefferedSide = null;
                         break;
                     } else {
-                        prefferedSide = side;
+                        prefferedSide = side.getOpposite();
                     }
             }
         }

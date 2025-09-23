@@ -128,6 +128,11 @@ public class CreativeMotorBlock extends DirectionalKineticBlock implements ITE<C
     }
 
     @Override
+    public Direction getPreferredFacing(World world, int x, int y, int z) {
+        return super.getPreferredFacing(world, x, y, z).getOpposite();
+    }
+
+    @Override
     public boolean isOpaqueCube() {
         return false;
     }
