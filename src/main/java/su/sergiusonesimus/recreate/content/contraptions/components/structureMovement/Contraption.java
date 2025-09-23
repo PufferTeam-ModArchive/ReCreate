@@ -56,6 +56,10 @@ import su.sergiusonesimus.recreate.content.contraptions.components.structureMove
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.WindmillBearingBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueHandler;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.MechanicalPistonBlock;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.MechanicalPistonBlock.PistonState;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.MechanicalPistonHeadBlock;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.PistonExtensionPoleBlock;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
 import su.sergiusonesimus.recreate.foundation.fluid.CombinedTankWrapper;
 import su.sergiusonesimus.recreate.foundation.networking.AllPackets;
@@ -103,8 +107,8 @@ public abstract class Contraption {
     protected World contraptionWorld;
 
     protected boolean initialized;
-    boolean ticking;
-    boolean beingRemoved = false;
+    public boolean ticking;
+    public boolean beingRemoved = false;
 
     public Contraption() {}
 
@@ -352,7 +356,7 @@ public abstract class Contraption {
         if (block instanceof BlockChest) {
             TileEntityChest te = (TileEntityChest) world.getTileEntity(posX, posY, posZ);
             if (te.func_145980_j() == 1) {
-                ChunkCoordinates attached = pos;
+                ChunkCoordinates attached = new ChunkCoordinates(pos);
                 if (te.adjacentChestZNeg != null) attached.posZ--;
                 if (te.adjacentChestZPos != null) attached.posZ++;
                 if (te.adjacentChestXNeg != null) attached.posX--;
@@ -375,16 +379,16 @@ public abstract class Contraption {
         //
         // // Pulleys drag their rope and their attached structure
         // if (block instanceof PulleyBlock) movePulley(world, posX, posY, posZ, frontier, visited);
-        //
-        // // Pistons drag their attaches poles and extension
-        // if (block instanceof MechanicalPistonBlock)
-        // if (!moveMechanicalPiston(world, posX, posY, posZ, frontier, visited, state))
-        // return false;
-        // if (isExtensionPole(state))
-        // movePistonPole(world, posX, posY, posZ, frontier, visited, state);
-        // if (isPistonHead(state))
-        // movePistonHead(world, posX, posY, posZ, frontier, visited, state);
-        //
+
+        // Pistons drag their attaches poles and extension
+        if (block instanceof MechanicalPistonBlock piston
+            && !moveMechanicalPiston(world, posX, posY, posZ, frontier, visited, piston, meta)) return false;
+        if (MechanicalPistonBlock.isExtensionPole(block))
+            movePistonPole(world, posX, posY, posZ, frontier, visited, (PistonExtensionPoleBlock) block, meta);
+        if (MechanicalPistonBlock.isPistonHead(block))
+            movePistonHead(world, posX, posY, posZ, frontier, visited, (MechanicalPistonHeadBlock) block, meta);
+
+        // TODO
         // // Cart assemblers attach themselves
         // ChunkCoordinates posDown = pos.below();
         // BlockState stateBelow = world.getBlockState(posDown);
@@ -439,55 +443,58 @@ public abstract class Contraption {
         else throw AssemblyException.structureTooLarge();
     }
 
-    // TODO
-    // protected void movePistonHead(World world, int x, int y, int z, Queue<ChunkCoordinates> frontier,
-    // Set<ChunkCoordinates> visited,
-    // Block block, int meta) {
-    // Direction direction = state.getValue(MechanicalPistonHeadBlock.FACING);
-    // BlockPos offset = pos.relative(direction.getOpposite());
-    // if (!visited.contains(offset)) {
-    // BlockState blockState = world.getBlockState(offset);
-    // if (isExtensionPole(blockState) && blockState.getValue(PistonExtensionPoleBlock.FACING)
-    // .getAxis() == direction.getAxis())
-    // frontier.add(offset);
-    // if (blockState.getBlock() instanceof MechanicalPistonBlock) {
-    // Direction pistonFacing = blockState.getValue(MechanicalPistonBlock.FACING);
-    // if (pistonFacing == direction
-    // && blockState.getValue(MechanicalPistonBlock.STATE) == PistonState.EXTENDED)
-    // frontier.add(offset);
-    // }
-    // }
-    // if (state.getValue(MechanicalPistonHeadBlock.TYPE) == PistonType.STICKY) {
-    // BlockPos attached = pos.relative(direction);
-    // if (!visited.contains(attached))
-    // frontier.add(attached);
-    // }
-    // }
+    protected void movePistonHead(World world, int x, int y, int z, Queue<ChunkCoordinates> frontier,
+        Set<ChunkCoordinates> visited, MechanicalPistonHeadBlock block, int meta) {
+        Direction direction = block.getDirection(meta);
+        ChunkCoordinates offset = direction.getOpposite()
+            .getNormal();
+        offset.posX += x;
+        offset.posY += y;
+        offset.posZ += z;
+        if (!visited.contains(offset)) {
+            Block neighbourBlock = world.getBlock(offset.posX, offset.posY, offset.posZ);
+            int neighbourMeta = world.getBlockMetadata(offset.posX, offset.posY, offset.posZ);
+            if (neighbourBlock instanceof PistonExtensionPoleBlock pole && pole.getDirection(neighbourMeta)
+                .getAxis() == direction.getAxis()) frontier.add(offset);
+            if (neighbourBlock instanceof MechanicalPistonBlock piston) {
+                Direction pistonFacing = piston.getDirection(neighbourMeta);
+                if (pistonFacing == direction
+                    && piston.getPistonState(world, offset.posX, offset.posY, offset.posZ) == PistonState.EXTENDED)
+                    frontier.add(offset);
+            }
+        }
+        if (block.isSticky(meta)) {
+            ChunkCoordinates attached = direction.getNormal();
+            attached.posX += x;
+            attached.posY += y;
+            attached.posZ += z;
+            if (!visited.contains(attached)) frontier.add(attached);
+        }
+    }
 
-    // TODO
-    // protected void movePistonPole(World world, int x, int y, int z, Queue<ChunkCoordinates> frontier,
-    // Set<ChunkCoordinates> visited,
-    // Block block, int meta) {
-    // for (Direction d : Iterate.directionsInAxis(state.getValue(PistonExtensionPoleBlock.FACING)
-    // .getAxis())) {
-    // BlockPos offset = pos.relative(d);
-    // if (!visited.contains(offset)) {
-    // BlockState blockState = world.getBlockState(offset);
-    // if (isExtensionPole(blockState) && blockState.getValue(PistonExtensionPoleBlock.FACING)
-    // .getAxis() == d.getAxis())
-    // frontier.add(offset);
-    // if (isPistonHead(blockState) && blockState.getValue(MechanicalPistonHeadBlock.FACING)
-    // .getAxis() == d.getAxis())
-    // frontier.add(offset);
-    // if (blockState.getBlock() instanceof MechanicalPistonBlock) {
-    // Direction pistonFacing = blockState.getValue(MechanicalPistonBlock.FACING);
-    // if (pistonFacing == d || pistonFacing == d.getOpposite()
-    // && blockState.getValue(MechanicalPistonBlock.STATE) == PistonState.EXTENDED)
-    // frontier.add(offset);
-    // }
-    // }
-    // }
-    // }
+    protected void movePistonPole(World world, int x, int y, int z, Queue<ChunkCoordinates> frontier,
+        Set<ChunkCoordinates> visited, PistonExtensionPoleBlock block, int meta) {
+        for (Direction d : Iterate.directionsInAxis(block.getAxis(meta))) {
+            ChunkCoordinates offset = d.getNormal();
+            offset.posX += x;
+            offset.posY += y;
+            offset.posZ += z;
+            if (!visited.contains(offset)) {
+                Block neighbourBlock = world.getBlock(offset.posX, offset.posY, offset.posZ);
+                int neighbourMeta = world.getBlockMetadata(offset.posX, offset.posY, offset.posZ);
+                if (neighbourBlock instanceof PistonExtensionPoleBlock pole
+                    && pole.getAxis(neighbourMeta) == d.getAxis()) frontier.add(offset);
+                if (neighbourBlock instanceof MechanicalPistonHeadBlock head
+                    && head.getAxis(neighbourMeta) == d.getAxis()) frontier.add(offset);
+                if (neighbourBlock instanceof MechanicalPistonBlock piston) {
+                    Direction pistonFacing = piston.getDirection(neighbourMeta);
+                    if (pistonFacing == d || pistonFacing == d.getOpposite()
+                        && piston.getPistonState(world, offset.posX, offset.posY, offset.posZ) == PistonState.EXTENDED)
+                        frontier.add(offset);
+                }
+            }
+        }
+    }
 
     // TODO
     // protected void moveGantryPinion(World world, int x, int y, int z, Queue<ChunkCoordinates> frontier,
@@ -592,31 +599,34 @@ public abstract class Contraption {
     // }
     // }
 
-    // TODO
-    // private boolean moveMechanicalPiston(World world, int x, int y, int z, Queue<ChunkCoordinates> frontier,
-    // Set<ChunkCoordinates> visited,
-    // Block block, int meta) throws AssemblyException {
-    // Direction direction = state.getValue(MechanicalPistonBlock.FACING);
-    // PistonState pistonState = state.getValue(MechanicalPistonBlock.STATE);
-    // if (pistonState == PistonState.MOVING)
-    // return false;
-    //
-    // BlockPos offset = pos.relative(direction.getOpposite());
-    // if (!visited.contains(offset)) {
-    // BlockState poleState = world.getBlockState(offset);
-    // if (AllBlocks.PISTON_EXTENSION_POLE.has(poleState) && poleState.getValue(PistonExtensionPoleBlock.FACING)
-    // .getAxis() == direction.getAxis())
-    // frontier.add(offset);
-    // }
-    //
-    // if (pistonState == PistonState.EXTENDED || MechanicalPistonBlock.isStickyPiston(state)) {
-    // offset = pos.relative(direction);
-    // if (!visited.contains(offset))
-    // frontier.add(offset);
-    // }
-    //
-    // return true;
-    // }
+    private boolean moveMechanicalPiston(World world, int x, int y, int z, Queue<ChunkCoordinates> frontier,
+        Set<ChunkCoordinates> visited, MechanicalPistonBlock block, int meta) throws AssemblyException {
+        Direction direction = block.getDirection(meta);
+        PistonState pistonState = block.getPistonState(world, x, y, z);
+        if (pistonState == PistonState.MOVING) return false;
+
+        ChunkCoordinates offset = direction.getOpposite()
+            .getNormal();
+        offset.posX += x;
+        offset.posY += y;
+        offset.posZ += z;
+        if (!visited.contains(offset)) {
+            Block neighbourBlock = world.getBlock(offset.posX, offset.posY, offset.posZ);
+            int neighbourMeta = world.getBlockMetadata(offset.posX, offset.posY, offset.posZ);
+            if (neighbourBlock instanceof PistonExtensionPoleBlock pole && pole.getDirection(neighbourMeta)
+                .getAxis() == direction.getAxis()) frontier.add(offset);
+        }
+
+        if (pistonState == PistonState.EXTENDED || MechanicalPistonBlock.isStickyPiston(block)) {
+            offset = direction.getNormal();
+            offset.posX += x;
+            offset.posY += y;
+            offset.posZ += z;
+            if (!visited.contains(offset)) frontier.add(offset);
+        }
+
+        return true;
+    }
 
     // TODO
     // private boolean moveChassis(World world, int x, int y, int z, Direction movementDirection,
@@ -722,6 +732,29 @@ public abstract class Contraption {
         if (this.contraptionWorld == null) return null;
         ContraptionWorld contraption = this.getContraptionWorld();
         return Vec3.createVectorHelper(contraption.getMotionX(), contraption.getMotionY(), contraption.getMotionZ());
+    }
+
+    public void setMotion(Vec3 newMotion) {
+        setMotion(newMotion.xCoord, newMotion.yCoord, newMotion.zCoord);
+    }
+
+    public void setMotion(double dX, double dY, double dZ) {
+        if (this.contraptionWorld == null) return;
+        ContraptionWorld contraption = this.getContraptionWorld();
+        contraption.setMotion(dX, dY, dZ);
+    }
+
+    public void move(Vec3 newMotion) {
+        move(newMotion.xCoord, newMotion.yCoord, newMotion.zCoord);
+    }
+
+    public void move(double dX, double dY, double dZ) {
+        if (this.contraptionWorld == null) return;
+        ContraptionWorld contraption = this.getContraptionWorld();
+        contraption.setTranslation(
+            contraption.getTranslationX() + dX,
+            contraption.getTranslationY() + dY,
+            contraption.getTranslationZ() + dZ);
     }
 
     protected ChunkCoordinates toLocalPos(ChunkCoordinates globalPos) {
@@ -971,6 +1004,7 @@ public abstract class Contraption {
         glueToRemove.forEach(SuperGlueEntity::setDead);
         ContraptionWorld contraption = this.getContraptionWorld();
 
+        Block oldBlock;
         Block block;
         int meta;
         NBTTagCompound nbttag;
@@ -1004,6 +1038,9 @@ public abstract class Contraption {
             for (ChunkCoordinates curCoord : currentList) {
                 block = parentWorld.getBlock(curCoord.posX, curCoord.posY, curCoord.posZ);
                 meta = parentWorld.getBlockMetadata(curCoord.posX, curCoord.posY, curCoord.posZ);
+
+                if (customBlockRemoval(parentWorld, curCoord.posX, curCoord.posY, curCoord.posZ, block, meta)) continue;
+
                 contraptionWorld.setBlock(curCoord.posX, curCoord.posY, curCoord.posZ, block, meta, 0);
                 contraptionWorld.setBlockMetadataWithNotify(curCoord.posX, curCoord.posY, curCoord.posZ, meta, 0);
                 if (block.hasTileEntity(meta)) {
@@ -1047,9 +1084,9 @@ public abstract class Contraption {
         listsToParse.set(2, blocksToTake);
         for (List<ChunkCoordinates> currentList : listsToParse) {
             for (ChunkCoordinates curCoord : currentList) {
+                oldBlock = parentWorld.getBlock(curCoord.posX, curCoord.posY, curCoord.posZ);
                 block = contraptionWorld.getBlock(curCoord.posX, curCoord.posY, curCoord.posZ);
-                meta = contraptionWorld.getBlockMetadata(curCoord.posX, curCoord.posY, curCoord.posZ);
-                parentWorld.setBlockToAir(curCoord.posX, curCoord.posY, curCoord.posZ);
+                if (oldBlock == block) parentWorld.setBlockToAir(curCoord.posX, curCoord.posY, curCoord.posZ);
             }
         }
 
@@ -1130,6 +1167,10 @@ public abstract class Contraption {
                 newMeta = RotationHelper.getRotatedMeta(contraptionWorld, curCoord.posX, curCoord.posY, curCoord.posZ);
                 ChunkCoordinates globalPos = this.getContraptionWorld()
                     .transformBlockToGlobal(curCoord.posX, curCoord.posY, curCoord.posZ);
+
+                if (customBlockPlacement(world, globalPos.posX, globalPos.posY, globalPos.posZ, block, newMeta))
+                    continue;
+
                 world.setBlock(globalPos.posX, globalPos.posY, globalPos.posZ, block, newMeta, 3);
                 world.setBlockMetadataWithNotify(globalPos.posX, globalPos.posY, globalPos.posZ, newMeta, 3);
                 if (block.hasTileEntity(oldMeta)) {
@@ -1325,14 +1366,13 @@ public abstract class Contraption {
         }
         ticking = false;
 
-        // TODO
-        // for (Contraption subContraption : stabilizedSubContraptions.keySet()) {
-        // if (!(subContraption instanceof OrientedContraption orientedContraption)) continue;
-        // if (orientedContraption.stalled) {
-        // stalled = true;
-        // break;
-        // }
-        // }
+        for (Contraption subContraption : stabilizedSubContraptions.keySet()) {
+            if (!(subContraption instanceof StabilizedContraption stabilizedContraption)) continue;
+            if (stabilizedContraption.stalled) {
+                stalled = true;
+                break;
+            }
+        }
 
         if (!parentWorld.isRemote) {
             if (!stalledPreviously && stalled) onContraptionStalled();
@@ -1381,4 +1421,14 @@ public abstract class Contraption {
     protected abstract float getStalledAngle();
 
     protected abstract void handleStallInformation(float x, float y, float z, float angle);
+
+    public boolean supportsTerrainCollision() {
+        return this instanceof TranslatingContraption;
+    }
+
+    public AxisAlignedBB getBoundingBox() {
+        if (this.contraptionWorld == null) return null;
+        return this.getContraptionWorld()
+            .getMaximumStretchedWorldBB(false, false);
+    }
 }

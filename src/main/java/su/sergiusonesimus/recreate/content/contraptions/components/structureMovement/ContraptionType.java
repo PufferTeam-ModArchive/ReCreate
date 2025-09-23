@@ -7,20 +7,23 @@ import java.util.function.Supplier;
 
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.BearingContraption;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.StabilizedContraption;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.PistonContraption;
 
 public class ContraptionType {
 
     public static Map<String, ContraptionType> entries = new HashMap<>();
-    public static ContraptionType
-    // TODO
-    // PISTON = register("piston", PistonContraption::new),
-    BEARING = register("bearing", BearingContraption::new),
+    public static ContraptionType PISTON = register("piston", PistonContraption::new),
+        BEARING = register("bearing", BearingContraption::new),
         // TODO
         // PULLEY = register("pulley", PulleyContraption::new),
         // CLOCKWORK = register("clockwork", ClockworkContraption::new),
         // MOUNTED = register("mounted", MountedContraption::new),
-        STABILIZED = register("stabilized", StabilizedContraption::new);
-    // GANTRY = register("gantry", GantryContraption::new);
+        STABILIZED = register(
+            "stabilized",
+            StabilizedContraption::new)/*
+                                        * ,
+                                        * GANTRY = register("gantry", GantryContraption::new)
+                                        */;
 
     Supplier<? extends Contraption> factory;
     String id;

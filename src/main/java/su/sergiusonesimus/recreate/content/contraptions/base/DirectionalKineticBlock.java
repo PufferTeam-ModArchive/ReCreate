@@ -5,6 +5,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 import su.sergiusonesimus.metaworlds.util.Direction;
@@ -31,7 +32,7 @@ public abstract class DirectionalKineticBlock extends KineticBlock {
     public int onBlockPlaced(World worldIn, int x, int y, int z, int side, float subX, float subY, float subZ,
         int meta) {
         Direction preferredFacing = getPreferredFacing(worldIn, x, y, z);
-        int localMeta = preferredFacing == null ? 0 : this.getMetaFromDirection(preferredFacing.getOpposite());
+        int localMeta = preferredFacing == null ? 0 : this.getMetaFromDirection(preferredFacing);
         worldIn.setBlockMetadataWithNotify(x, y, z, localMeta, 2 | 4);
         return localMeta;
     }
@@ -73,7 +74,8 @@ public abstract class DirectionalKineticBlock extends KineticBlock {
 
     public int rotate(World world, int x, int y, int z, Rotation rot) {
         int meta = world.getBlockMetadata(x, y, z);
-        int newMeta = this.getMetaFromDirection(rot.rotate(this.getDirection(meta)));
+        int baseMeta = MathHelper.floor_double((double) meta / 6.0D) * 6;
+        int newMeta = baseMeta + this.getMetaFromDirection(rot.rotate(this.getDirection(meta)));
         if (newMeta != meta) world.setBlockMetadataWithNotify(x, y, z, meta, 2);
         return newMeta;
     }

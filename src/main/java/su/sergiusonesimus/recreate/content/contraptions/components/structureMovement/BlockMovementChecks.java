@@ -29,6 +29,10 @@ import su.sergiusonesimus.recreate.content.contraptions.components.structureMove
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.SailBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.WindmillBearingBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.WindmillBearingTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.MechanicalPistonBlock;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.MechanicalPistonBlock.PistonState;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.MechanicalPistonHeadBlock;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.PistonExtensionPoleBlock;
 import su.sergiusonesimus.recreate.foundation.config.ContraptionMovementSetting;
 
 public class BlockMovementChecks {
@@ -140,10 +144,8 @@ public class BlockMovementChecks {
         if (ContraptionMovementSetting.get(block) == ContraptionMovementSetting.UNMOVABLE) return false;
 
         // Move controllers only when they aren't moving
-        // TODO
-        // if (block instanceof MechanicalPistonBlock && state.getValue(MechanicalPistonBlock.STATE) !=
-        // PistonState.MOVING)
-        // return true;
+        if (block instanceof MechanicalPistonBlock piston
+            && piston.getPistonState(world, x, y, z) != PistonState.MOVING) return true;
         if (block instanceof MechanicalBearingBlock) {
             TileEntity te = world.getTileEntity(x, y, z);
             if (te instanceof MechanicalBearingTileEntity) return !((MechanicalBearingTileEntity) te).isRunning();
@@ -278,13 +280,9 @@ public class BlockMovementChecks {
         // return facing == Direction.DOWN;
         if (block instanceof BlockCarpet) return facing == Direction.UP;
         if (block instanceof SailBlock sail) return facing.getAxis() == sail.getAxis(meta);
+        if (block instanceof PistonExtensionPoleBlock pole) return facing.getAxis() != pole.getAxis(meta);
+        if (block instanceof MechanicalPistonHeadBlock head) return facing.getAxis() != head.getAxis(meta);
         // TODO
-        // if (AllBlocks.PISTON_EXTENSION_POLE.has(state))
-        // return facing.getAxis() != state.getValue(BlockStateProperties.FACING)
-        // .getAxis();
-        // if (AllBlocks.MECHANICAL_PISTON_HEAD.has(state))
-        // return facing.getAxis() != state.getValue(BlockStateProperties.FACING)
-        // .getAxis();
         // if (AllBlocks.STICKER.has(state) && !state.getValue(StickerBlock.EXTENDED))
         // return facing == state.getValue(StickerBlock.FACING);
         return BlockVolatilityMap.checkBlockVolatility(block);

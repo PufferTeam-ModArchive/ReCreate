@@ -79,11 +79,7 @@ public class SuperGlueItem extends Item {
 
         float distance = fullBlock ? 1f : .25f + .25f * (world.rand.nextFloat() - .5f);
         plane = Vec3.createVectorHelper(plane.xCoord * distance, plane.yCoord * distance, plane.zCoord * distance);
-        ItemStack stack = new ItemStack(Items.slime_ball);
-        String particle = "iconcrack_" + Item.getIdFromItem(stack.getItem());
-        if (stack.getHasSubtypes()) {
-            particle = particle + "_" + stack.getItemDamage();
-        }
+        String particle = "iconcrack_" + Item.getIdFromItem(Items.slime_ball);
 
         for (int i = fullBlock ? 40 : 15; i > 0; i--) {
             Vec3 offset = VecHelper.rotate(plane, 360 * world.rand.nextFloat(), direction.getAxis());

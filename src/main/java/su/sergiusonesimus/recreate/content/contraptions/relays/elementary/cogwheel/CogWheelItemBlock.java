@@ -1,6 +1,7 @@
 package su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel;
 
 import java.util.List;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import net.minecraft.block.Block;
@@ -20,7 +21,6 @@ import su.sergiusonesimus.recreate.content.contraptions.base.DirectionalKineticB
 import su.sergiusonesimus.recreate.content.contraptions.base.HorizontalKineticBlock;
 import su.sergiusonesimus.recreate.content.contraptions.base.IRotate;
 import su.sergiusonesimus.recreate.content.contraptions.base.RotatedPillarKineticBlock;
-import su.sergiusonesimus.recreate.foundation.utility.Pair;
 import su.sergiusonesimus.recreate.foundation.utility.placement.IPlacementHelper;
 import su.sergiusonesimus.recreate.foundation.utility.placement.PlacementHelpers;
 import su.sergiusonesimus.recreate.foundation.utility.placement.PlacementOffset;
@@ -174,8 +174,8 @@ public class CogWheelItemBlock extends ItemBlock {
         }
 
         @Override
-        public Predicate<Pair<Block, Integer>> getBlockPredicate() {
-            return pair -> ICogWheel.isLargeCog(pair.getFirst()) && ICogWheel.isDedicatedCogWheel(pair.getFirst());
+        public BiPredicate<Block, Integer> getBlockPredicate() {
+            return (block, meta) -> ICogWheel.isLargeCog(block) && ICogWheel.isDedicatedCogWheel(block);
         }
 
         @Override
@@ -217,8 +217,8 @@ public class CogWheelItemBlock extends ItemBlock {
     public abstract static class DiagonalCogHelper implements IPlacementHelper {
 
         @Override
-        public Predicate<Pair<Block, Integer>> getBlockPredicate() {
-            return s -> ICogWheel.isSmallCog(s.getFirst()) || ICogWheel.isLargeCog(s.getFirst());
+        public BiPredicate<Block, Integer> getBlockPredicate() {
+            return (block, meta) -> ICogWheel.isSmallCog(block) || ICogWheel.isLargeCog(block);
         }
 
         @Override
@@ -276,8 +276,8 @@ public class CogWheelItemBlock extends ItemBlock {
         }
 
         @Override
-        public Predicate<Pair<Block, Integer>> getBlockPredicate() {
-            return s -> !ICogWheel.isDedicatedCogWheel(s.getFirst()) && ICogWheel.isSmallCog(s.getFirst());
+        public BiPredicate<Block, Integer> getBlockPredicate() {
+            return (block, meta) -> !ICogWheel.isDedicatedCogWheel(block) && ICogWheel.isSmallCog(block);
         }
 
         @Override
@@ -330,8 +330,8 @@ public class CogWheelItemBlock extends ItemBlock {
         }
 
         @Override
-        public Predicate<Pair<Block, Integer>> getBlockPredicate() {
-            return s -> !ICogWheel.isDedicatedCogWheel(s.getFirst()) && ICogWheel.isSmallCog(s.getFirst());
+        public BiPredicate<Block, Integer> getBlockPredicate() {
+            return (block, meta) -> !ICogWheel.isDedicatedCogWheel(block) && ICogWheel.isSmallCog(block);
         }
 
         @Override

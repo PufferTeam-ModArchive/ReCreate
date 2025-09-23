@@ -18,10 +18,6 @@ public interface ContraptionWorld extends SubWorld {
 
     public void setContraption(Contraption contraption);
 
-    public default boolean supportsTerrainCollision() {
-        return this instanceof TranslatingContraption;
-    }
-
     public void addSittingPassenger(Entity passenger, int seatIndex);
 
     public void removePassenger(Entity passenger);

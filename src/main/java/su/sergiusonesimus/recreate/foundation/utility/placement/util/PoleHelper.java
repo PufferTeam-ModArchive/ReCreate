@@ -1,8 +1,8 @@
 package su.sergiusonesimus.recreate.foundation.utility.placement.util;
 
 import java.util.List;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,25 +13,23 @@ import net.minecraft.world.World;
 import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.metaworlds.util.Direction.Axis;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
-import su.sergiusonesimus.recreate.foundation.utility.Pair;
 import su.sergiusonesimus.recreate.foundation.utility.placement.IPlacementHelper;
 import su.sergiusonesimus.recreate.foundation.utility.placement.PlacementOffset;
 
 public abstract class PoleHelper<T extends Comparable<T>> implements IPlacementHelper {
 
-    protected final Predicate<Pair<Block, Integer>> blockPredicate;
-    protected final Function<Pair<Block, Integer>, Axis> axisFunction;
+    protected final BiPredicate<Block, Integer> blockPredicate;
+    protected final BiFunction<Block, Integer, Axis> axisFunction;
 
-    public PoleHelper(Predicate<Pair<Block, Integer>> blockPredicate,
-        Function<Pair<Block, Integer>, Axis> axisFunction) {
+    public PoleHelper(BiPredicate<Block, Integer> blockPredicate, BiFunction<Block, Integer, Axis> axisFunction) {
         this.blockPredicate = blockPredicate;
         this.axisFunction = axisFunction;
     }
 
     public boolean matchesAxis(Block block, int meta, Axis axis) {
-        if (!blockPredicate.test(Pair.of(block, meta))) return false;
+        if (!blockPredicate.test(block, meta)) return false;
 
-        return axisFunction.apply(Pair.of(block, meta)) == axis;
+        return axisFunction.apply(block, meta) == axis;
     }
 
     public int attachedPoles(World world, int x, int y, int z, Direction direction) {
@@ -54,15 +52,16 @@ public abstract class PoleHelper<T extends Comparable<T>> implements IPlacementH
     }
 
     @Override
-    public Predicate<Pair<Block, Integer>> getBlockPredicate() {
+    public BiPredicate<Block, Integer> getBlockPredicate() {
         return this.blockPredicate;
     }
 
+    @SuppressWarnings("static-access")
     @Override
     public PlacementOffset getOffset(EntityPlayer player, World world, Block block, int meta, int x, int y, int z,
         MovingObjectPosition ray) {
         List<Direction> directions = IPlacementHelper
-            .orderedByDistance(x, y, z, ray.hitVec, dir -> dir.getAxis() == axisFunction.apply(Pair.of(block, meta)));
+            .orderedByDistance(x, y, z, ray.hitVec, dir -> dir.getAxis() == axisFunction.apply(block, meta));
         for (Direction dir : directions) {
             int range = AllConfigs.SERVER.curiosities.placementAssistRange;
             // TODO

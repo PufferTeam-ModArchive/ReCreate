@@ -18,6 +18,11 @@ import su.sergiusonesimus.recreate.content.contraptions.components.structureMove
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.SailRenderBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueRenderer;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.MechanicalPistonHeadRenderBlock;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.MechanicalPistonRenderBlock;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.MechanicalPistonTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.MechanicalPistonTileEntityRenderer;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.PistonExtensionPoleRenderBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.waterwheel.WaterWheelRenderBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.waterwheel.WaterWheelTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.waterwheel.WaterWheelTileEntityRenderer;
@@ -47,6 +52,9 @@ public class ClientProxy extends CommonProxy {
     int gearboxRenderID;
     int waterWheelRenderID;
     int sailRenderID;
+    int mechanicalPistonRenderID;
+    int mechanicalPistonHeadRenderID;
+    int pistonExtensionPoleRenderID;
 
     ModelBiped gogglesArmorModel;
 
@@ -86,6 +94,8 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(ClutchTileEntity.class, sster);
         ClientRegistry.bindTileEntitySpecialRenderer(GearboxTileEntity.class, new GearboxTileEntityRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(WaterWheelTileEntity.class, new WaterWheelTileEntityRenderer());
+        ClientRegistry
+            .bindTileEntitySpecialRenderer(MechanicalPistonTileEntity.class, new MechanicalPistonTileEntityRenderer());
 
         // block render ids
         shaftRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -106,6 +116,12 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(new WaterWheelRenderBlock(waterWheelRenderID));
         sailRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new SailRenderBlock(sailRenderID));
+        mechanicalPistonRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new MechanicalPistonRenderBlock(mechanicalPistonRenderID));
+        mechanicalPistonHeadRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new MechanicalPistonHeadRenderBlock(mechanicalPistonHeadRenderID));
+        pistonExtensionPoleRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new PistonExtensionPoleRenderBlock(pistonExtensionPoleRenderID));
 
         // armor model
         gogglesArmorModel = new GogglesModel();
@@ -170,6 +186,18 @@ public class ClientProxy extends CommonProxy {
 
     public int getSailBlockRenderID() {
         return sailRenderID;
+    }
+
+    public int getMechanicalPistonBlockRenderID() {
+        return mechanicalPistonRenderID;
+    }
+
+    public int getMechanicalPistonHeadBlockRenderID() {
+        return mechanicalPistonHeadRenderID;
+    }
+
+    public int getPistonExtensionPoleBlockRenderID() {
+        return pistonExtensionPoleRenderID;
     }
 
     public ModelBiped getGogglesArmorModel() {

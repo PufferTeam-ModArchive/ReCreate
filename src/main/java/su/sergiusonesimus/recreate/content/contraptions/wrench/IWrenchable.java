@@ -12,6 +12,7 @@ import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.content.contraptions.base.DirectionalKineticBlock;
 import su.sergiusonesimus.recreate.content.contraptions.base.GeneratingKineticTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.base.HorizontalAxisKineticBlock;
+import su.sergiusonesimus.recreate.content.contraptions.base.IAxisAlongFirstCoordinate;
 import su.sergiusonesimus.recreate.content.contraptions.base.KineticTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.base.RotatedPillarKineticBlock;
 
@@ -85,19 +86,15 @@ public interface IWrenchable {
             .getAxis();
 
         if (originalFacing.getAxis() == rotationAxis) {
-            // TODO Might as well just delete all of this
-            // if (originalState.hasProperty(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE))
-            // return originalState.cycle(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE);
-            // else
-            return originalMeta;
+            if (block instanceof IAxisAlongFirstCoordinate aafc) return aafc.cycleMetadata(originalMeta);
+            else return originalMeta;
         } else {
             do {
                 newMeta = this.getMetaFromDirection(
                     this.getDirection(newMeta)
                         .rotateAround(rotationAxis));
-                // if (rotationAxis == Axis.Y
-                // && newMeta.hasProperty(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE))
-                // newMeta = newMeta.cycle(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE);
+                if (rotationAxis == Axis.Y && block instanceof IAxisAlongFirstCoordinate aafc)
+                    newMeta = aafc.cycleMetadata(newMeta);
             } while (this.getDirection(newMeta)
                 .getAxis() == rotationAxis);
         }

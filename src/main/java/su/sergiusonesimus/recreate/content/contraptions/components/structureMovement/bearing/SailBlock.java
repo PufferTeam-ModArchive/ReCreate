@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import net.minecraft.block.Block;
@@ -36,7 +37,6 @@ import su.sergiusonesimus.recreate.AllBlocks;
 import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.foundation.block.WrenchableDirectionalBlock;
 import su.sergiusonesimus.recreate.foundation.utility.Iterate;
-import su.sergiusonesimus.recreate.foundation.utility.Pair;
 import su.sergiusonesimus.recreate.foundation.utility.placement.IPlacementHelper;
 import su.sergiusonesimus.recreate.foundation.utility.placement.PlacementHelpers;
 import su.sergiusonesimus.recreate.foundation.utility.placement.PlacementOffset;
@@ -796,8 +796,8 @@ public class SailBlock extends WrenchableDirectionalBlock {
         }
 
         @Override
-        public Predicate<Pair<Block, Integer>> getBlockPredicate() {
-            return s -> s != null && s.getFirst() instanceof SailBlock;
+        public BiPredicate<Block, Integer> getBlockPredicate() {
+            return (block, meta) -> block instanceof SailBlock;
         }
 
         @Override

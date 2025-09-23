@@ -60,6 +60,18 @@ public class CommonProxy {
         return 0;
     }
 
+    public int getMechanicalPistonBlockRenderID() {
+        return 0;
+    }
+
+    public int getMechanicalPistonHeadBlockRenderID() {
+        return 0;
+    }
+
+    public int getPistonExtensionPoleBlockRenderID() {
+        return 0;
+    }
+
     public int registerArmorRenderID(String prefix) {
         return 0;
     }

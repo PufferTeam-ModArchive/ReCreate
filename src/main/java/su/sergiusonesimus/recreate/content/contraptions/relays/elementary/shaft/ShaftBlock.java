@@ -1,5 +1,6 @@
 package su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft;
 
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import net.minecraft.block.Block;
@@ -22,7 +23,6 @@ import su.sergiusonesimus.recreate.AllBlocks;
 import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.AbstractShaftBlock;
 import su.sergiusonesimus.recreate.foundation.block.ITE;
-import su.sergiusonesimus.recreate.foundation.utility.Pair;
 import su.sergiusonesimus.recreate.foundation.utility.placement.IPlacementHelper;
 import su.sergiusonesimus.recreate.foundation.utility.placement.PlacementHelpers;
 import su.sergiusonesimus.recreate.foundation.utility.placement.util.PoleHelper;
@@ -204,8 +204,8 @@ public class ShaftBlock extends AbstractShaftBlock implements ITE<ShaftTileEntit
 
         private PlacementHelper() {
             super(
-                block -> block.getFirst() instanceof AbstractShaftBlock,
-                block -> ((AbstractShaftBlock) block.getFirst()).getAxis(block.getSecond()));
+                (block, meta) -> block instanceof AbstractShaftBlock,
+                (block, meta) -> ((AbstractShaftBlock) block).getAxis(meta));
         }
 
         @Override
@@ -215,8 +215,8 @@ public class ShaftBlock extends AbstractShaftBlock implements ITE<ShaftTileEntit
         }
 
         @Override
-        public Predicate<Pair<Block, Integer>> getBlockPredicate() {
-            return block -> block.getFirst() instanceof ShaftBlock;
+        public BiPredicate<Block, Integer> getBlockPredicate() {
+            return (block, meta) -> block instanceof ShaftBlock;
         }
     }
 }

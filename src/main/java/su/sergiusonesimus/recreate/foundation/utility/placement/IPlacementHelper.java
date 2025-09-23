@@ -3,6 +3,7 @@ package su.sergiusonesimus.recreate.foundation.utility.placement;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,7 @@ public interface IPlacementHelper {
      * @return a predicate that gets tested with the block the player is looking at<br>
      *         should return true if this placement helper is active with the given block
      */
-    Predicate<Pair<Block, Integer>> getBlockPredicate();
+    BiPredicate<Block, Integer> getBlockPredicate();
 
     /**
      *
@@ -225,6 +226,6 @@ public interface IPlacementHelper {
     }
 
     default boolean matchesBlock(Block block, int meta) {
-        return getBlockPredicate().test(Pair.of(block, meta));
+        return getBlockPredicate().test(block, meta);
     }
 }

@@ -32,6 +32,7 @@ import su.sergiusonesimus.recreate.content.contraptions.components.structureMove
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.WindmillBearingTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.glue.SuperGlueHandler;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.MechanicalPistonTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.waterwheel.WaterWheelTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftTileEntity;
@@ -165,12 +166,14 @@ public class ReCreate {
         GameRegistry.registerTileEntity(WaterWheelTileEntity.class, "Water Wheel");
 
         // Contraptions
+        GameRegistry.registerTileEntity(MechanicalPistonTileEntity.class, "Mechanical Piston");
+
         GameRegistry.registerTileEntity(WindmillBearingTileEntity.class, "Windmill Bearing");
         GameRegistry.registerTileEntity(MechanicalBearingTileEntity.class, "Mechanical Bearing");
     }
 
     private void registerRotators() {
-        // Directional kinetic blocks
+        // Directional blocks
         RotationHelper.registerBlocks(
             "3d_directional",
             AllBlocks.creative_motor,

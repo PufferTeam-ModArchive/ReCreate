@@ -13,6 +13,9 @@ import su.sergiusonesimus.recreate.content.contraptions.components.motor.Creativ
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.SailBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.WindmillBearingBlock;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.MechanicalPistonBlock;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.MechanicalPistonHeadBlock;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.PistonExtensionPoleBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.waterwheel.WaterWheelBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelItemBlock;
@@ -41,6 +44,11 @@ public class AllBlocks {
     // Fluids
 
     // Contraptions
+    public static Block mechanical_piston;
+    public static Block sticky_mechanical_piston;
+    public static Block piston_extension_pole;
+    public static Block mechanical_piston_head;
+
     public static Block windmill_bearing;
     public static Block mechanical_bearing;
 
@@ -102,6 +110,24 @@ public class AllBlocks {
         // Fluids
 
         // Contraptions
+
+        mechanical_piston = MechanicalPistonBlock.normal(Material.wood)
+            .setBlockName("mechanical_piston")
+            .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
+        registerMyBlock(mechanical_piston);
+        BlockStressDefaults.setImpact(mechanical_piston, 4.0);
+        sticky_mechanical_piston = MechanicalPistonBlock.sticky(Material.wood)
+            .setBlockName("sticky_mechanical_piston")
+            .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
+        registerMyBlock(sticky_mechanical_piston);
+        BlockStressDefaults.setImpact(sticky_mechanical_piston, 4.0);
+
+        piston_extension_pole = new PistonExtensionPoleBlock(Material.wood).setBlockName("piston_extension_pole")
+            .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
+        registerMyBlock(piston_extension_pole);
+
+        mechanical_piston_head = new MechanicalPistonHeadBlock(Material.wood).setBlockName("mechanical_piston_head");
+        registerMyBlock(mechanical_piston_head);
 
         windmill_bearing = new WindmillBearingBlock(Material.wood).setBlockName("windmill_bearing")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);

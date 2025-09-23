@@ -12,12 +12,15 @@ import su.sergiusonesimus.recreate.zmixin.interfaces.IMixinWorldReCreate;
 
 public class AllSubWorldTypes {
 
+    public static final String SUBWORLD_TYPE_CONTRAPTION_PISTON = "piston_contraption";
     public static final String SUBWORLD_TYPE_CONTRAPTION_BEARING = "bearing_contraption";
     public static final String SUBWORLD_TYPE_CONTRAPTION_STABILIZED = "stabilized_contraption";
 
     public static final ContraptionWorldInfoProvider CONTRAPTION_INFO_PROVIDER = new ContraptionWorldInfoProvider();
 
     public static void register() {
+        SubWorldTypeManager.registerSubWorldType(SUBWORLD_TYPE_CONTRAPTION_PISTON, CONTRAPTION_INFO_PROVIDER);
+
         SubWorldTypeManager.registerSubWorldType(SUBWORLD_TYPE_CONTRAPTION_BEARING, CONTRAPTION_INFO_PROVIDER);
         SubWorldTypeManager.registerSubWorldType(SUBWORLD_TYPE_CONTRAPTION_STABILIZED, CONTRAPTION_INFO_PROVIDER);
     }

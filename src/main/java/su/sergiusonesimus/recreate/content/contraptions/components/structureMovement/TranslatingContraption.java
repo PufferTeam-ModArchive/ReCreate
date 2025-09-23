@@ -1,13 +1,20 @@
 package su.sergiusonesimus.recreate.content.contraptions.components.structureMovement;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import net.minecraft.block.Block;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
 import su.sergiusonesimus.metaworlds.util.Direction;
+import su.sergiusonesimus.metaworlds.util.Direction.Axis;
 
-public abstract class TranslatingContraption extends Contraption {
+public abstract class TranslatingContraption extends ControlledContraption {
 
     protected Set<ChunkCoordinates> cachedColliders;
     protected Direction cachedColliderDirection;
@@ -16,29 +23,56 @@ public abstract class TranslatingContraption extends Contraption {
         super();
     }
 
-    // TODO
-    // public Set<ChunkCoordinates> getColliders(World world, Direction movementDirection) {
-    // if (getBlocks() == null)
-    // return Collections.emptySet();
-    // if (cachedColliders == null || cachedColliderDirection != movementDirection) {
-    // cachedColliders = new HashSet<>();
-    // cachedColliderDirection = movementDirection;
-    //
-    // for (StructureBlockInfo info : getBlocks().values()) {
-    // ChunkCoordinates offsetPos = info.pos.relative(movementDirection);
-    // if (info.state.getCollisionShape(world, offsetPos)
-    // .isEmpty())
-    // continue;
-    // if (getBlocks().containsKey(offsetPos)
-    // && !getBlocks().get(offsetPos).state.getCollisionShape(world, offsetPos)
-    // .isEmpty())
-    // continue;
-    // cachedColliders.add(info.pos);
-    // }
-    //
-    // }
-    // return cachedColliders;
-    // }
+    public TranslatingContraption(World parentWorld, IControlContraption controller, Axis rotationAxis) {
+        super(parentWorld, controller, rotationAxis);
+    }
+
+    public Set<ChunkCoordinates> getColliders(World world, Direction movementDirection) {
+        if (getBlocks() == null || contraptionWorld == null) return Collections.emptySet();
+        if (cachedColliders == null || cachedColliderDirection != movementDirection) {
+            cachedColliders = new HashSet<ChunkCoordinates>();
+            cachedColliderDirection = movementDirection;
+            ChunkCoordinates normal = movementDirection.getNormal();
+
+            for (ChunkCoordinates blockPos : getBlocks()) {
+                Block block = contraptionWorld.getBlock(blockPos.posX, blockPos.posY, blockPos.posZ);
+                List<AxisAlignedBB> collisionBoxes = new ArrayList<AxisAlignedBB>();
+                block.addCollisionBoxesToList(
+                    contraptionWorld,
+                    blockPos.posX,
+                    blockPos.posY,
+                    blockPos.posZ,
+                    block.getSelectedBoundingBoxFromPool(contraptionWorld, blockPos.posX, blockPos.posY, blockPos.posZ),
+                    collisionBoxes,
+                    null);
+                if (collisionBoxes.isEmpty()) continue;
+                ChunkCoordinates offsetPos = new ChunkCoordinates(blockPos);
+                offsetPos.posX += normal.posX;
+                offsetPos.posY += normal.posY;
+                offsetPos.posZ += normal.posZ;
+                if (getBlocks().contains(offsetPos)) {
+                    block = contraptionWorld.getBlock(offsetPos.posX, offsetPos.posY, offsetPos.posZ);
+                    collisionBoxes.clear();
+                    block.addCollisionBoxesToList(
+                        contraptionWorld,
+                        offsetPos.posX,
+                        offsetPos.posY,
+                        offsetPos.posZ,
+                        block.getSelectedBoundingBoxFromPool(
+                            contraptionWorld,
+                            offsetPos.posX,
+                            offsetPos.posY,
+                            offsetPos.posZ),
+                        collisionBoxes,
+                        null);
+                    if (!collisionBoxes.isEmpty()) continue;
+                }
+                cachedColliders.add(blockPos);
+            }
+
+        }
+        return cachedColliders;
+    }
 
     @Override
     public void removeBlocksFromWorld(World world, int offsetX, int offsetY, int offsetZ) {
