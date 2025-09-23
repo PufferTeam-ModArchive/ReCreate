@@ -1,5 +1,7 @@
 package su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -10,6 +12,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -21,6 +24,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.metaworlds.util.Direction.Axis;
+import su.sergiusonesimus.metaworlds.util.Direction.AxisDirection;
 import su.sergiusonesimus.recreate.AllBlocks;
 import su.sergiusonesimus.recreate.AllSounds;
 import su.sergiusonesimus.recreate.ReCreate;
@@ -333,6 +337,45 @@ public class MechanicalPistonBlock extends DirectionalAxisKineticBlock implement
                     break;
             }
         }
+    }
+
+    public List<AxisAlignedBB> getSelectedBoundingBoxesList(World worldIn, int x, int y, int z) {
+        List<AxisAlignedBB> list = new ArrayList<AxisAlignedBB>();
+        list.add(getSelectedBoundingBoxFromPool(worldIn, x, y, z));
+        if (this.getPistonState(worldIn, x, y, z) == PistonState.EXTENDED) {
+            double minX = 0.0D;
+            double minY = 0.0D;
+            double minZ = 0.0D;
+            double maxX = 1.0D;
+            double maxY = 1.0D;
+            double maxZ = 1.0D;
+            double pixel = 1.0D / 16.0D;
+            Direction dir = this.getDirection(worldIn.getBlockMetadata(x, y, z));
+
+            switch (dir.getAxis()) {
+                case X:
+                    minY = minZ = 6 * pixel;
+                    maxY = maxZ = 1.0D - 6 * pixel;
+                    if (dir.getAxisDirection() == AxisDirection.POSITIVE) minX = 1.0D - 4 * pixel;
+                    else maxX = 4 * pixel;
+                    break;
+                case Y:
+                    minX = minZ = 6 * pixel;
+                    maxX = maxZ = 1.0D - 6 * pixel;
+                    if (dir.getAxisDirection() == AxisDirection.POSITIVE) minY = 1.0D - 4 * pixel;
+                    else maxY = 4 * pixel;
+                    break;
+                case Z:
+                    minY = minX = 6 * pixel;
+                    maxY = maxX = 1.0D - 6 * pixel;
+                    if (dir.getAxisDirection() == AxisDirection.POSITIVE) minZ = 1.0D - 4 * pixel;
+                    else maxZ = 4 * pixel;
+                    break;
+            }
+
+            list.add(AxisAlignedBB.getBoundingBox(x + minX, y + minY, z + minZ, x + maxX, y + maxY, z + maxZ));
+        }
+        return list;
     }
 
     @Override

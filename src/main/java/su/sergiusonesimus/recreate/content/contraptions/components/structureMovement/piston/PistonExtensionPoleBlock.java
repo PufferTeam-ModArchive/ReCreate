@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
@@ -169,6 +170,12 @@ public class PistonExtensionPoleBlock extends WrenchableDirectionalBlock impleme
         }
 
         super.onBlockHarvested(worldIn, x, y, z, meta, player);
+    }
+
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World worldIn, int x, int y, int z) {
+        setBlockBoundsBasedOnState(worldIn, x, y, z);
+        return super.getCollisionBoundingBoxFromPool(worldIn, x, y, z);
     }
 
     @Override

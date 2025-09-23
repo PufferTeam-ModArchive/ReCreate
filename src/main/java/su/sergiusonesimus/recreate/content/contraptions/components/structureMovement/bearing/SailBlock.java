@@ -108,451 +108,151 @@ public class SailBlock extends WrenchableDirectionalBlock {
         }
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "rawtypes" })
     public void addCollisionBoxesToList(World worldIn, int x, int y, int z, AxisAlignedBB mask, List list,
         Entity collider) {
-        AxisAlignedBB testBB = getBoundingBox(worldIn, x, y, z);
+        float pixel = 1.0F / 16.0F;
+        switch (getDirection(worldIn.getBlockMetadata(x, y, z))) {
+            case UP:
+                this.setBlockBounds(0.0F, 1.0F - 4 * pixel, 0.0F, 3 * pixel, 1.0F, 3 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(0.0F, 1.0F - 4 * pixel, 1.0F - 3 * pixel, 3 * pixel, 1.0F, 1.0F);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(1.0F - 3 * pixel, 1.0F - 4 * pixel, 0.0F, 1.0F, 1.0F, 3 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(1.0F - 3 * pixel, 1.0F - 4 * pixel, 1.0F - 3 * pixel, 1.0F, 1.0F, 1.0F);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
 
-        if (mask.intersectsWith(testBB)) {
-            double pixel = 1.0D / 16D;
-            switch (getDirection(worldIn.getBlockMetadata(x, y, z))) {
-                case UP:
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 0.0D,
-                            y + 1.0D - 4 * pixel,
-                            z + 0.0D,
-                            x + 3 * pixel,
-                            y + 1.0D,
-                            z + 3 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 0.0D,
-                            y + 1.0D - 4 * pixel,
-                            z + 1.0D - 3 * pixel,
-                            x + 3 * pixel,
-                            y + 1.0D,
-                            z + 1.0D));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 1.0D - 3 * pixel,
-                            y + 1.0D - 4 * pixel,
-                            z + 0.0D,
-                            x + 1.0D,
-                            y + 1.0D,
-                            z + 3 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 1.0D - 3 * pixel,
-                            y + 1.0D - 4 * pixel,
-                            z + 1.0D - 3 * pixel,
-                            x + 1.0D,
-                            y + 1.0D,
-                            z + 1.0D));
+                this.setBlockBounds(0.0F, 1.0F - 3 * pixel, 3 * pixel, 2 * pixel, 1.0F, 1.0F - 3 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(1.0F - 2 * pixel, 1.0F - 3 * pixel, 3 * pixel, 1.0F, 1.0F, 1.0F - 3 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(3 * pixel, 1.0F - 3 * pixel, 0.0F, 1.0F - 3 * pixel, 1.0F, 2 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(3 * pixel, 1.0F - 3 * pixel, 1.0F - 2 * pixel, 1.0F - 3 * pixel, 1.0F, 1.0F);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                if (!frame) {
+                    this.setBlockBounds(2 * pixel, 1.0F - pixel, 2 * pixel, 1.0F - 2 * pixel, 1.0F, 1.0F - 2 * pixel);
+                    super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                }
+                break;
+            case DOWN:
+                this.setBlockBounds(0.0F, 0.0F, 0.0F, 3 * pixel, 4 * pixel, 3 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(0.0F, 0.0F, 1.0F - 3 * pixel, 3 * pixel, 4 * pixel, 1.0F);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(1.0F - 3 * pixel, 0.0F, 0.0F, 1.0F, 4 * pixel, 3 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(1.0F - 3 * pixel, 0.0F, 1.0F - 3 * pixel, 1.0F, 4 * pixel, 1.0F);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
 
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 0.0D,
-                            y + 1.0D - 3 * pixel,
-                            z + 3 * pixel,
-                            x + 2 * pixel,
-                            y + 1.0D,
-                            z + 1.0D - 3 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 1.0D - 2 * pixel,
-                            y + 1.0D - 3 * pixel,
-                            z + 3 * pixel,
-                            x + 1.0D,
-                            y + 1.0D,
-                            z + 1.0D - 3 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 3 * pixel,
-                            y + 1.0D - 3 * pixel,
-                            z + 0.0D,
-                            x + 1.0D - 3 * pixel,
-                            y + 1.0D,
-                            z + 2 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 3 * pixel,
-                            y + 1.0D - 3 * pixel,
-                            z + 1.0D - 2 * pixel,
-                            x + 1.0D - 3 * pixel,
-                            y + 1.0D,
-                            z + 1.0D));
-                    if (!frame) list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 2 * pixel,
-                            y + 1.0D - pixel,
-                            z + 2 * pixel,
-                            x + 1.0D - 2 * pixel,
-                            y + 1.0D,
-                            z + 1.0D - 2 * pixel));
-                    break;
-                case DOWN:
-                    list.add(
-                        AxisAlignedBB
-                            .getBoundingBox(x + 0.0D, y + 0.0D, z + 0.0D, x + 3 * pixel, y + 4 * pixel, z + 3 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 0.0D,
-                            y + 0.0D,
-                            z + 1.0D - 3 * pixel,
-                            x + 3 * pixel,
-                            y + 4 * pixel,
-                            z + 1.0D));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 1.0D - 3 * pixel,
-                            y + 0.0D,
-                            z + 0.0D,
-                            x + 1.0D,
-                            y + 4 * pixel,
-                            z + 3 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 1.0D - 3 * pixel,
-                            y + 0.0D,
-                            z + 1.0D - 3 * pixel,
-                            x + 1.0D,
-                            y + 4 * pixel,
-                            z + 1.0D));
+                this.setBlockBounds(0.0F, 0.0F, 3 * pixel, 2 * pixel, 3 * pixel, 1.0F - 3 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(1.0F - 2 * pixel, 0.0F, 3 * pixel, 1.0F, 3 * pixel, 1.0F - 3 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(3 * pixel, 0.0F, 0.0F, 1.0F - 3 * pixel, 3 * pixel, 2 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(3 * pixel, 0.0F, 1.0F - 2 * pixel, 1.0F - 3 * pixel, 3 * pixel, 1.0F);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                if (!frame) {
+                    this.setBlockBounds(2 * pixel, 0.0F, 2 * pixel, 1.0F - 2 * pixel, pixel, 1.0F - 2 * pixel);
+                    super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                }
+                break;
+            case EAST:
+                this.setBlockBounds(1.0F - 4 * pixel, 0.0F, 0.0F, 1.0F, 3 * pixel, 3 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(1.0F - 4 * pixel, 0.0F, 1.0F - 3 * pixel, 1.0F, 3 * pixel, 1.0F);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(1.0F - 4 * pixel, 1.0F - 3 * pixel, 0.0F, 1.0F, 1.0F, 3 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(1.0F - 4 * pixel, 1.0F - 3 * pixel, 1.0F - 3 * pixel, 1.0F, 1.0F, 1.0F);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
 
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 0.0D,
-                            y + 0.0D,
-                            z + 3 * pixel,
-                            x + 2 * pixel,
-                            y + 3 * pixel,
-                            z + 1.0D - 3 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 1.0D - 2 * pixel,
-                            y + 0.0D,
-                            z + 3 * pixel,
-                            x + 1.0D,
-                            y + 3 * pixel,
-                            z + 1.0D - 3 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 3 * pixel,
-                            y + 0.0D,
-                            z + 0.0D,
-                            x + 1.0D - 3 * pixel,
-                            y + 3 * pixel,
-                            z + 2 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 3 * pixel,
-                            y + 0.0D,
-                            z + 1.0D - 2 * pixel,
-                            x + 1.0D - 3 * pixel,
-                            y + 3 * pixel,
-                            z + 1.0D));
-                    if (!frame) list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 2 * pixel,
-                            y + 0.0D,
-                            z + 2 * pixel,
-                            x + 1.0D - 2 * pixel,
-                            y + pixel,
-                            z + 1.0D - 2 * pixel));
-                    break;
-                case EAST:
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 1.0D - 4 * pixel,
-                            y + 0.0D,
-                            z + 0.0D,
-                            x + 1.0D,
-                            y + 3 * pixel,
-                            z + 3 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 1.0D - 4 * pixel,
-                            y + 0.0D,
-                            z + 1.0D - 3 * pixel,
-                            x + 1.0D,
-                            y + 3 * pixel,
-                            z + 1.0D));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 1.0D - 4 * pixel,
-                            y + 1.0D - 3 * pixel,
-                            z + 0.0D,
-                            x + 1.0D,
-                            y + 1.0D,
-                            z + 3 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 1.0D - 4 * pixel,
-                            y + 1.0D - 3 * pixel,
-                            z + 1.0D - 3 * pixel,
-                            x + 1.0D,
-                            y + 1.0D,
-                            z + 1.0D));
+                this.setBlockBounds(1.0F - 3 * pixel, 0.0F, 3 * pixel, 1.0F, 2 * pixel, 1.0F - 3 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(1.0F - 3 * pixel, 1.0F - 2 * pixel, 3 * pixel, 1.0F, 1.0F, 1.0F - 3 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(1.0F - 3 * pixel, 3 * pixel, 0.0F, 1.0F, 1.0F - 3 * pixel, 2 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(1.0F - 3 * pixel, 3 * pixel, 1.0F - 2 * pixel, 1.0F, 1.0F - 3 * pixel, 1.0F);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                if (!frame) {
+                    this.setBlockBounds(1.0F - pixel, 2 * pixel, 2 * pixel, 1.0F, 1.0F - 2 * pixel, 1.0F - 2 * pixel);
+                    super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                }
+                break;
+            case WEST:
+                this.setBlockBounds(0.0F, 0.0F, 0.0F, 4 * pixel, 3 * pixel, 3 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(0.0F, 0.0F, 1.0F - 3 * pixel, 4 * pixel, 3 * pixel, 1.0F);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(0.0F, 1.0F - 3 * pixel, 0.0F, 4 * pixel, 1.0F, 3 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(0.0F, 1.0F - 3 * pixel, 1.0F - 3 * pixel, 4 * pixel, 1.0F, 1.0F);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
 
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 1.0D - 3 * pixel,
-                            y + 0.0D,
-                            z + 3 * pixel,
-                            x + 1.0D,
-                            y + 2 * pixel,
-                            z + 1.0D - 3 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 1.0D - 3 * pixel,
-                            y + 1.0D - 2 * pixel,
-                            z + 3 * pixel,
-                            x + 1.0D,
-                            y + 1.0D,
-                            z + 1.0D - 3 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 1.0D - 3 * pixel,
-                            y + 3 * pixel,
-                            z + 0.0D,
-                            x + 1.0D,
-                            y + 1.0D - 3 * pixel,
-                            z + 2 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 1.0D - 3 * pixel,
-                            y + 3 * pixel,
-                            z + 1.0D - 2 * pixel,
-                            x + 1.0D,
-                            y + 1.0D - 3 * pixel,
-                            z + 1.0D));
-                    if (!frame) list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 1.0D - pixel,
-                            y + 2 * pixel,
-                            z + 2 * pixel,
-                            x + 1.0D,
-                            y + 1.0D - 2 * pixel,
-                            z + 1.0D - 2 * pixel));
-                    break;
-                case WEST:
-                    list.add(
-                        AxisAlignedBB
-                            .getBoundingBox(x + 0.0D, y + 0.0D, z + 0.0D, x + 4 * pixel, y + 3 * pixel, z + 3 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 0.0D,
-                            y + 0.0D,
-                            z + 1.0D - 3 * pixel,
-                            x + 4 * pixel,
-                            y + 3 * pixel,
-                            z + 1.0D));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 0.0D,
-                            y + 1.0D - 3 * pixel,
-                            z + 0.0D,
-                            x + 4 * pixel,
-                            y + 1.0D,
-                            z + 3 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 0.0D,
-                            y + 1.0D - 3 * pixel,
-                            z + 1.0D - 3 * pixel,
-                            x + 4 * pixel,
-                            y + 1.0D,
-                            z + 1.0D));
+                this.setBlockBounds(0.0F, 0.0F, 3 * pixel, 3 * pixel, 2 * pixel, 1.0F - 3 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(0.0F, 1.0F - 2 * pixel, 3 * pixel, 3 * pixel, 1.0F, 1.0F - 3 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(0.0F, 3 * pixel, 0.0F, 3 * pixel, 1.0F - 3 * pixel, 2 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(0.0F, 3 * pixel, 1.0F - 2 * pixel, 3 * pixel, 1.0F - 3 * pixel, 1.0F);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                if (!frame) {
+                    this.setBlockBounds(0.0F, 2 * pixel, 2 * pixel, pixel, 1.0F - 2 * pixel, 1.0F - 2 * pixel);
+                    super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                }
+                break;
+            case SOUTH:
+                this.setBlockBounds(0.0F, 0.0F, 1.0F - 4 * pixel, 3 * pixel, 3 * pixel, 1.0F);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(0.0F, 1.0F - 3 * pixel, 1.0F - 4 * pixel, 3 * pixel, 1.0F, 1.0F);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(1.0F - 3 * pixel, 0.0F, 1.0F - 4 * pixel, 1.0F, 3 * pixel, 1.0F);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(1.0F - 3 * pixel, 1.0F - 3 * pixel, 1.0F - 4 * pixel, 1.0F, 1.0F, 1.0F);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
 
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 0.0D,
-                            y + 0.0D,
-                            z + 3 * pixel,
-                            x + 3 * pixel,
-                            y + 2 * pixel,
-                            z + 1.0D - 3 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 0.0D,
-                            y + 1.0D - 2 * pixel,
-                            z + 3 * pixel,
-                            x + 3 * pixel,
-                            y + 1.0D,
-                            z + 1.0D - 3 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 0.0D,
-                            y + 3 * pixel,
-                            z + 0.0D,
-                            x + 3 * pixel,
-                            y + 1.0D - 3 * pixel,
-                            z + 2 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 0.0D,
-                            y + 3 * pixel,
-                            z + 1.0D - 2 * pixel,
-                            x + 3 * pixel,
-                            y + 1.0D - 3 * pixel,
-                            z + 1.0D));
-                    if (!frame) list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 0.0D,
-                            y + 2 * pixel,
-                            z + 2 * pixel,
-                            x + pixel,
-                            y + 1.0D - 2 * pixel,
-                            z + 1.0D - 2 * pixel));
-                    break;
-                case SOUTH:
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 0.0D,
-                            y + 0.0D,
-                            z + 1.0D - 4 * pixel,
-                            x + 3 * pixel,
-                            y + 3 * pixel,
-                            z + 1.0D));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 0.0D,
-                            y + 1.0D - 3 * pixel,
-                            z + 1.0D - 4 * pixel,
-                            x + 3 * pixel,
-                            y + 1.0D,
-                            z + 1.0D));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 1.0D - 3 * pixel,
-                            y + 0.0D,
-                            z + 1.0D - 4 * pixel,
-                            x + 1.0D,
-                            y + 3 * pixel,
-                            z + 1.0D));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 1.0D - 3 * pixel,
-                            y + 1.0D - 3 * pixel,
-                            z + 1.0D - 4 * pixel,
-                            x + 1.0D,
-                            y + 1.0D,
-                            z + 1.0D));
+                this.setBlockBounds(0.0F, 3 * pixel, 1.0F - 3 * pixel, 2 * pixel, 1.0F - 3 * pixel, 1.0F);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(1.0F - 2 * pixel, 3 * pixel, 1.0F - 3 * pixel, 1.0F, 1.0F - 3 * pixel, 1.0F);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(3 * pixel, 0.0F, 1.0F - 3 * pixel, 1.0F - 3 * pixel, 2 * pixel, 1.0F);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(3 * pixel, 1.0F - 2 * pixel, 1.0F - 3 * pixel, 1.0F - 3 * pixel, 1.0F, 1.0F);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                if (!frame) {
+                    this.setBlockBounds(2 * pixel, 2 * pixel, 1.0F - pixel, 1.0F - 2 * pixel, 1.0F - 2 * pixel, 1.0F);
+                    super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                }
+                break;
+            case NORTH:
+                this.setBlockBounds(0.0F, 0.0F, 0.0F, 3 * pixel, 3 * pixel, 4 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(0.0F, 1.0F - 3 * pixel, 0.0F, 3 * pixel, 1.0F, 4 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(1.0F - 3 * pixel, 0.0F, 0.0F, 1.0F, 3 * pixel, 4 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(1.0F - 3 * pixel, 1.0F - 3 * pixel, 0.0F, 1.0F, 1.0F, 4 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
 
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 0.0D,
-                            y + 3 * pixel,
-                            z + 1.0D - 3 * pixel,
-                            x + 2 * pixel,
-                            y + 1.0D - 3 * pixel,
-                            z + 1.0D));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 1.0D - 2 * pixel,
-                            y + 3 * pixel,
-                            z + 1.0D - 3 * pixel,
-                            x + 1.0D,
-                            y + 1.0D - 3 * pixel,
-                            z + 1.0D));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 3 * pixel,
-                            y + 0.0D,
-                            z + 1.0D - 3 * pixel,
-                            x + 1.0D - 3 * pixel,
-                            y + 2 * pixel,
-                            z + 1.0D));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 3 * pixel,
-                            y + 1.0D - 2 * pixel,
-                            z + 1.0D - 3 * pixel,
-                            x + 1.0D - 3 * pixel,
-                            y + 1.0D,
-                            z + 1.0D));
-                    if (!frame) list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 2 * pixel,
-                            y + 2 * pixel,
-                            z + 1.0D - pixel,
-                            x + 1.0D - 2 * pixel,
-                            y + 1.0D - 2 * pixel,
-                            z + 1.0D));
-                    break;
-                case NORTH:
-                    list.add(
-                        AxisAlignedBB
-                            .getBoundingBox(x + 0.0D, y + 0.0D, z + 0.0D, x + 3 * pixel, y + 3 * pixel, z + 4 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 0.0D,
-                            y + 1.0D - 3 * pixel,
-                            z + 0.0D,
-                            x + 3 * pixel,
-                            y + 1.0D,
-                            z + 4 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 1.0D - 3 * pixel,
-                            y + 0.0D,
-                            z + 0.0D,
-                            x + 1.0D,
-                            y + 3 * pixel,
-                            z + 4 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 1.0D - 3 * pixel,
-                            y + 1.0D - 3 * pixel,
-                            z + 0.0D,
-                            x + 1.0D,
-                            y + 1.0D,
-                            z + 4 * pixel));
-
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 0.0D,
-                            y + 3 * pixel,
-                            z + 0.0D,
-                            x + 2 * pixel,
-                            y + 1.0D - 3 * pixel,
-                            z + 3 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 1.0D - 2 * pixel,
-                            y + 3 * pixel,
-                            z + 0.0D,
-                            x + 1.0D,
-                            y + 1.0D - 3 * pixel,
-                            z + 3 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 3 * pixel,
-                            y + 0.0D,
-                            z + 0.0D,
-                            x + 1.0D - 3 * pixel,
-                            y + 2 * pixel,
-                            z + 3 * pixel));
-                    list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 3 * pixel,
-                            y + 1.0D - 2 * pixel,
-                            z + 0.0D,
-                            x + 1.0D - 3 * pixel,
-                            y + 1.0D,
-                            z + 3 * pixel));
-                    if (!frame) list.add(
-                        AxisAlignedBB.getBoundingBox(
-                            x + 2 * pixel,
-                            y + 2 * pixel,
-                            z + 0.0D,
-                            x + 1.0D - 2 * pixel,
-                            y + 1.0D - 2 * pixel,
-                            z + pixel));
-                    break;
-            }
+                this.setBlockBounds(0.0F, 3 * pixel, 0.0F, 2 * pixel, 1.0F - 3 * pixel, 3 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(1.0F - 2 * pixel, 3 * pixel, 0.0F, 1.0F, 1.0F - 3 * pixel, 3 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(3 * pixel, 0.0F, 0.0F, 1.0F - 3 * pixel, 2 * pixel, 3 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                this.setBlockBounds(3 * pixel, 1.0F - 2 * pixel, 0.0F, 1.0F - 3 * pixel, 1.0F, 3 * pixel);
+                super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                if (!frame) {
+                    this.setBlockBounds(2 * pixel, 2 * pixel, 0.0F, 1.0F - 2 * pixel, 1.0F - 2 * pixel, pixel);
+                    super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+                }
+                break;
         }
+        this.setBlockBoundsBasedOnState(worldIn, x, y, z);
     }
 
     @SideOnly(Side.CLIENT)

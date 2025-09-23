@@ -1,5 +1,6 @@
 package su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -19,6 +20,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import su.sergiusonesimus.metaworlds.util.Direction;
+import su.sergiusonesimus.metaworlds.util.Direction.AxisDirection;
 import su.sergiusonesimus.recreate.AllBlocks;
 import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.MechanicalPistonBlock.PistonState;
@@ -153,41 +155,99 @@ public class MechanicalPistonHeadBlock extends WrenchableDirectionalBlock {
         super.onBlockHarvested(worldIn, x, y, z, meta, player);
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({ "rawtypes" })
     @Override
     public void addCollisionBoxesToList(World worldIn, int x, int y, int z, AxisAlignedBB mask, List list,
         Entity collider) {
-        if (mask.intersectsWith(AxisAlignedBB.getBoundingBox(x, y, z, x + 1.0D, y + 1.0D, z + 1.0D))) {
-            list.add(AllBlocks.piston_extension_pole.getCollisionBoundingBoxFromPool(worldIn, x, y, z));
-            double minX = 0.0D;
-            double minY = 0.0D;
-            double minZ = 0.0D;
-            double maxX = 1.0D;
-            double maxY = 1.0D;
-            double maxZ = 1.0D;
-            double topHeight = 4.0D / 16.0D;
-            switch (this.getDirection(worldIn.getBlockMetadata(x, y, z))) {
-                case UP:
-                    minY = 1.0D - topHeight;
-                    break;
-                case DOWN:
-                    maxY = topHeight;
-                    break;
-                case EAST:
-                    minX = 1.0D - topHeight;
-                    break;
-                case WEST:
-                    maxX = topHeight;
-                    break;
-                case SOUTH:
-                    minZ = 1.0D - topHeight;
-                    break;
-                case NORTH:
-                    maxZ = topHeight;
-                    break;
-            }
-            list.add(AxisAlignedBB.getBoundingBox(x + minX, y + minY, z + minZ, x + maxX, y + maxY, z + maxZ));
+        AllBlocks.piston_extension_pole.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+        float minX = 0.0F;
+        float minY = 0.0F;
+        float minZ = 0.0F;
+        float maxX = 1.0F;
+        float maxY = 1.0F;
+        float maxZ = 1.0F;
+        float topHeight = 4.0F / 16.0F;
+        switch (this.getDirection(worldIn.getBlockMetadata(x, y, z))) {
+            case UP:
+                minY = 1.0F - topHeight;
+                break;
+            case DOWN:
+                maxY = topHeight;
+                break;
+            case EAST:
+                minX = 1.0F - topHeight;
+                break;
+            case WEST:
+                maxX = topHeight;
+                break;
+            case SOUTH:
+                minZ = 1.0F - topHeight;
+                break;
+            case NORTH:
+                maxZ = topHeight;
+                break;
         }
+        this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
+        super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
+        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+    }
+
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World worldIn, int x, int y, int z) {
+        return AxisAlignedBB.getBoundingBox(
+            (double) x + this.minX,
+            (double) y + this.minY,
+            (double) z + this.minZ,
+            (double) x + this.maxX,
+            (double) y + this.maxY,
+            (double) z + this.maxZ);
+    }
+
+    public List<AxisAlignedBB> getSelectedBoundingBoxesList(World worldIn, int x, int y, int z) {
+        List<AxisAlignedBB> list = new ArrayList<AxisAlignedBB>();
+        double headMinX = 0.0D;
+        double headMinY = 0.0D;
+        double headMinZ = 0.0D;
+        double headMaxX = 1.0D;
+        double headMaxY = 1.0D;
+        double headMaxZ = 1.0D;
+        double poleMinX = 0.0D;
+        double poleMinY = 0.0D;
+        double poleMinZ = 0.0D;
+        double poleMaxX = 1.0D;
+        double poleMaxY = 1.0D;
+        double poleMaxZ = 1.0D;
+        double pixel = 1.0D / 16.0D;
+        Direction dir = this.getDirection(worldIn.getBlockMetadata(x, y, z));
+
+        switch (dir.getAxis()) {
+            case X:
+                poleMinY = poleMinZ = 6 * pixel;
+                poleMaxY = poleMaxZ = 1.0D - 6 * pixel;
+                if (dir.getAxisDirection() == AxisDirection.POSITIVE) headMinX = poleMaxX = 1.0D - 4 * pixel;
+                else headMaxX = poleMinX = 4 * pixel;
+                break;
+            case Y:
+                poleMinX = poleMinZ = 6 * pixel;
+                poleMaxX = poleMaxZ = 1.0D - 6 * pixel;
+                if (dir.getAxisDirection() == AxisDirection.POSITIVE) headMinY = poleMaxY = 1.0D - 4 * pixel;
+                else headMaxY = poleMinY = 4 * pixel;
+                break;
+            case Z:
+                poleMinY = poleMinX = 6 * pixel;
+                poleMaxY = poleMaxX = 1.0D - 6 * pixel;
+                if (dir.getAxisDirection() == AxisDirection.POSITIVE) headMinZ = poleMaxZ = 1.0D - 4 * pixel;
+                else headMaxZ = poleMinZ = 4 * pixel;
+                break;
+        }
+
+        list.add(
+            AxisAlignedBB
+                .getBoundingBox(x + headMinX, y + headMinY, z + headMinZ, x + headMaxX, y + headMaxY, z + headMaxZ));
+        list.add(
+            AxisAlignedBB
+                .getBoundingBox(x + poleMinX, y + poleMinY, z + poleMinZ, x + poleMaxX, y + poleMaxY, z + poleMaxZ));
+        return list;
     }
 
     public boolean isSticky(int meta) {
