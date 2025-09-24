@@ -9,8 +9,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IIcon;
@@ -18,16 +21,19 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.oredict.OreDictionary;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.metaworlds.util.Direction.AxisDirection;
 import su.sergiusonesimus.recreate.AllBlocks;
+import su.sergiusonesimus.recreate.AllSounds;
 import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.MechanicalPistonBlock.PistonState;
 import su.sergiusonesimus.recreate.foundation.block.WrenchableDirectionalBlock;
 import su.sergiusonesimus.recreate.util.BlockHelper;
+import su.sergiusonesimus.recreate.util.OreDictHelper;
 
 public class MechanicalPistonHeadBlock extends WrenchableDirectionalBlock {
 
@@ -65,6 +71,58 @@ public class MechanicalPistonHeadBlock extends WrenchableDirectionalBlock {
 
     public boolean isOpaqueCube() {
         return false;
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, int x, int y, int z, EntityPlayer player, int side, float subX,
+        float subY, float subZ) {
+        if (player.isPlayerSleeping() || player.isRiding() || player.isSneaking()) return false;
+        ItemStack heldItem = player.getHeldItem();
+        int meta = worldIn.getBlockMetadata(x, y, z);
+        if (!OreDictHelper.containsMatch(false, OreDictionary.getOres("slimeball"), heldItem) || this.isSticky(meta))
+            return false;
+        worldIn.setBlockMetadataWithNotify(x, y, z, meta + 6, 2);
+        Direction direction = getDirection(meta);
+        if (Direction.from3DDataValue(side) != direction) return false;
+
+        ChunkCoordinates normal = direction.getOpposite()
+            .getNormal();
+        int nextX = x + normal.posX;
+        int nextY = y + normal.posY;
+        int nextZ = z + normal.posZ;
+        Block nextBlock = worldIn.getBlock(nextX, nextY, nextZ);
+        int nextMeta = worldIn.getBlockMetadata(nextX, nextY, nextZ);
+
+        while (nextBlock instanceof PistonExtensionPoleBlock pole && pole.getAxis(nextMeta) == direction.getAxis()) {
+            nextX += normal.posX;
+            nextY += normal.posY;
+            nextZ += normal.posZ;
+            nextBlock = worldIn.getBlock(nextX, nextY, nextZ);
+            nextMeta = worldIn.getBlockMetadata(nextX, nextY, nextZ);
+        }
+
+        if (!(nextBlock instanceof MechanicalPistonBlock piston) || piston.getDirection(nextMeta) != direction
+            || piston.getPistonState(worldIn, nextX, nextY, nextZ) != PistonState.EXTENDED
+            || piston.isSticky) return false;
+        if (worldIn.isRemote) {
+            worldIn.spawnParticle(
+                "iconcrack_" + Item.getIdFromItem(Items.slime_ball),
+                x + subX,
+                y + subY,
+                z + subZ,
+                0,
+                0,
+                0);
+            return true;
+        }
+        AllSounds.SLIME_ADDED.playOnServer(worldIn, x, y, z, .5f, 1);
+        if (!player.capabilities.isCreativeMode) player.getHeldItem().stackSize--;
+        NBTTagCompound nbt = new NBTTagCompound();
+        worldIn.getTileEntity(nextX, nextY, nextZ)
+            .writeToNBT(nbt);
+        worldIn.setBlock(nextX, nextY, nextZ, AllBlocks.sticky_mechanical_piston, nextMeta, 2);
+        worldIn.setTileEntity(nextX, nextY, nextZ, TileEntity.createAndLoadEntity(nbt));
+        return true;
     }
 
     @Override
