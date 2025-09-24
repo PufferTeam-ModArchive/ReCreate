@@ -9,6 +9,7 @@ import su.sergiusonesimus.recreate.content.contraptions.components.motor.Creativ
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.BearingModel;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.MechanicalPistonTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.waterwheel.WaterWheelTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelModel;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelTileEntity;
@@ -86,6 +87,8 @@ public class TileEntityBreakerIntegration {
 
         TileEntityBreaker.registerModel(WATER_WHEEL, TEBREAKER);
         TileEntityBreaker.registerTileEntity(WaterWheelTileEntity.class, SHAFT);
+
+        TileEntityBreaker.registerTileEntity(MechanicalPistonTileEntity.class, SHAFT);
     }
 
     public static boolean shouldRenderDamageTexture(TileEntitySpecialRenderer renderer) {
