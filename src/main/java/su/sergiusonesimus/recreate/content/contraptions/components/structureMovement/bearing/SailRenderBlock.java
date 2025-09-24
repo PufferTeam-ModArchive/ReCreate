@@ -66,12 +66,7 @@ public class SailRenderBlock implements ISimpleBlockRenderingHandler {
             .setRenderBounds(7 * pixel, 3 * pixel, 1.0D - 2 * pixel, 1.0D - 6 * pixel - min, 1.0D - 3 * pixel, 1.0D);
         RenderHelper.renderInvBox(renderer, block, correctMeta);
 
-        renderer.uvRotateBottom = 0;
-        renderer.uvRotateTop = 0;
-        renderer.uvRotateNorth = 0;
-        renderer.uvRotateSouth = 0;
-        renderer.uvRotateWest = 0;
-        renderer.uvRotateEast = 0;
+        renderer.uvRotateBottom = renderer.uvRotateTop = renderer.uvRotateNorth = renderer.uvRotateSouth = renderer.uvRotateWest = renderer.uvRotateEast = 0;
 
         block.setBlockBoundsForItemRender();
     }
@@ -410,12 +405,7 @@ public class SailRenderBlock implements ISimpleBlockRenderingHandler {
                 break;
         }
 
-        renderer.uvRotateBottom = 0;
-        renderer.uvRotateTop = 0;
-        renderer.uvRotateNorth = 0;
-        renderer.uvRotateSouth = 0;
-        renderer.uvRotateWest = 0;
-        renderer.uvRotateEast = 0;
+        renderer.uvRotateBottom = renderer.uvRotateTop = renderer.uvRotateNorth = renderer.uvRotateSouth = renderer.uvRotateWest = renderer.uvRotateEast = 0;
 
         return true;
     }

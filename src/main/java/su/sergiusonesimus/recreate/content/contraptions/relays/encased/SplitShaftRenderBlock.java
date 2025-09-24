@@ -105,6 +105,8 @@ public class SplitShaftRenderBlock implements ISimpleBlockRenderingHandler {
                 break;
         }
 
+        renderer.uvRotateEast = renderer.uvRotateWest = renderer.uvRotateSouth = renderer.uvRotateNorth = renderer.uvRotateTop = renderer.uvRotateBottom = 0;
+
         return true;
     }
 
