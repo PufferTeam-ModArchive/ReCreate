@@ -137,9 +137,9 @@ public class MechanicalBearingTileEntity extends GeneratingKineticTileEntity
         if (!(block instanceof BearingBlock bearing)) return;
 
         Direction direction = bearing.getDirection(meta);
-        movedContraption = new BearingContraption(this.getWorld(), this, isWindmill(), direction);
+        BearingContraption contraption = new BearingContraption(this.getWorld(), this, isWindmill(), direction);
         try {
-            if (!movedContraption.assemble(worldObj, xCoord, yCoord, zCoord)) return;
+            if (!contraption.assemble(worldObj, xCoord, yCoord, zCoord)) return;
 
             lastException = null;
         } catch (AssemblyException e) {
@@ -154,7 +154,8 @@ public class MechanicalBearingTileEntity extends GeneratingKineticTileEntity
         // if (contraption.getSailBlocks() >= 16 * 8)
         // AllTriggers.triggerForNearbyPlayers(AllTriggers.MAXED_WINDMILL, worldObj, worldPosition, 5);
 
-        movedContraption.removeBlocksFromWorld(worldObj);
+        contraption.removeBlocksFromWorld(worldObj);
+        movedContraption = contraption;
         movedContraption.preInit();
         ChunkCoordinates offset = direction.getNormal();
         movedContraption.anchorX = xCoord + offset.posX;
@@ -227,8 +228,7 @@ public class MechanicalBearingTileEntity extends GeneratingKineticTileEntity
 
         if (!running) return;
 
-        if (!(movedContraption != null && movedContraption.getContraptionWorld()
-            .isStalled())) {
+        if (!(movedContraption != null && movedContraption.stalled)) {
             float angularSpeed = getAngularSpeed();
             float newAngle = angle + angularSpeed;
             angle = (float) (newAngle % 360);

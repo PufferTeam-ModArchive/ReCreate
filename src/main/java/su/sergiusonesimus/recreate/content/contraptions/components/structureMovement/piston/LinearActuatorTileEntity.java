@@ -260,9 +260,7 @@ public abstract class LinearActuatorTileEntity extends KineticTileEntity
             return false;
         }
 
-        // Vec3 motion = getMotionVector();
         movedContraption.setMotion(getMotionVector());
-        // movedContraption.move(motion);
         return ContraptionCollider.collideBlocks((TranslatingContraption) movedContraption);
     }
 

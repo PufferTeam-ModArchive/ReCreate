@@ -59,7 +59,7 @@ public class BearingContraption extends ControlledContraption {
 
     @Override
     public void addBlock(World world, int x, int y, int z) {
-        ChunkCoordinates localPos = this.toLocalPos(x, y, z);
+        ChunkCoordinates localPos = new ChunkCoordinates(x, y, z);
         Block block = world.getBlock(x, y, z);
         int meta = world.getBlockMetadata(x, y, z);
         if (!getBlocks().contains(localPos) && AllBlockTags.WINDMILL_SAILS.matches(block, meta)) sailBlocks++;

@@ -127,6 +127,10 @@ public abstract class Contraption {
         return (ContraptionWorld) getWorld();
     }
 
+    public boolean hasContraptionWorld() {
+        return contraptionWorld != null;
+    }
+
     public abstract String getSubWorldType();
 
     public abstract boolean assemble(World world, int x, int y, int z) throws AssemblyException;
