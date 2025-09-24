@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -189,6 +190,19 @@ public class PistonExtensionPoleBlock extends WrenchableDirectionalBlock impleme
                 break;
         }
     }
+
+    @Override
+    public int onBlockPlaced(World worldIn, int x, int y, int z, int side, float subX, float subY, float subZ,
+        int meta) {
+        meta = getMetaFromDirection(
+            Direction.from3DDataValue(side)
+                .getOpposite());
+        worldIn.setBlockMetadataWithNotify(x, y, z, meta, 2);
+        return meta;
+    }
+
+    @Override
+    public void onBlockPlacedBy(World worldIn, int x, int y, int z, EntityLivingBase placer, ItemStack itemIn) {}
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float subX,
