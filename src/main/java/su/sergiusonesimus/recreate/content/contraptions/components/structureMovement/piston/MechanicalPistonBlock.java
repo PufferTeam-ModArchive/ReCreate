@@ -34,6 +34,7 @@ import su.sergiusonesimus.recreate.content.contraptions.relays.gearbox.GearboxBl
 import su.sergiusonesimus.recreate.foundation.block.ITE;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
 import su.sergiusonesimus.recreate.foundation.utility.Lang;
+import su.sergiusonesimus.recreate.util.BlockHelper;
 import su.sergiusonesimus.recreate.util.OreDictHelper;
 
 public class MechanicalPistonBlock extends DirectionalAxisKineticBlock implements ITE<MechanicalPistonTileEntity> {
@@ -64,7 +65,8 @@ public class MechanicalPistonBlock extends DirectionalAxisKineticBlock implement
         super(material);
         isSticky = sticky;
         this.setStepSound(soundTypePiston);
-        this.setHardness(0.5F);
+        this.setHardness(1.5F);
+        this.setResistance(5.0F);
     }
 
     public boolean renderAsNormalBlock() {

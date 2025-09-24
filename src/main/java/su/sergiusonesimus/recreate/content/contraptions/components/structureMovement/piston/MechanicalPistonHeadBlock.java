@@ -32,6 +32,9 @@ public class MechanicalPistonHeadBlock extends WrenchableDirectionalBlock {
 
     public MechanicalPistonHeadBlock(Material material) {
         super(material);
+        this.setHardness(1.5F);
+        this.setResistance(5.0F);
+        this.setStepSound(soundTypePiston);
     }
 
     public boolean renderAsNormalBlock() {
