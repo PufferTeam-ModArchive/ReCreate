@@ -267,17 +267,8 @@ public class MechanicalPistonBlock extends DirectionalAxisKineticBlock implement
             for (int tempX = startX; tempX <= endX; tempX++) {
                 for (int tempY = startY; tempY <= endY; tempY++) {
                     for (int tempZ = startZ; tempZ <= endZ; tempZ++) {
-                        if (tempX != x || tempY != y || tempZ != z) {
-                            if (dropBlocks) worldIn.getBlock(tempX, tempY, tempZ)
-                                .dropBlockAsItem(
-                                    worldIn,
-                                    tempX,
-                                    tempY,
-                                    tempZ,
-                                    worldIn.getBlockMetadata(tempX, tempY, tempZ),
-                                    0);
-                            worldIn.setBlockToAir(tempX, tempY, tempZ);
-                        }
+                        if (tempX != x || tempY != y || tempZ != z)
+                            BlockHelper.breakBlock(worldIn, tempX, tempY, tempZ, dropBlocks);
                     }
                 }
             }
@@ -295,9 +286,7 @@ public class MechanicalPistonBlock extends DirectionalAxisKineticBlock implement
             if (isExtensionPole(block)
                 && direction.getAxis() == ((PistonExtensionPoleBlock) block).getDirection(blockMeta)
                     .getAxis()) {
-                if (dropBlocks) worldIn.getBlock(currentX, currentY, currentZ)
-                    .dropBlockAsItem(worldIn, currentX, currentY, currentZ, blockMeta, 0);
-                worldIn.setBlockToAir(currentX, currentY, currentZ);
+                BlockHelper.breakBlock(worldIn, currentX, currentY, currentZ, dropBlocks);
                 continue;
             }
 

@@ -28,6 +28,7 @@ import su.sergiusonesimus.recreate.foundation.block.WrenchableDirectionalBlock;
 import su.sergiusonesimus.recreate.foundation.utility.placement.IPlacementHelper;
 import su.sergiusonesimus.recreate.foundation.utility.placement.PlacementHelpers;
 import su.sergiusonesimus.recreate.foundation.utility.placement.util.PoleHelper;
+import su.sergiusonesimus.recreate.util.BlockHelper;
 
 public class PistonExtensionPoleBlock extends WrenchableDirectionalBlock implements IWrenchable {
 
@@ -143,17 +144,8 @@ public class PistonExtensionPoleBlock extends WrenchableDirectionalBlock impleme
                 for (int tempY = startY; tempY <= endY; tempY++) {
                     for (int tempZ = startZ; tempZ <= endZ; tempZ++) {
                         if ((tempX != x || tempY != y || tempZ != z)
-                            && (tempX != pistonBase.posX || tempY != pistonBase.posY || tempZ != pistonBase.posZ)) {
-                            if (!player.capabilities.isCreativeMode) worldIn.getBlock(tempX, tempY, tempZ)
-                                .dropBlockAsItem(
-                                    worldIn,
-                                    tempX,
-                                    tempY,
-                                    tempZ,
-                                    worldIn.getBlockMetadata(tempX, tempY, tempZ),
-                                    0);
-                            worldIn.setBlockToAir(tempX, tempY, tempZ);
-                        }
+                            && (tempX != pistonBase.posX || tempY != pistonBase.posY || tempZ != pistonBase.posZ))
+                            BlockHelper.breakBlock(worldIn, tempX, tempY, tempZ, !player.capabilities.isCreativeMode);
                     }
                 }
             }

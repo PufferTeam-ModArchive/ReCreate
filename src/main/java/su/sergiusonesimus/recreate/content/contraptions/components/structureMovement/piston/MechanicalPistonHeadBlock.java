@@ -27,6 +27,7 @@ import su.sergiusonesimus.recreate.AllBlocks;
 import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.MechanicalPistonBlock.PistonState;
 import su.sergiusonesimus.recreate.foundation.block.WrenchableDirectionalBlock;
+import su.sergiusonesimus.recreate.util.BlockHelper;
 
 public class MechanicalPistonHeadBlock extends WrenchableDirectionalBlock {
 
@@ -142,17 +143,8 @@ public class MechanicalPistonHeadBlock extends WrenchableDirectionalBlock {
                 for (int tempY = startY; tempY <= endY; tempY++) {
                     for (int tempZ = startZ; tempZ <= endZ; tempZ++) {
                         if ((tempX != x || tempY != y || tempZ != z)
-                            && (tempX != pistonBase.posX || tempY != pistonBase.posY || tempZ != pistonBase.posZ)) {
-                            if (dropBlocks) worldIn.getBlock(tempX, tempY, tempZ)
-                                .dropBlockAsItem(
-                                    worldIn,
-                                    tempX,
-                                    tempY,
-                                    tempZ,
-                                    worldIn.getBlockMetadata(tempX, tempY, tempZ),
-                                    0);
-                            worldIn.setBlockToAir(tempX, tempY, tempZ);
-                        }
+                            && (tempX != pistonBase.posX || tempY != pistonBase.posY || tempZ != pistonBase.posZ))
+                            BlockHelper.breakBlock(worldIn, tempX, tempY, tempZ, dropBlocks);
                     }
                 }
             }
