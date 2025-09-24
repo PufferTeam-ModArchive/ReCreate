@@ -2,12 +2,14 @@ package su.sergiusonesimus.recreate.content.contraptions.components.structureMov
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
@@ -72,6 +74,11 @@ public class MechanicalPistonHeadBlock extends WrenchableDirectionalBlock {
     }
 
     @Override
+    public Item getItemDropped(int meta, Random random, int fortune) {
+        return Item.getItemFromBlock(AllBlocks.piston_extension_pole);
+    }
+
+    @Override
     public void onBlockHarvested(World worldIn, int x, int y, int z, int meta, EntityPlayer player) {
         Direction direction = getDirection(meta);
         ChunkCoordinates pistonHead = new ChunkCoordinates(x, y, z);
@@ -131,7 +138,8 @@ public class MechanicalPistonHeadBlock extends WrenchableDirectionalBlock {
             for (int tempX = startX; tempX <= endX; tempX++) {
                 for (int tempY = startY; tempY <= endY; tempY++) {
                     for (int tempZ = startZ; tempZ <= endZ; tempZ++) {
-                        if (tempX != x && tempY != y && tempZ != z) {
+                        if ((tempX != x || tempY != y || tempZ != z)
+                            && (tempX != pistonBase.posX || tempY != pistonBase.posY || tempZ != pistonBase.posZ)) {
                             if (dropBlocks) worldIn.getBlock(tempX, tempY, tempZ)
                                 .dropBlockAsItem(
                                     worldIn,
@@ -149,6 +157,8 @@ public class MechanicalPistonHeadBlock extends WrenchableDirectionalBlock {
             MechanicalPistonTileEntity te = ((MechanicalPistonTileEntity) worldIn
                 .getTileEntity(pistonBase.posX, pistonBase.posY, pistonBase.posZ));
             te.state = PistonState.RETRACTED;
+            te.offset = 0;
+            te.onLengthBroken();
             te.notifyUpdate();
         }
 

@@ -265,7 +265,7 @@ public class MechanicalPistonBlock extends DirectionalAxisKineticBlock implement
             for (int tempX = startX; tempX <= endX; tempX++) {
                 for (int tempY = startY; tempY <= endY; tempY++) {
                     for (int tempZ = startZ; tempZ <= endZ; tempZ++) {
-                        if (tempX != x && tempY != y && tempZ != z) {
+                        if (tempX != x || tempY != y || tempZ != z) {
                             if (dropBlocks) worldIn.getBlock(tempX, tempY, tempZ)
                                 .dropBlockAsItem(
                                     worldIn,

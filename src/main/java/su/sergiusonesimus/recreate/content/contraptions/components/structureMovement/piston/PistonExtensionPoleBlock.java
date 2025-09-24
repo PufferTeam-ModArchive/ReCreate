@@ -92,7 +92,9 @@ public class PistonExtensionPoleBlock extends WrenchableDirectionalBlock impleme
                 if (MechanicalPistonBlock.isExtensionPole(block)
                     && axis == ((PistonExtensionPoleBlock) block).getAxis(localMeta)) continue;
 
-                if (MechanicalPistonBlock.isPiston(block) && axis == ((MechanicalPistonBlock) block).getAxis(localMeta))
+                if (MechanicalPistonBlock.isPiston(block)
+                    && axis == ((MechanicalPistonBlock) block).getDirection(localMeta)
+                        .getAxis())
                     pistonBase = new ChunkCoordinates(currentX, currentY, currentZ);
 
                 if (MechanicalPistonBlock.isPistonHead(block)
@@ -140,11 +142,8 @@ public class PistonExtensionPoleBlock extends WrenchableDirectionalBlock impleme
             for (int tempX = startX; tempX <= endX; tempX++) {
                 for (int tempY = startY; tempY <= endY; tempY++) {
                     for (int tempZ = startZ; tempZ <= endZ; tempZ++) {
-                        if (tempX != x && tempY != y
-                            && tempZ != z
-                            && tempX != pistonBase.posX
-                            && tempY != pistonBase.posY
-                            && tempZ != pistonBase.posZ) {
+                        if ((tempX != x || tempY != y || tempZ != z)
+                            && (tempX != pistonBase.posX || tempY != pistonBase.posY || tempZ != pistonBase.posZ)) {
                             if (!player.capabilities.isCreativeMode) worldIn.getBlock(tempX, tempY, tempZ)
                                 .dropBlockAsItem(
                                     worldIn,
