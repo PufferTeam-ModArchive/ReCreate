@@ -8,4 +8,8 @@ public interface IMixinRenderBlocks {
 
     void clearOverrideAlpha();
 
+    void overrideTextureBlockBounds(double minX, double minY, double minZ, double maxX, double maxY, double maxZ);
+
+    void clearTextureBlockBounds();
+
 }

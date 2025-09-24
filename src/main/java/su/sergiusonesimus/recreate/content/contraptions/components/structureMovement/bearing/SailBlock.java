@@ -114,140 +114,158 @@ public class SailBlock extends WrenchableDirectionalBlock {
         float pixel = 1.0F / 16.0F;
         switch (getDirection(worldIn.getBlockMetadata(x, y, z))) {
             case UP:
-                this.setBlockBounds(0.0F, 1.0F - 4 * pixel, 0.0F, 3 * pixel, 1.0F, 3 * pixel);
+                this.setBlockBounds(1 - 6 * pixel, 6 * pixel, 0.0F, 3 * pixel, 1 - 6 * pixel, 3 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(0.0F, 1.0F - 4 * pixel, 1.0F - 3 * pixel, 3 * pixel, 1.0F, 1.0F);
+                this.setBlockBounds(0.0F, 6 * pixel, 1.0F - 3 * pixel, 3 * pixel, 1 - 6 * pixel, 1.0F);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(1.0F - 3 * pixel, 1.0F - 4 * pixel, 0.0F, 1.0F, 1.0F, 3 * pixel);
+                this.setBlockBounds(1.0F - 3 * pixel, 6 * pixel, 0.0F, 1.0F, 1 - 6 * pixel, 3 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(1.0F - 3 * pixel, 1.0F - 4 * pixel, 1.0F - 3 * pixel, 1.0F, 1.0F, 1.0F);
+                this.setBlockBounds(1.0F - 3 * pixel, 6 * pixel, 1.0F - 3 * pixel, 1.0F, 1 - 6 * pixel, 1.0F);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
 
-                this.setBlockBounds(0.0F, 1.0F - 3 * pixel, 3 * pixel, 2 * pixel, 1.0F, 1.0F - 3 * pixel);
+                this.setBlockBounds(0.0F, 7 * pixel, 3 * pixel, 2 * pixel, 1 - 6 * pixel, 1.0F - 3 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(1.0F - 2 * pixel, 1.0F - 3 * pixel, 3 * pixel, 1.0F, 1.0F, 1.0F - 3 * pixel);
+                this.setBlockBounds(1.0F - 2 * pixel, 7 * pixel, 3 * pixel, 1.0F, 1 - 6 * pixel, 1.0F - 3 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(3 * pixel, 1.0F - 3 * pixel, 0.0F, 1.0F - 3 * pixel, 1.0F, 2 * pixel);
+                this.setBlockBounds(3 * pixel, 7 * pixel, 0.0F, 1.0F - 3 * pixel, 1 - 6 * pixel, 2 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(3 * pixel, 1.0F - 3 * pixel, 1.0F - 2 * pixel, 1.0F - 3 * pixel, 1.0F, 1.0F);
+                this.setBlockBounds(3 * pixel, 7 * pixel, 1.0F - 2 * pixel, 1.0F - 3 * pixel, 1 - 6 * pixel, 1.0F);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
                 if (!frame) {
-                    this.setBlockBounds(2 * pixel, 1.0F - pixel, 2 * pixel, 1.0F - 2 * pixel, 1.0F, 1.0F - 2 * pixel);
+                    this.setBlockBounds(
+                        2 * pixel,
+                        1 - 7 * pixel,
+                        2 * pixel,
+                        1.0F - 2 * pixel,
+                        1 - 6 * pixel,
+                        1.0F - 2 * pixel);
                     super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
                 }
                 break;
             case DOWN:
-                this.setBlockBounds(0.0F, 0.0F, 0.0F, 3 * pixel, 4 * pixel, 3 * pixel);
+                this.setBlockBounds(0.0F, 6 * pixel, 0.0F, 3 * pixel, 4 * pixel, 3 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(0.0F, 0.0F, 1.0F - 3 * pixel, 3 * pixel, 4 * pixel, 1.0F);
+                this.setBlockBounds(0.0F, 6 * pixel, 1.0F - 3 * pixel, 3 * pixel, 1 - 6 * pixel, 1.0F);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(1.0F - 3 * pixel, 0.0F, 0.0F, 1.0F, 4 * pixel, 3 * pixel);
+                this.setBlockBounds(1.0F - 3 * pixel, 6 * pixel, 0.0F, 1.0F, 1 - 6 * pixel, 3 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(1.0F - 3 * pixel, 0.0F, 1.0F - 3 * pixel, 1.0F, 4 * pixel, 1.0F);
+                this.setBlockBounds(1.0F - 3 * pixel, 6 * pixel, 1.0F - 3 * pixel, 1.0F, 1 - 6 * pixel, 1.0F);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
 
-                this.setBlockBounds(0.0F, 0.0F, 3 * pixel, 2 * pixel, 3 * pixel, 1.0F - 3 * pixel);
+                this.setBlockBounds(0.0F, 6 * pixel, 3 * pixel, 2 * pixel, 1 - 7 * pixel, 1.0F - 3 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(1.0F - 2 * pixel, 0.0F, 3 * pixel, 1.0F, 3 * pixel, 1.0F - 3 * pixel);
+                this.setBlockBounds(1.0F - 2 * pixel, 6 * pixel, 3 * pixel, 1.0F, 1 - 7 * pixel, 1.0F - 3 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(3 * pixel, 0.0F, 0.0F, 1.0F - 3 * pixel, 3 * pixel, 2 * pixel);
+                this.setBlockBounds(3 * pixel, 6 * pixel, 0.0F, 1.0F - 3 * pixel, 1 - 7 * pixel, 2 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(3 * pixel, 0.0F, 1.0F - 2 * pixel, 1.0F - 3 * pixel, 3 * pixel, 1.0F);
+                this.setBlockBounds(3 * pixel, 6 * pixel, 1.0F - 2 * pixel, 1.0F - 3 * pixel, 1 - 7 * pixel, 1.0F);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
                 if (!frame) {
-                    this.setBlockBounds(2 * pixel, 0.0F, 2 * pixel, 1.0F - 2 * pixel, pixel, 1.0F - 2 * pixel);
+                    this.setBlockBounds(2 * pixel, 6 * pixel, 2 * pixel, 1.0F - 2 * pixel, 7 * pixel, 1.0F - 2 * pixel);
                     super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
                 }
                 break;
             case EAST:
-                this.setBlockBounds(1.0F - 4 * pixel, 0.0F, 0.0F, 1.0F, 3 * pixel, 3 * pixel);
+                this.setBlockBounds(6 * pixel, 0.0F, 0.0F, 1 - 6 * pixel, 3 * pixel, 3 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(1.0F - 4 * pixel, 0.0F, 1.0F - 3 * pixel, 1.0F, 3 * pixel, 1.0F);
+                this.setBlockBounds(6 * pixel, 0.0F, 1.0F - 3 * pixel, 1 - 6 * pixel, 3 * pixel, 1.0F);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(1.0F - 4 * pixel, 1.0F - 3 * pixel, 0.0F, 1.0F, 1.0F, 3 * pixel);
+                this.setBlockBounds(6 * pixel, 1.0F - 3 * pixel, 0.0F, 1 - 6 * pixel, 1.0F, 3 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(1.0F - 4 * pixel, 1.0F - 3 * pixel, 1.0F - 3 * pixel, 1.0F, 1.0F, 1.0F);
+                this.setBlockBounds(6 * pixel, 1.0F - 3 * pixel, 1.0F - 3 * pixel, 1 - 6 * pixel, 1.0F, 1.0F);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
 
-                this.setBlockBounds(1.0F - 3 * pixel, 0.0F, 3 * pixel, 1.0F, 2 * pixel, 1.0F - 3 * pixel);
+                this.setBlockBounds(7 * pixel, 0.0F, 3 * pixel, 1 - 6 * pixel, 2 * pixel, 1.0F - 3 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(1.0F - 3 * pixel, 1.0F - 2 * pixel, 3 * pixel, 1.0F, 1.0F, 1.0F - 3 * pixel);
+                this.setBlockBounds(7 * pixel, 1.0F - 2 * pixel, 3 * pixel, 1 - 6 * pixel, 1.0F, 1.0F - 3 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(1.0F - 3 * pixel, 3 * pixel, 0.0F, 1.0F, 1.0F - 3 * pixel, 2 * pixel);
+                this.setBlockBounds(7 * pixel, 3 * pixel, 0.0F, 1 - 6 * pixel, 1.0F - 3 * pixel, 2 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(1.0F - 3 * pixel, 3 * pixel, 1.0F - 2 * pixel, 1.0F, 1.0F - 3 * pixel, 1.0F);
+                this.setBlockBounds(7 * pixel, 3 * pixel, 1.0F - 2 * pixel, 1 - 6 * pixel, 1.0F - 3 * pixel, 1.0F);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
                 if (!frame) {
-                    this.setBlockBounds(1.0F - pixel, 2 * pixel, 2 * pixel, 1.0F, 1.0F - 2 * pixel, 1.0F - 2 * pixel);
+                    this.setBlockBounds(
+                        1 - 7 * pixel,
+                        2 * pixel,
+                        2 * pixel,
+                        1 - 6 * pixel,
+                        1.0F - 2 * pixel,
+                        1.0F - 2 * pixel);
                     super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
                 }
                 break;
             case WEST:
-                this.setBlockBounds(0.0F, 0.0F, 0.0F, 4 * pixel, 3 * pixel, 3 * pixel);
+                this.setBlockBounds(6 * pixel, 0.0F, 0.0F, 1 - 6 * pixel, 3 * pixel, 3 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(0.0F, 0.0F, 1.0F - 3 * pixel, 4 * pixel, 3 * pixel, 1.0F);
+                this.setBlockBounds(6 * pixel, 0.0F, 1.0F - 3 * pixel, 1 - 6 * pixel, 3 * pixel, 1.0F);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(0.0F, 1.0F - 3 * pixel, 0.0F, 4 * pixel, 1.0F, 3 * pixel);
+                this.setBlockBounds(6 * pixel, 1.0F - 3 * pixel, 0.0F, 1 - 6 * pixel, 1.0F, 3 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(0.0F, 1.0F - 3 * pixel, 1.0F - 3 * pixel, 4 * pixel, 1.0F, 1.0F);
+                this.setBlockBounds(6 * pixel, 1.0F - 3 * pixel, 1.0F - 3 * pixel, 1 - 6 * pixel, 1.0F, 1.0F);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
 
-                this.setBlockBounds(0.0F, 0.0F, 3 * pixel, 3 * pixel, 2 * pixel, 1.0F - 3 * pixel);
+                this.setBlockBounds(6 * pixel, 0.0F, 3 * pixel, 1 - 7 * pixel, 2 * pixel, 1.0F - 3 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(0.0F, 1.0F - 2 * pixel, 3 * pixel, 3 * pixel, 1.0F, 1.0F - 3 * pixel);
+                this.setBlockBounds(6 * pixel, 1.0F - 2 * pixel, 3 * pixel, 1 - 7 * pixel, 1.0F, 1.0F - 3 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(0.0F, 3 * pixel, 0.0F, 3 * pixel, 1.0F - 3 * pixel, 2 * pixel);
+                this.setBlockBounds(6 * pixel, 3 * pixel, 0.0F, 1 - 7 * pixel, 1.0F - 3 * pixel, 2 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(0.0F, 3 * pixel, 1.0F - 2 * pixel, 3 * pixel, 1.0F - 3 * pixel, 1.0F);
+                this.setBlockBounds(6 * pixel, 3 * pixel, 1.0F - 2 * pixel, 1 - 7 * pixel, 1.0F - 3 * pixel, 1.0F);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
                 if (!frame) {
-                    this.setBlockBounds(0.0F, 2 * pixel, 2 * pixel, pixel, 1.0F - 2 * pixel, 1.0F - 2 * pixel);
+                    this.setBlockBounds(6 * pixel, 2 * pixel, 2 * pixel, 7 * pixel, 1.0F - 2 * pixel, 1.0F - 2 * pixel);
                     super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
                 }
                 break;
             case SOUTH:
-                this.setBlockBounds(0.0F, 0.0F, 1.0F - 4 * pixel, 3 * pixel, 3 * pixel, 1.0F);
+                this.setBlockBounds(0.0F, 0.0F, 6 * pixel, 3 * pixel, 3 * pixel, 1 - 6 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(0.0F, 1.0F - 3 * pixel, 1.0F - 4 * pixel, 3 * pixel, 1.0F, 1.0F);
+                this.setBlockBounds(0.0F, 1.0F - 3 * pixel, 6 * pixel, 3 * pixel, 1.0F, 1 - 6 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(1.0F - 3 * pixel, 0.0F, 1.0F - 4 * pixel, 1.0F, 3 * pixel, 1.0F);
+                this.setBlockBounds(1.0F - 3 * pixel, 0.0F, 6 * pixel, 1.0F, 3 * pixel, 1 - 6 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(1.0F - 3 * pixel, 1.0F - 3 * pixel, 1.0F - 4 * pixel, 1.0F, 1.0F, 1.0F);
+                this.setBlockBounds(1.0F - 3 * pixel, 1.0F - 3 * pixel, 6 * pixel, 1.0F, 1.0F, 1 - 6 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
 
-                this.setBlockBounds(0.0F, 3 * pixel, 1.0F - 3 * pixel, 2 * pixel, 1.0F - 3 * pixel, 1.0F);
+                this.setBlockBounds(0.0F, 3 * pixel, 7 * pixel, 2 * pixel, 1.0F - 3 * pixel, 1 - 6 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(1.0F - 2 * pixel, 3 * pixel, 1.0F - 3 * pixel, 1.0F, 1.0F - 3 * pixel, 1.0F);
+                this.setBlockBounds(1.0F - 2 * pixel, 3 * pixel, 7 * pixel, 1.0F, 1.0F - 3 * pixel, 1 - 6 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(3 * pixel, 0.0F, 1.0F - 3 * pixel, 1.0F - 3 * pixel, 2 * pixel, 1.0F);
+                this.setBlockBounds(3 * pixel, 0.0F, 7 * pixel, 1.0F - 3 * pixel, 2 * pixel, 1 - 6 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(3 * pixel, 1.0F - 2 * pixel, 1.0F - 3 * pixel, 1.0F - 3 * pixel, 1.0F, 1.0F);
+                this.setBlockBounds(3 * pixel, 1.0F - 2 * pixel, 7 * pixel, 1.0F - 3 * pixel, 1.0F, 1 - 6 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
                 if (!frame) {
-                    this.setBlockBounds(2 * pixel, 2 * pixel, 1.0F - pixel, 1.0F - 2 * pixel, 1.0F - 2 * pixel, 1.0F);
+                    this.setBlockBounds(
+                        2 * pixel,
+                        2 * pixel,
+                        1 - 7 * pixel,
+                        1.0F - 2 * pixel,
+                        1.0F - 2 * pixel,
+                        1 - 6 * pixel);
                     super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
                 }
                 break;
             case NORTH:
-                this.setBlockBounds(0.0F, 0.0F, 0.0F, 3 * pixel, 3 * pixel, 4 * pixel);
+                this.setBlockBounds(0.0F, 0.0F, 6 * pixel, 3 * pixel, 3 * pixel, 1 - 6 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(0.0F, 1.0F - 3 * pixel, 0.0F, 3 * pixel, 1.0F, 4 * pixel);
+                this.setBlockBounds(0.0F, 1.0F - 3 * pixel, 6 * pixel, 3 * pixel, 1.0F, 1 - 6 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(1.0F - 3 * pixel, 0.0F, 0.0F, 1.0F, 3 * pixel, 4 * pixel);
+                this.setBlockBounds(1.0F - 3 * pixel, 0.0F, 6 * pixel, 1.0F, 3 * pixel, 1 - 6 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(1.0F - 3 * pixel, 1.0F - 3 * pixel, 0.0F, 1.0F, 1.0F, 4 * pixel);
+                this.setBlockBounds(1.0F - 3 * pixel, 1.0F - 3 * pixel, 6 * pixel, 1.0F, 1.0F, 1 - 6 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
 
-                this.setBlockBounds(0.0F, 3 * pixel, 0.0F, 2 * pixel, 1.0F - 3 * pixel, 3 * pixel);
+                this.setBlockBounds(0.0F, 3 * pixel, 6 * pixel, 2 * pixel, 1.0F - 3 * pixel, 1 - 7 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(1.0F - 2 * pixel, 3 * pixel, 0.0F, 1.0F, 1.0F - 3 * pixel, 3 * pixel);
+                this.setBlockBounds(1.0F - 2 * pixel, 3 * pixel, 6 * pixel, 1.0F, 1.0F - 3 * pixel, 1 - 7 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(3 * pixel, 0.0F, 0.0F, 1.0F - 3 * pixel, 2 * pixel, 3 * pixel);
+                this.setBlockBounds(3 * pixel, 0.0F, 6 * pixel, 1.0F - 3 * pixel, 2 * pixel, 1 - 7 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
-                this.setBlockBounds(3 * pixel, 1.0F - 2 * pixel, 0.0F, 1.0F - 3 * pixel, 1.0F, 3 * pixel);
+                this.setBlockBounds(3 * pixel, 1.0F - 2 * pixel, 6 * pixel, 1.0F - 3 * pixel, 1.0F, 1 - 7 * pixel);
                 super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
                 if (!frame) {
-                    this.setBlockBounds(2 * pixel, 2 * pixel, 0.0F, 1.0F - 2 * pixel, 1.0F - 2 * pixel, pixel);
+                    this.setBlockBounds(2 * pixel, 2 * pixel, 6 * pixel, 1.0F - 2 * pixel, 1.0F - 2 * pixel, 7 * pixel);
                     super.addCollisionBoxesToList(worldIn, x, y, z, mask, list, collider);
                 }
                 break;
@@ -261,7 +279,7 @@ public class SailBlock extends WrenchableDirectionalBlock {
     }
 
     public AxisAlignedBB getBoundingBox(IBlockAccess worldIn, int x, int y, int z) {
-        Direction direction = getDirection(worldIn.getBlockMetadata(x, y, z));
+        Axis axis = getAxis(worldIn.getBlockMetadata(x, y, z));
         double pixel = 1.0D / 16D;
         double minX = 0.0D;
         double minY = 0.0D;
@@ -270,24 +288,18 @@ public class SailBlock extends WrenchableDirectionalBlock {
         double maxY = 1.0D;
         double maxZ = 1.0D;
 
-        switch (direction) {
-            case UP:
-                minY = 1.0D - 4 * pixel;
+        switch (axis) {
+            case Y:
+                minY = 6 * pixel;
+                maxY = 1.0D - 6 * pixel;
                 break;
-            case DOWN:
-                maxY = 4 * pixel;
+            case X:
+                minX = 6 * pixel;
+                maxX = 1.0D - 6 * pixel;
                 break;
-            case EAST:
-                minX = 1.0D - 4 * pixel;
-                break;
-            case WEST:
-                maxX = 4 * pixel;
-                break;
-            case SOUTH:
-                minZ = 1.0D - 4 * pixel;
-                break;
-            case NORTH:
-                maxZ = 4 * pixel;
+            case Z:
+                minZ = 6 * pixel;
+                maxZ = 1.0D - 6 * pixel;
                 break;
         }
 
@@ -334,37 +346,31 @@ public class SailBlock extends WrenchableDirectionalBlock {
     }
 
     public void setBlockBoundsBasedOnState(IBlockAccess worldIn, int x, int y, int z) {
-        Direction direction = getDirection(worldIn.getBlockMetadata(x, y, z));
-        double pixel = 1.0D / 16D;
-        double minX = 0.0D;
-        double minY = 0.0D;
-        double minZ = 0.0D;
-        double maxX = 1.0D;
-        double maxY = 1.0D;
-        double maxZ = 1.0D;
+        Axis axis = getAxis(worldIn.getBlockMetadata(x, y, z));
+        float pixel = 1.0F / 16.0F;
+        float minX = 0.0F;
+        float minY = 0.0F;
+        float minZ = 0.0F;
+        float maxX = 1.0F;
+        float maxY = 1.0F;
+        float maxZ = 1.0F;
 
-        switch (direction) {
-            case UP:
-                minY = 1.0D - 4 * pixel;
+        switch (axis) {
+            case Y:
+                minY = 6 * pixel;
+                maxY = 1.0F - 6 * pixel;
                 break;
-            case DOWN:
-                maxY = 4 * pixel;
+            case X:
+                minX = 6 * pixel;
+                maxX = 1.0F - 6 * pixel;
                 break;
-            case EAST:
-                minX = 1.0D - 4 * pixel;
-                break;
-            case WEST:
-                maxX = 4 * pixel;
-                break;
-            case SOUTH:
-                minZ = 1.0D - 4 * pixel;
-                break;
-            case NORTH:
-                maxZ = 4 * pixel;
+            case Z:
+                minZ = 6 * pixel;
+                maxZ = 1.0F - 6 * pixel;
                 break;
         }
 
-        setBlockBounds((float) minX, (float) minY, (float) minZ, (float) maxX, (float) maxY, (float) maxZ);
+        this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
     }
 
     @SideOnly(Side.CLIENT)
@@ -478,11 +484,12 @@ public class SailBlock extends WrenchableDirectionalBlock {
         MovingObjectPosition result = super.collisionRayTrace(worldIn, x, y, z, startVec, endVec);
         if (result != null && frame) {
             double frame = 3.0D / 16.0D;
-            int counter = 0
-                + ((result.hitVec.xCoord % 1.0D) > frame && (result.hitVec.xCoord % 1.0D) < (1 - frame) ? 1 : 0)
-                + ((result.hitVec.yCoord % 1.0D) > frame && (result.hitVec.yCoord % 1.0D) < (1 - frame) ? 1 : 0)
-                + ((result.hitVec.zCoord % 1.0D) > frame && (result.hitVec.zCoord % 1.0D) < (1 - frame) ? 1 : 0);
-            if (counter >= 2) return null;
+            boolean centeredX = (result.hitVec.xCoord % 1.0D) > frame && (result.hitVec.xCoord % 1.0D) < (1.0D - frame);
+            boolean centeredY = (result.hitVec.yCoord % 1.0D) > frame && (result.hitVec.yCoord % 1.0D) < (1.0D - frame);
+            boolean centeredZ = (result.hitVec.zCoord % 1.0D) > frame && (result.hitVec.zCoord % 1.0D) < (1.0D - frame);
+            Axis axis = this.getAxis(worldIn.getBlockMetadata(x, y, z));
+            if ((axis == Axis.X && centeredY && centeredZ) || (axis == Axis.Y && centeredX && centeredZ)
+                || (axis == Axis.Z && centeredX && centeredY)) return null;
         }
         return result;
     }

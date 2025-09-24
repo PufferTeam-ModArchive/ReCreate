@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.recreate.util.RenderHelper;
+import su.sergiusonesimus.recreate.zmixin.interfaces.IMixinRenderBlocks;
 
 public class SailRenderBlock implements ISimpleBlockRenderingHandler {
 
@@ -26,18 +27,18 @@ public class SailRenderBlock implements ISimpleBlockRenderingHandler {
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-        GL11.glTranslatef(-0.5F, 0.0F, 0.0F);
-
         double pixel = 1.0D / 16D;
         SailBlock sail = (SailBlock) block;
         double min = sail.frame ? 0.0D : pixel;
-        int correctMeta = Direction.EAST.get3DDataValue();
+        int correctMeta = Direction.WEST.get3DDataValue();
 
         if (!sail.frame) {
-            renderer.setRenderBounds(1.0D - pixel, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+            renderer.setRenderBounds(1 - 7 * pixel, 0.0D, 0.0D, 1 - 6 * pixel, 1.0D, 1.0D);
             renderer.setOverrideBlockTexture(sail.getIcon(correctMeta, correctMeta));
+            ((IMixinRenderBlocks) renderer).overrideTextureBlockBounds(15, 0, 0, 16, 16, 16);
             RenderHelper.renderInvBox(renderer, block, correctMeta);
             renderer.clearOverrideBlockTexture();
+            ((IMixinRenderBlocks) renderer).clearTextureBlockBounds();
         }
 
         renderer.uvRotateTop = 1;
@@ -45,22 +46,24 @@ public class SailRenderBlock implements ISimpleBlockRenderingHandler {
         renderer.uvRotateEast = 2;
         renderer.uvRotateWest = 1;
 
-        renderer.setRenderBounds(1.0D - 4 * pixel, 0.0D, 0.0D, 1.0D - min, 3 * pixel, 3 * pixel);
+        renderer.setRenderBounds(6 * pixel, 0.0D, 0.0D, 1.0D - 6 * pixel - min, 3 * pixel, 3 * pixel);
         RenderHelper.renderInvBox(renderer, block, correctMeta);
-        renderer.setRenderBounds(1.0D - 4 * pixel, 1.0D - 3 * pixel, 0.0D, 1.0D - min, 1.0D, 3 * pixel);
+        renderer.setRenderBounds(6 * pixel, 1.0D - 3 * pixel, 0.0D, 1.0D - 6 * pixel - min, 1.0D, 3 * pixel);
         RenderHelper.renderInvBox(renderer, block, correctMeta);
-        renderer.setRenderBounds(1.0D - 4 * pixel, 0.0D, 1.0D - 3 * pixel, 1.0D - min, 3 * pixel, 1.0D);
+        renderer.setRenderBounds(6 * pixel, 0.0D, 1.0D - 3 * pixel, 1.0D - 6 * pixel - min, 3 * pixel, 1.0D);
         RenderHelper.renderInvBox(renderer, block, correctMeta);
-        renderer.setRenderBounds(1.0D - 4 * pixel, 1.0D - 3 * pixel, 1.0D - 3 * pixel, 1.0D - min, 1.0D, 1.0D);
+        renderer.setRenderBounds(6 * pixel, 1.0D - 3 * pixel, 1.0D - 3 * pixel, 1.0D - 6 * pixel - min, 1.0D, 1.0D);
         RenderHelper.renderInvBox(renderer, block, correctMeta);
 
-        renderer.setRenderBounds(1.0D - 3 * pixel, 0.0D, 3 * pixel, 1.0D - min, 2 * pixel, 1.0D - 3 * pixel);
+        renderer.setRenderBounds(7 * pixel, 0.0D, 3 * pixel, 1.0D - 6 * pixel - min, 2 * pixel, 1.0D - 3 * pixel);
         RenderHelper.renderInvBox(renderer, block, correctMeta);
-        renderer.setRenderBounds(1.0D - 3 * pixel, 1.0D - 2 * pixel, 3 * pixel, 1.0D, 1.0D - min, 1.0D - 3 * pixel);
+        renderer
+            .setRenderBounds(7 * pixel, 1.0D - 2 * pixel, 3 * pixel, 1.0D - 6 * pixel - min, 1.0D, 1.0D - 3 * pixel);
         RenderHelper.renderInvBox(renderer, block, correctMeta);
-        renderer.setRenderBounds(1.0D - 3 * pixel, 3 * pixel, 0.0D, 1.0D - min, 1.0D - 3 * pixel, 2 * pixel);
+        renderer.setRenderBounds(7 * pixel, 3 * pixel, 0.0D, 1.0D - 6 * pixel - min, 1.0D - 3 * pixel, 2 * pixel);
         RenderHelper.renderInvBox(renderer, block, correctMeta);
-        renderer.setRenderBounds(1.0D - 3 * pixel, 3 * pixel, 1.0D - 2 * pixel, 1.0D - min, 1.0D - 3 * pixel, 1.0D);
+        renderer
+            .setRenderBounds(7 * pixel, 3 * pixel, 1.0D - 2 * pixel, 1.0D - 6 * pixel - min, 1.0D - 3 * pixel, 1.0D);
         RenderHelper.renderInvBox(renderer, block, correctMeta);
 
         renderer.uvRotateBottom = 0;
@@ -89,21 +92,28 @@ public class SailRenderBlock implements ISimpleBlockRenderingHandler {
         }
         Direction dir = sail.getDirection(meta);
         boolean damageTexture = false;
-        for (Object object : Minecraft.getMinecraft().renderGlobal.damagedBlocks.values()) {
-            DestroyBlockProgress dbp = (DestroyBlockProgress) object;
-            if (dbp.getPartialBlockX() == x && dbp.getPartialBlockY() == y && dbp.getPartialBlockZ() == z) {
-                damageTexture = true;
-                break;
+        if (renderer.overrideBlockTexture != null)
+            for (Object object : Minecraft.getMinecraft().renderGlobal.damagedBlocks.values()) {
+                DestroyBlockProgress dbp = (DestroyBlockProgress) object;
+                if (dbp.getPartialBlockX() == x && dbp.getPartialBlockY() == y && dbp.getPartialBlockZ() == z) {
+                    damageTexture = true;
+                    break;
+                }
             }
-        }
 
         switch (dir) {
             case UP:
                 if (!sail.frame) {
-                    renderer.setRenderBounds(0.0D, 1.0D - pixel, 0.0D, 1.0D, 1.0D, 1.0D);
-                    if (!damageTexture) renderer.setOverrideBlockTexture(sail.getIcon(dir.get3DDataValue(), meta));
+                    renderer.setRenderBounds(0.0D, 1 - 7 * pixel, 0.0D, 1.0D, 1 - 6 * pixel, 1.0D);
+                    if (!damageTexture) {
+                        renderer.setOverrideBlockTexture(sail.getIcon(dir.get3DDataValue(), meta));
+                        ((IMixinRenderBlocks) renderer).overrideTextureBlockBounds(0, 15, 0, 16, 16, 16);
+                    }
                     renderer.renderStandardBlock(block, x, y, z);
-                    if (!damageTexture) renderer.clearOverrideBlockTexture();
+                    if (!damageTexture) {
+                        renderer.clearOverrideBlockTexture();
+                        ((IMixinRenderBlocks) renderer).clearTextureBlockBounds();
+                    }
                 }
 
                 renderer.uvRotateEast = 0;
@@ -111,32 +121,51 @@ public class SailRenderBlock implements ISimpleBlockRenderingHandler {
                 renderer.uvRotateSouth = 0;
                 renderer.uvRotateNorth = 0;
 
-                renderer.setRenderBounds(0.0D, 1.0D - 4 * pixel, 0.0D, 3 * pixel, 1.0D - min, 3 * pixel);
+                renderer.setRenderBounds(0.0D, 6 * pixel, 0.0D, 3 * pixel, 1.0D - 6 * pixel - min, 3 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(1.0D - 3 * pixel, 1.0D - 4 * pixel, 0.0D, 1.0D, 1.0D - min, 3 * pixel);
+                renderer.setRenderBounds(1.0D - 3 * pixel, 6 * pixel, 0.0D, 1.0D, 1.0D - 6 * pixel - min, 3 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(0.0D, 1.0D - 4 * pixel, 1.0D - 3 * pixel, 3 * pixel, 1.0D - min, 1.0D);
+                renderer.setRenderBounds(0.0D, 6 * pixel, 1.0D - 3 * pixel, 3 * pixel, 1.0D - 6 * pixel - min, 1.0D);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(1.0D - 3 * pixel, 1.0D - 4 * pixel, 1.0D - 3 * pixel, 1.0D, 1.0D - min, 1.0D);
+                renderer
+                    .setRenderBounds(1.0D - 3 * pixel, 6 * pixel, 1.0D - 3 * pixel, 1.0D, 1.0D - 6 * pixel - min, 1.0D);
                 renderer.renderStandardBlock(block, x, y, z);
 
-                renderer.setRenderBounds(0.0D, 1.0D - 3 * pixel, 3 * pixel, 2 * pixel, 1.0D - min, 1.0D - 3 * pixel);
+                renderer
+                    .setRenderBounds(0.0D, 7 * pixel, 3 * pixel, 2 * pixel, 1.0D - 6 * pixel - min, 1.0D - 3 * pixel);
+                renderer.renderStandardBlock(block, x, y, z);
+                renderer.setRenderBounds(
+                    1.0D - 2 * pixel,
+                    7 * pixel,
+                    3 * pixel,
+                    1.0D,
+                    1.0D - 6 * pixel - min,
+                    1.0D - 3 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
                 renderer
-                    .setRenderBounds(1.0D - 2 * pixel, 1.0D - 3 * pixel, 3 * pixel, 1.0D, 1.0D - min, 1.0D - 3 * pixel);
+                    .setRenderBounds(3 * pixel, 7 * pixel, 0.0D, 1.0D - 3 * pixel, 1.0D - 6 * pixel - min, 2 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(3 * pixel, 1.0D - 3 * pixel, 0.0D, 1.0D - 3 * pixel, 1.0D - min, 2 * pixel);
-                renderer.renderStandardBlock(block, x, y, z);
-                renderer
-                    .setRenderBounds(3 * pixel, 1.0D - 3 * pixel, 1.0D - 2 * pixel, 1.0D - 3 * pixel, 1.0D - min, 1.0D);
+                renderer.setRenderBounds(
+                    3 * pixel,
+                    7 * pixel,
+                    1.0D - 2 * pixel,
+                    1.0D - 3 * pixel,
+                    1.0D - 6 * pixel - min,
+                    1.0D);
                 renderer.renderStandardBlock(block, x, y, z);
                 break;
             case DOWN:
                 if (!sail.frame) {
-                    renderer.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, pixel, 1.0D);
-                    if (!damageTexture) renderer.setOverrideBlockTexture(sail.getIcon(dir.get3DDataValue(), meta));
+                    renderer.setRenderBounds(0.0D, 6 * pixel, 0.0D, 1.0D, 7 * pixel, 1.0D);
+                    if (!damageTexture) {
+                        renderer.setOverrideBlockTexture(sail.getIcon(dir.get3DDataValue(), meta));
+                        ((IMixinRenderBlocks) renderer).overrideTextureBlockBounds(0, 0, 0, 16, 1, 16);
+                    }
                     renderer.renderStandardBlock(block, x, y, z);
-                    if (!damageTexture) renderer.clearOverrideBlockTexture();
+                    if (!damageTexture) {
+                        renderer.clearOverrideBlockTexture();
+                        ((IMixinRenderBlocks) renderer).clearTextureBlockBounds();
+                    }
                 }
 
                 renderer.uvRotateEast = 3;
@@ -144,30 +173,49 @@ public class SailRenderBlock implements ISimpleBlockRenderingHandler {
                 renderer.uvRotateSouth = 3;
                 renderer.uvRotateNorth = 3;
 
-                renderer.setRenderBounds(0.0D, min, 0.0D, 3 * pixel, 4 * pixel, 3 * pixel);
+                renderer.setRenderBounds(0.0D, 6 * pixel + min, 0.0D, 3 * pixel, 1 - 6 * pixel, 3 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(1.0D - 3 * pixel, min, 0.0D, 1.0D, 4 * pixel, 3 * pixel);
+                renderer.setRenderBounds(1.0D - 3 * pixel, 6 * pixel + min, 0.0D, 1.0D, 1 - 6 * pixel, 3 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(0.0D, min, 1.0D - 3 * pixel, 3 * pixel, 4 * pixel, 1.0D);
+                renderer.setRenderBounds(0.0D, 6 * pixel + min, 1.0D - 3 * pixel, 3 * pixel, 1 - 6 * pixel, 1.0D);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(1.0D - 3 * pixel, min, 1.0D - 3 * pixel, 1.0D, 4 * pixel, 1.0D);
+                renderer
+                    .setRenderBounds(1.0D - 3 * pixel, 6 * pixel + min, 1.0D - 3 * pixel, 1.0D, 1 - 6 * pixel, 1.0D);
                 renderer.renderStandardBlock(block, x, y, z);
 
-                renderer.setRenderBounds(0.0D, min, 3 * pixel, 2 * pixel, 3 * pixel, 1.0D - 3 * pixel);
+                renderer.setRenderBounds(0.0D, 6 * pixel + min, 3 * pixel, 2 * pixel, 1 - 7 * pixel, 1.0D - 3 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(1.0D - 2 * pixel, min, 3 * pixel, 1.0D, 3 * pixel, 1.0D - 3 * pixel);
+                renderer.setRenderBounds(
+                    1.0D - 2 * pixel,
+                    6 * pixel + min,
+                    3 * pixel,
+                    1.0D,
+                    1 - 7 * pixel,
+                    1.0D - 3 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(3 * pixel, min, 0.0D, 1.0D - 3 * pixel, 3 * pixel, 2 * pixel);
+                renderer.setRenderBounds(3 * pixel, 6 * pixel + min, 0.0D, 1.0D - 3 * pixel, 1 - 7 * pixel, 2 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(3 * pixel, min, 1.0D - 2 * pixel, 1.0D - 3 * pixel, 3 * pixel, 1.0D);
+                renderer.setRenderBounds(
+                    3 * pixel,
+                    6 * pixel + min,
+                    1.0D - 2 * pixel,
+                    1.0D - 3 * pixel,
+                    1 - 7 * pixel,
+                    1.0D);
                 renderer.renderStandardBlock(block, x, y, z);
                 break;
             case EAST:
                 if (!sail.frame) {
-                    renderer.setRenderBounds(1.0D - pixel, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
-                    if (!damageTexture) renderer.setOverrideBlockTexture(sail.getIcon(dir.get3DDataValue(), meta));
+                    renderer.setRenderBounds(1 - 7 * pixel, 0.0D, 0.0D, 1 - 6 * pixel, 1.0D, 1.0D);
+                    if (!damageTexture) {
+                        renderer.setOverrideBlockTexture(sail.getIcon(dir.get3DDataValue(), meta));
+                        ((IMixinRenderBlocks) renderer).overrideTextureBlockBounds(15, 0, 0, 16, 16, 16);
+                    }
                     renderer.renderStandardBlock(block, x, y, z);
-                    if (!damageTexture) renderer.clearOverrideBlockTexture();
+                    if (!damageTexture) {
+                        renderer.clearOverrideBlockTexture();
+                        ((IMixinRenderBlocks) renderer).clearTextureBlockBounds();
+                    }
                 }
 
                 renderer.uvRotateTop = 1;
@@ -175,32 +223,51 @@ public class SailRenderBlock implements ISimpleBlockRenderingHandler {
                 renderer.uvRotateEast = 2;
                 renderer.uvRotateWest = 1;
 
-                renderer.setRenderBounds(1.0D - 4 * pixel, 0.0D, 0.0D, 1.0D - min, 3 * pixel, 3 * pixel);
+                renderer.setRenderBounds(6 * pixel, 0.0D, 0.0D, 1.0D - 6 * pixel - min, 3 * pixel, 3 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(1.0D - 4 * pixel, 1.0D - 3 * pixel, 0.0D, 1.0D - min, 1.0D, 3 * pixel);
+                renderer.setRenderBounds(6 * pixel, 1.0D - 3 * pixel, 0.0D, 1.0D - 6 * pixel - min, 1.0D, 3 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(1.0D - 4 * pixel, 0.0D, 1.0D - 3 * pixel, 1.0D - min, 3 * pixel, 1.0D);
+                renderer.setRenderBounds(6 * pixel, 0.0D, 1.0D - 3 * pixel, 1.0D - 6 * pixel - min, 3 * pixel, 1.0D);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(1.0D - 4 * pixel, 1.0D - 3 * pixel, 1.0D - 3 * pixel, 1.0D - min, 1.0D, 1.0D);
+                renderer
+                    .setRenderBounds(6 * pixel, 1.0D - 3 * pixel, 1.0D - 3 * pixel, 1.0D - 6 * pixel - min, 1.0D, 1.0D);
                 renderer.renderStandardBlock(block, x, y, z);
 
-                renderer.setRenderBounds(1.0D - 3 * pixel, 0.0D, 3 * pixel, 1.0D - min, 2 * pixel, 1.0D - 3 * pixel);
+                renderer
+                    .setRenderBounds(7 * pixel, 0.0D, 3 * pixel, 1.0D - 6 * pixel - min, 2 * pixel, 1.0D - 3 * pixel);
+                renderer.renderStandardBlock(block, x, y, z);
+                renderer.setRenderBounds(
+                    7 * pixel,
+                    1.0D - 2 * pixel,
+                    3 * pixel,
+                    1.0D - 6 * pixel - min,
+                    1.0D,
+                    1.0D - 3 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
                 renderer
-                    .setRenderBounds(1.0D - 3 * pixel, 1.0D - 2 * pixel, 3 * pixel, 1.0D, 1.0D - min, 1.0D - 3 * pixel);
+                    .setRenderBounds(7 * pixel, 3 * pixel, 0.0D, 1.0D - 6 * pixel - min, 1.0D - 3 * pixel, 2 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(1.0D - 3 * pixel, 3 * pixel, 0.0D, 1.0D - min, 1.0D - 3 * pixel, 2 * pixel);
-                renderer.renderStandardBlock(block, x, y, z);
-                renderer
-                    .setRenderBounds(1.0D - 3 * pixel, 3 * pixel, 1.0D - 2 * pixel, 1.0D - min, 1.0D - 3 * pixel, 1.0D);
+                renderer.setRenderBounds(
+                    7 * pixel,
+                    3 * pixel,
+                    1.0D - 2 * pixel,
+                    1.0D - 6 * pixel - min,
+                    1.0D - 3 * pixel,
+                    1.0D);
                 renderer.renderStandardBlock(block, x, y, z);
                 break;
             case WEST:
                 if (!sail.frame) {
-                    renderer.setRenderBounds(0.0D, 0.0D, 0.0D, pixel, 1.0D, 1.0D);
-                    if (!damageTexture) renderer.setOverrideBlockTexture(sail.getIcon(dir.get3DDataValue(), meta));
+                    renderer.setRenderBounds(6 * pixel, 0.0D, 0.0D, 7 * pixel, 1.0D, 1.0D);
+                    if (!damageTexture) {
+                        renderer.setOverrideBlockTexture(sail.getIcon(dir.get3DDataValue(), meta));
+                        ((IMixinRenderBlocks) renderer).overrideTextureBlockBounds(0, 0, 0, 1, 16, 16);
+                    }
                     renderer.renderStandardBlock(block, x, y, z);
-                    if (!damageTexture) renderer.clearOverrideBlockTexture();
+                    if (!damageTexture) {
+                        renderer.clearOverrideBlockTexture();
+                        ((IMixinRenderBlocks) renderer).clearTextureBlockBounds();
+                    }
                 }
 
                 renderer.uvRotateTop = 2;
@@ -208,30 +275,49 @@ public class SailRenderBlock implements ISimpleBlockRenderingHandler {
                 renderer.uvRotateEast = 1;
                 renderer.uvRotateWest = 2;
 
-                renderer.setRenderBounds(min, 0.0D, 0.0D, 4 * pixel, 3 * pixel, 3 * pixel);
+                renderer.setRenderBounds(6 * pixel + min, 0.0D, 0.0D, 1 - 6 * pixel, 3 * pixel, 3 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(min, 1.0D - 3 * pixel, 0.0D, 4 * pixel, 1.0D, 3 * pixel);
+                renderer.setRenderBounds(6 * pixel + min, 1.0D - 3 * pixel, 0.0D, 1 - 6 * pixel, 1.0D, 3 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(min, 0.0D, 1.0D - 3 * pixel, 4 * pixel, 3 * pixel, 1.0D);
+                renderer.setRenderBounds(6 * pixel + min, 0.0D, 1.0D - 3 * pixel, 1 - 6 * pixel, 3 * pixel, 1.0D);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(min, 1.0D - 3 * pixel, 1.0D - 3 * pixel, 4 * pixel, 1.0D, 1.0D);
+                renderer
+                    .setRenderBounds(6 * pixel + min, 1.0D - 3 * pixel, 1.0D - 3 * pixel, 1 - 6 * pixel, 1.0D, 1.0D);
                 renderer.renderStandardBlock(block, x, y, z);
 
-                renderer.setRenderBounds(min, 0.0D, 3 * pixel, 3 * pixel, 2 * pixel, 1.0D - 3 * pixel);
+                renderer.setRenderBounds(6 * pixel + min, 0.0D, 3 * pixel, 1 - 7 * pixel, 2 * pixel, 1.0D - 3 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(min, 1.0D - 2 * pixel, 3 * pixel, 3 * pixel, 1.0D, 1.0D - 3 * pixel);
+                renderer.setRenderBounds(
+                    6 * pixel + min,
+                    1.0D - 2 * pixel,
+                    3 * pixel,
+                    1 - 7 * pixel,
+                    1.0D,
+                    1.0D - 3 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(min, 3 * pixel, 0.0D, 3 * pixel, 1.0D - 3 * pixel, 2 * pixel);
+                renderer.setRenderBounds(6 * pixel + min, 3 * pixel, 0.0D, 1 - 7 * pixel, 1.0D - 3 * pixel, 2 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(min, 3 * pixel, 1.0D - 2 * pixel, 3 * pixel, 1.0D - 3 * pixel, 1.0D);
+                renderer.setRenderBounds(
+                    6 * pixel + min,
+                    3 * pixel,
+                    1.0D - 2 * pixel,
+                    1 - 7 * pixel,
+                    1.0D - 3 * pixel,
+                    1.0D);
                 renderer.renderStandardBlock(block, x, y, z);
                 break;
             case SOUTH:
                 if (!sail.frame) {
-                    renderer.setRenderBounds(0.0D, 0.0D, 1.0D - pixel, 1.0D, 1.0D, 1.0D);
-                    if (!damageTexture) renderer.setOverrideBlockTexture(sail.getIcon(dir.get3DDataValue(), meta));
+                    renderer.setRenderBounds(0.0D, 0.0D, 1 - 7 * pixel, 1.0D, 1.0D, 1 - 6 * pixel);
+                    if (!damageTexture) {
+                        renderer.setOverrideBlockTexture(sail.getIcon(dir.get3DDataValue(), meta));
+                        ((IMixinRenderBlocks) renderer).overrideTextureBlockBounds(0, 0, 15, 16, 16, 16);
+                    }
                     renderer.renderStandardBlock(block, x, y, z);
-                    if (!damageTexture) renderer.clearOverrideBlockTexture();
+                    if (!damageTexture) {
+                        renderer.clearOverrideBlockTexture();
+                        ((IMixinRenderBlocks) renderer).clearTextureBlockBounds();
+                    }
                 }
 
                 renderer.uvRotateTop = 3;
@@ -239,32 +325,51 @@ public class SailRenderBlock implements ISimpleBlockRenderingHandler {
                 renderer.uvRotateSouth = 2;
                 renderer.uvRotateNorth = 1;
 
-                renderer.setRenderBounds(0.0D, 0.0D, 1.0D - 4 * pixel, 3 * pixel, 3 * pixel, 1.0D - min);
+                renderer.setRenderBounds(0.0D, 0.0D, 6 * pixel, 3 * pixel, 3 * pixel, 1.0D - 6 * pixel - min);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(1.0D - 3 * pixel, 0.0D, 1.0D - 4 * pixel, 1.0D, 3 * pixel, 1.0D - min);
+                renderer.setRenderBounds(1.0D - 3 * pixel, 0.0D, 6 * pixel, 1.0D, 3 * pixel, 1.0D - 6 * pixel - min);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(0.0D, 1.0D - 3 * pixel, 1.0D - 4 * pixel, 3 * pixel, 1.0D, 1.0D - min);
+                renderer.setRenderBounds(0.0D, 1.0D - 3 * pixel, 6 * pixel, 3 * pixel, 1.0D, 1.0D - 6 * pixel - min);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(1.0D - 3 * pixel, 1.0D - 3 * pixel, 1.0D - 4 * pixel, 1.0D, 1.0D, 1.0D - min);
+                renderer
+                    .setRenderBounds(1.0D - 3 * pixel, 1.0D - 3 * pixel, 6 * pixel, 1.0D, 1.0D, 1.0D - 6 * pixel - min);
                 renderer.renderStandardBlock(block, x, y, z);
 
-                renderer.setRenderBounds(0.0D, 3 * pixel, 1.0D - 3 * pixel, 2 * pixel, 1.0D - 3 * pixel, 1.0D - min);
+                renderer
+                    .setRenderBounds(0.0D, 3 * pixel, 7 * pixel, 2 * pixel, 1.0D - 3 * pixel, 1.0D - 6 * pixel - min);
+                renderer.renderStandardBlock(block, x, y, z);
+                renderer.setRenderBounds(
+                    1.0D - 2 * pixel,
+                    3 * pixel,
+                    7 * pixel,
+                    1.0D,
+                    1.0D - 3 * pixel,
+                    1.0D - 6 * pixel - min);
                 renderer.renderStandardBlock(block, x, y, z);
                 renderer
-                    .setRenderBounds(1.0D - 2 * pixel, 3 * pixel, 1.0D - 3 * pixel, 1.0D, 1.0D - 3 * pixel, 1.0D - min);
+                    .setRenderBounds(3 * pixel, 0.0D, 7 * pixel, 1.0D - 3 * pixel, 2 * pixel, 1.0D - 6 * pixel - min);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(3 * pixel, 0.0D, 1.0D - 3 * pixel, 1.0D - 3 * pixel, 2 * pixel, 1.0D - min);
-                renderer.renderStandardBlock(block, x, y, z);
-                renderer
-                    .setRenderBounds(3 * pixel, 1.0D - 2 * pixel, 1.0D - 3 * pixel, 1.0D - 3 * pixel, 1.0D, 1.0D - min);
+                renderer.setRenderBounds(
+                    3 * pixel,
+                    1.0D - 2 * pixel,
+                    7 * pixel,
+                    1.0D - 3 * pixel,
+                    1.0D,
+                    1.0D - 6 * pixel - min);
                 renderer.renderStandardBlock(block, x, y, z);
                 break;
             case NORTH:
                 if (!sail.frame) {
-                    renderer.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, pixel);
-                    if (!damageTexture) renderer.setOverrideBlockTexture(sail.getIcon(dir.get3DDataValue(), meta));
+                    renderer.setRenderBounds(0.0D, 0.0D, 6 * pixel, 1.0D, 1.0D, 7 * pixel);
+                    if (!damageTexture) {
+                        renderer.setOverrideBlockTexture(sail.getIcon(dir.get3DDataValue(), meta));
+                        ((IMixinRenderBlocks) renderer).overrideTextureBlockBounds(0, 0, 0, 16, 16, 1);
+                    }
                     renderer.renderStandardBlock(block, x, y, z);
-                    if (!damageTexture) renderer.clearOverrideBlockTexture();
+                    if (!damageTexture) {
+                        renderer.clearOverrideBlockTexture();
+                        ((IMixinRenderBlocks) renderer).clearTextureBlockBounds();
+                    }
                 }
 
                 renderer.uvRotateTop = 0;
@@ -272,22 +377,35 @@ public class SailRenderBlock implements ISimpleBlockRenderingHandler {
                 renderer.uvRotateSouth = 1;
                 renderer.uvRotateNorth = 2;
 
-                renderer.setRenderBounds(0.0D, 0.0D, min, 3 * pixel, 3 * pixel, 4 * pixel);
+                renderer.setRenderBounds(0.0D, 0.0D, 6 * pixel + min, 3 * pixel, 3 * pixel, 1 - 6 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(1.0D - 3 * pixel, 0.0D, min, 1.0D, 3 * pixel, 4 * pixel);
+                renderer.setRenderBounds(1.0D - 3 * pixel, 0.0D, 6 * pixel + min, 1.0D, 3 * pixel, 1 - 6 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(0.0D, 1.0D - 3 * pixel, min, 3 * pixel, 1.0D, 4 * pixel);
+                renderer.setRenderBounds(0.0D, 1.0D - 3 * pixel, 6 * pixel + min, 3 * pixel, 1.0D, 1 - 6 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(1.0D - 3 * pixel, 1.0D - 3 * pixel, min, 1.0D, 1.0D, 4 * pixel);
+                renderer
+                    .setRenderBounds(1.0D - 3 * pixel, 1.0D - 3 * pixel, 6 * pixel + min, 1.0D, 1.0D, 1 - 6 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
 
-                renderer.setRenderBounds(0.0D, 3 * pixel, min, 2 * pixel, 1.0D - 3 * pixel, 3 * pixel);
+                renderer.setRenderBounds(0.0D, 3 * pixel, 6 * pixel + min, 2 * pixel, 1.0D - 3 * pixel, 1 - 7 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(1.0D - 2 * pixel, 3 * pixel, min, 1.0D, 1.0D - 3 * pixel, 3 * pixel);
+                renderer.setRenderBounds(
+                    1.0D - 2 * pixel,
+                    3 * pixel,
+                    6 * pixel + min,
+                    1.0D,
+                    1.0D - 3 * pixel,
+                    1 - 7 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(3 * pixel, 0.0D, min, 1.0D - 3 * pixel, 2 * pixel, 3 * pixel);
+                renderer.setRenderBounds(3 * pixel, 0.0D, 6 * pixel + min, 1.0D - 3 * pixel, 2 * pixel, 1 - 7 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
-                renderer.setRenderBounds(3 * pixel, 1.0D - 2 * pixel, min, 1.0D - 3 * pixel, 1.0D, 3 * pixel);
+                renderer.setRenderBounds(
+                    3 * pixel,
+                    1.0D - 2 * pixel,
+                    6 * pixel + min,
+                    1.0D - 3 * pixel,
+                    1.0D,
+                    1 - 7 * pixel);
                 renderer.renderStandardBlock(block, x, y, z);
                 break;
         }
