@@ -89,14 +89,35 @@ public interface IWrenchable {
             if (block instanceof IAxisAlongFirstCoordinate aafc) return aafc.cycleMetadata(originalMeta);
             else return originalMeta;
         } else {
-            do {
-                newMeta = this.getMetaFromDirection(
-                    this.getDirection(newMeta)
-                        .rotateAround(rotationAxis));
-                if (rotationAxis == Axis.Y && block instanceof IAxisAlongFirstCoordinate aafc)
-                    newMeta = aafc.cycleMetadata(newMeta);
-            } while (this.getDirection(newMeta)
-                .getAxis() == rotationAxis);
+            Direction newFacing = this.getDirection(newMeta)
+                .rotateAround(rotationAxis);
+            newMeta = this.getMetaFromDirection(newFacing);
+            if (block instanceof IAxisAlongFirstCoordinate aafc) {
+                boolean axisAlongFirst = aafc.isAxisAlongFirstCoordinate(originalMeta);
+                Axis originalAxis = ((IWrenchable) block).getAxis(originalMeta);
+                if (originalAxis == rotationAxis) {
+                    switch (newFacing.getAxis()) {
+                        case X:
+                            axisAlongFirst = originalAxis == Axis.Y;
+                            break;
+                        case Y:
+                        case Z:
+                            axisAlongFirst = originalAxis == Axis.X;
+                            break;
+                    }
+                } else {
+                    switch (newFacing.getAxis()) {
+                        case X:
+                            axisAlongFirst = originalFacing.getAxis() == Axis.Y;
+                            break;
+                        case Y:
+                        case Z:
+                            axisAlongFirst = originalFacing.getAxis() == Axis.X;
+                            break;
+                    }
+                }
+                newMeta = aafc.getMetadata(newFacing, axisAlongFirst);
+            }
         }
         return newMeta;
     }
