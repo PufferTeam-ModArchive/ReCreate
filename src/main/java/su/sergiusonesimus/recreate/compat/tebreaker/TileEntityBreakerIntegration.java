@@ -1,5 +1,7 @@
 package su.sergiusonesimus.recreate.compat.tebreaker;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.DestroyBlockProgress;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -21,6 +23,7 @@ import su.sergiusonesimus.recreate.content.contraptions.relays.gearbox.GearboxTi
 import su.sergiusonesimus.tebreaker.TileEntityBreaker;
 import su.sergiusonesimus.tebreaker.mixin.interfaces.IMixinTileEntitySpecialRenderer;
 
+@SideOnly(Side.CLIENT)
 public class TileEntityBreakerIntegration {
 
     public static final String TEBREAKER = "tebreaker";

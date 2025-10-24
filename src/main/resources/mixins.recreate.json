@@ -6,14 +6,15 @@
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+  	"MixinWorld",
+  	"MixinWorldServer"
+  ],
+  "client": [
 	"MixinBlock",
   	"MixinMinecraft",
   	"MixinRenderBlocks",
   	"MixinRenderGlobal",
-  	"MixinWorld",
-  	"MixinWorldClient",
-  	"MixinWorldServer"
+  	"MixinWorldClient"
   ],
-  "client": [],
   "server": []
 }

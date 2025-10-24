@@ -1,7 +1,13 @@
 package su.sergiusonesimus.recreate;
 
 import net.minecraft.client.model.ModelBiped;
-
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.WorldSettings;
+import su.sergiusonesimus.metaworlds.world.SubWorldServer;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.Contraption;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.ContraptionWorld;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.ContraptionWorldServer;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -26,6 +32,34 @@ public class CommonProxy {
 
     public void doOnLoadRegistration() {
 
+    }
+
+    public World createContraptionWorld(World parentWorld, int newSubWorldID, Contraption contraption) {
+        World subWorld = null;
+        if (!parentWorld.isRemote) {
+            SubWorldServer.global_newSubWorldID = newSubWorldID;
+            subWorld = new ContraptionWorldServer(
+                (WorldServer) parentWorld,
+                newSubWorldID,
+                ((WorldServer) parentWorld).func_73046_m(),
+                parentWorld.getSaveHandler(),
+                parentWorld.getWorldInfo()
+                    .getWorldName(),
+                parentWorld.provider.dimensionId,
+                new WorldSettings(
+                    0L,
+                    parentWorld.getWorldInfo()
+                        .getGameType(),
+                    false,
+                    parentWorld.getWorldInfo()
+                        .isHardcoreModeEnabled(),
+                    parentWorld.getWorldInfo()
+                        .getTerrainType()),
+                parentWorld.theProfiler,
+                contraption);
+        }
+        if (contraption != null) ((ContraptionWorld) subWorld).setSubWorldType(contraption.getSubWorldType());
+        return subWorld;
     }
 
     public int getShaftBlockRenderID() {

@@ -54,9 +54,9 @@ public class ScrollValueUpdatePacket extends TileEntityConfigurationPacket<Smart
             }
 
             TileEntity te = world.getTileEntity(message.posX, message.posY, message.posZ);
-            if (te instanceof SmartTileEntity) {
-                message.applySettings((SmartTileEntity) te);
-                ((SmartTileEntity) te).markDirty();
+            if (te instanceof SmartTileEntity ste) {
+                message.applySettings(ste);
+                ste.markDirty();
             }
             return null;
         }

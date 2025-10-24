@@ -1,17 +1,28 @@
 package su.sergiusonesimus.recreate;
 
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldSettings;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import su.sergiusonesimus.recreate.compat.tebreaker.TileEntityBreakerIntegration;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorRenderBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorTileEntityRenderer;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.Contraption;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.ContraptionWorld;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.ContraptionWorldClient;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.BearingRenderBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.BearingTileEntityRenderer;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
@@ -66,6 +77,13 @@ public class ClientProxy extends CommonProxy {
 
         AllKeys.register();
 
+    }
+    public void init(FMLInitializationEvent event) {
+    	
+    }
+
+    public void postInit(FMLPostInitializationEvent event) {
+        if (ReCreate.isTileEntityBreakerLoaded) TileEntityBreakerIntegration.registerTileEntities();
     }
 
     @Override
@@ -154,6 +172,33 @@ public class ClientProxy extends CommonProxy {
         // new ChatComponentText("Click here to disable this warning")));
         //
         // player.addChatMessage(text);
+    }
+
+    public World createContraptionWorld(World parentWorld, int newSubWorldID, Contraption contraption) {
+        World subWorld = null;
+        if (parentWorld.isRemote) {
+            subWorld = new ContraptionWorldClient(
+                (WorldClient) parentWorld,
+                newSubWorldID,
+                ((WorldClient) parentWorld).sendQueue,
+                new WorldSettings(
+                    0L,
+                    parentWorld.getWorldInfo()
+                        .getGameType(),
+                    false,
+                    parentWorld.getWorldInfo()
+                        .isHardcoreModeEnabled(),
+                    parentWorld.getWorldInfo()
+                        .getTerrainType()),
+                ((WorldClient) parentWorld).provider.dimensionId,
+                parentWorld.difficultySetting,
+                parentWorld.theProfiler,
+                contraption);
+        } else {
+            subWorld = super.createContraptionWorld(parentWorld, newSubWorldID, contraption);
+        }
+        if (contraption != null) ((ContraptionWorld) subWorld).setSubWorldType(contraption.getSubWorldType());
+        return subWorld;
     }
 
     public int getShaftBlockRenderID() {

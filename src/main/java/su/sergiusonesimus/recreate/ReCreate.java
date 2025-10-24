@@ -24,7 +24,6 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.metaworlds.util.RotationHelper;
-import su.sergiusonesimus.recreate.compat.tebreaker.TileEntityBreakerIntegration;
 import su.sergiusonesimus.recreate.content.contraptions.TorquePropagator;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.AllSubWorldTypes;
@@ -39,7 +38,6 @@ import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.
 import su.sergiusonesimus.recreate.content.contraptions.relays.encased.ClutchTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.encased.GearshiftTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.gearbox.GearboxTileEntity;
-import su.sergiusonesimus.recreate.events.ClientEvents;
 import su.sergiusonesimus.recreate.events.CommonEvents;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
 import su.sergiusonesimus.recreate.foundation.data.ReCreateRegistrate;
@@ -102,12 +100,6 @@ public class ReCreate {
     public void init(FMLInitializationEvent event) {
 
         // event listeners
-        final ClientEvents clientEvents = new ClientEvents();
-        MinecraftForge.EVENT_BUS.register(clientEvents);
-        FMLCommonHandler.instance()
-            .bus()
-            .register(clientEvents);
-
         final CommonEvents commonEvents = new CommonEvents();
         MinecraftForge.EVENT_BUS.register(commonEvents);
         FMLCommonHandler.instance()
@@ -136,8 +128,6 @@ public class ReCreate {
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
-
-        if (isTileEntityBreakerLoaded) TileEntityBreakerIntegration.registerTileEntities();
 
         registerRotators();
     }

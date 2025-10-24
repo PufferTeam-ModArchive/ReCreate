@@ -22,8 +22,8 @@ import su.sergiusonesimus.metaworlds.zmixin.interfaces.minecraft.entity.IMixinEn
 import su.sergiusonesimus.metaworlds.zmixin.interfaces.minecraft.server.IMixinMinecraftServer;
 import su.sergiusonesimus.metaworlds.zmixin.interfaces.minecraft.world.IMixinWorld;
 import su.sergiusonesimus.metaworlds.zmixin.interfaces.minecraft.world.storage.IMixinWorldInfo;
+import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.Contraption;
-import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.ContraptionWorldFactory;
 import su.sergiusonesimus.recreate.zmixin.interfaces.IMixinWorldReCreate;
 
 @Mixin(WorldServer.class)
@@ -35,8 +35,7 @@ public class MixinWorldServer extends MixinWorld {
     }
 
     public World createContraptionWorld(int newSubWorldID, Contraption contraption) {
-        World newSubWorld = ContraptionWorldFactory
-            .createContraptionWorld((World) (Object) this, newSubWorldID, contraption);
+        World newSubWorld = ReCreate.proxy.createContraptionWorld((World) (Object) this, newSubWorldID, contraption);
         if (((IMixinMinecraftServer) MinecraftServer.getServer()).getExistingSubWorlds()
             .put(((IMixinWorld) newSubWorld).getSubWorldID(), newSubWorld) != null) {
             throw new IllegalArgumentException("SubWorld with this ID already exists!");

@@ -12,9 +12,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import su.sergiusonesimus.metaworlds.client.entity.EntityClientPlayerMPSubWorldProxy;
 import su.sergiusonesimus.metaworlds.zmixin.interfaces.minecraft.client.renderer.IMixinRenderGlobal;
 import su.sergiusonesimus.metaworlds.zmixin.interfaces.minecraft.world.IMixinWorld;
-import su.sergiusonesimus.metaworlds.zmixin.interfaces.minecraft.world.IMixinWorldIntermediate;
+import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.Contraption;
-import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.ContraptionWorldFactory;
 import su.sergiusonesimus.recreate.zmixin.interfaces.IMixinWorldReCreate;
 
 @Mixin(WorldClient.class)
@@ -29,9 +28,7 @@ public class MixinWorldClient extends MixinWorld {
     }
 
     public World createContraptionWorld(int newSubWorldID, Contraption contraption) {
-        if (((IMixinWorldIntermediate) this).getSubworldFactory() == null) return null;
-        World newSubWorld = ContraptionWorldFactory
-            .createContraptionWorld(((World) (Object) this), newSubWorldID, contraption);
+        World newSubWorld = ReCreate.proxy.createContraptionWorld(((World) (Object) this), newSubWorldID, contraption);
         if (((IMixinWorld) this).getSubWorldsMap()
             .get(((IMixinWorld) newSubWorld).getSubWorldID()) == null) {
             ((IMixinWorld) this).getSubWorldsMap()

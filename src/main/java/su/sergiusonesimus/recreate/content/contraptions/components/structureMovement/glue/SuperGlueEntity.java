@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
@@ -299,7 +298,7 @@ public class SuperGlueEntity extends Entity implements IEntityAdditionalSpawnDat
     @SideOnly(Side.CLIENT)
     private void triggerPlaceBlock(EntityPlayer player) {
         if (!(player instanceof EntityPlayerSP)) return;
-        if (!(player.worldObj instanceof WorldClient)) return;
+        if (!player.worldObj.isRemote) return;
 
         EntityPlayerSP cPlayer = (EntityPlayerSP) player;
         Minecraft mc = Minecraft.getMinecraft();
