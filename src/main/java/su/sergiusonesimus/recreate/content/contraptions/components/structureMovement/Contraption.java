@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityHanging;
 import net.minecraft.entity.EntityList;
@@ -42,6 +41,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import codechicken.lib.math.MathHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import su.sergiusonesimus.metaworlds.MetaworldsMod;
 import su.sergiusonesimus.metaworlds.api.SubWorld;
 import su.sergiusonesimus.metaworlds.util.BlockVolatilityMap;
 import su.sergiusonesimus.metaworlds.util.Direction;
@@ -280,8 +280,7 @@ public abstract class Contraption {
 
     public void tick() {
         if (parentWorld == null) {
-            parentWorld = ((IMixinWorld) (this.contraptionWorld.isRemote ? Minecraft.getMinecraft().theWorld
-                : DimensionManager.getWorld(0))).getSubWorld(parentWorldID);
+            parentWorld = ((IMixinWorld) MetaworldsMod.proxy.getMainWorld()).getSubWorld(parentWorldID);
         }
         if (stabilizedSubContraptionsIDs.size() > stabilizedSubContraptions.size()) {
             for (Map.Entry<Integer, BlockFace> entry : stabilizedSubContraptionsIDs.entrySet()) {
@@ -1416,7 +1415,7 @@ public abstract class Contraption {
 
     @SideOnly(Side.CLIENT)
     static void handleStallPacket(ContraptionStallPacket packet) {
-        World subworld = ((IMixinWorld) Minecraft.getMinecraft().theWorld).getSubWorld(packet.subworldID);
+        World subworld = ((IMixinWorld) MetaworldsMod.proxy.getMainWorld()).getSubWorld(packet.subworldID);
         if (!(subworld instanceof ContraptionWorld contraptionWorld)) return;
         contraptionWorld.getContraption()
             .handleStallInformation(packet.x, packet.y, packet.z, packet.angle);

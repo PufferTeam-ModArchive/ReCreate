@@ -42,7 +42,8 @@ public abstract class TranslatingContraption extends ControlledContraption {
                     blockPos.posX,
                     blockPos.posY,
                     blockPos.posZ,
-                    block.getSelectedBoundingBoxFromPool(contraptionWorld, blockPos.posX, blockPos.posY, blockPos.posZ),
+                    block
+                        .getCollisionBoundingBoxFromPool(contraptionWorld, blockPos.posX, blockPos.posY, blockPos.posZ),
                     collisionBoxes,
                     null);
                 if (collisionBoxes.isEmpty()) continue;
@@ -58,7 +59,7 @@ public abstract class TranslatingContraption extends ControlledContraption {
                         offsetPos.posX,
                         offsetPos.posY,
                         offsetPos.posZ,
-                        block.getSelectedBoundingBoxFromPool(
+                        block.getCollisionBoundingBoxFromPool(
                             contraptionWorld,
                             offsetPos.posX,
                             offsetPos.posY,

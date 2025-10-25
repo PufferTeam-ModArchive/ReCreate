@@ -222,8 +222,8 @@ public class SuperGlueEntity extends Entity implements IEntityAdditionalSpawnDat
         // if (AllBlocks.GANTRY_CARRIAGE.has(state))
         // return state.getValue(DirectionalKineticBlock.FACING) == direction;
         //
-        if (block instanceof BearingBlock) {
-            return ((BearingBlock) block).getDirection(meta) == direction;
+        if (block instanceof BearingBlock bearing) {
+            return bearing.getDirection(meta) == direction;
         }
         // TODO
         // if (state.getBlock() instanceof AbstractChassisBlock) {
@@ -238,8 +238,7 @@ public class SuperGlueEntity extends Entity implements IEntityAdditionalSpawnDat
 
     @Override
     public boolean hitByEntity(Entity entityIn) {
-        return entityIn instanceof EntityPlayer
-            ? attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) entityIn), 0)
+        return entityIn instanceof EntityPlayer player ? attackEntityFrom(DamageSource.causePlayerDamage(player), 0)
             : false;
     }
 
@@ -259,12 +258,12 @@ public class SuperGlueEntity extends Entity implements IEntityAdditionalSpawnDat
         if (!mobGriefing && trueSource instanceof IMob) return false;
 
         Entity immediateSource = source.getSourceOfDamage();
-        if (!isVisible() && immediateSource instanceof EntityPlayer) {
-            ItemStack heldItem = ((EntityPlayer) immediateSource).getHeldItem();
+        if (!isVisible() && immediateSource instanceof EntityPlayer player) {
+            ItemStack heldItem = player.getHeldItem();
             if (heldItem == null || heldItem.getItem() != AllItems.super_glue) return true;
         }
 
-        if (isEntityAlive() && !worldObj.isRemote) {
+        if (isEntityAlive() && worldObj.isRemote) {
             onBroken(source.getEntity());
             kill();
             performHurtAnimation();
@@ -290,7 +289,7 @@ public class SuperGlueEntity extends Entity implements IEntityAdditionalSpawnDat
     public boolean interactFirst(EntityPlayer player) {
         if (player instanceof FakePlayer) return false;
         blockPlacement = true;
-        if (player.isClientWorld()) triggerPlaceBlock(player);
+        if (player.worldObj.isRemote) triggerPlaceBlock(player);
         blockPlacement = false;
         return true;
     }

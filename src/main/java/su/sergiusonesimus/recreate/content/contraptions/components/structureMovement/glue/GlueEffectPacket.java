@@ -6,6 +6,8 @@ import net.minecraft.util.Vec3;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import su.sergiusonesimus.metaworlds.util.Direction;
 
@@ -46,6 +48,7 @@ public class GlueEffectPacket implements IMessage {
     public static class Handler implements IMessageHandler<GlueEffectPacket, IMessage> {
 
         @Override
+        @SideOnly(Side.CLIENT)
         public IMessage onMessage(GlueEffectPacket message, MessageContext ctx) {
             Minecraft mc = Minecraft.getMinecraft();
             Vec3 playerPos = mc.thePlayer.getPosition(1);

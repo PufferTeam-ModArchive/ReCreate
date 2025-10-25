@@ -11,6 +11,7 @@ import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
+import su.sergiusonesimus.metaworlds.MetaworldsMod;
 import su.sergiusonesimus.metaworlds.util.Direction;
 import su.sergiusonesimus.metaworlds.util.Direction.Axis;
 import su.sergiusonesimus.metaworlds.util.Direction.AxisDirection;
@@ -37,7 +38,7 @@ public class KineticDebugger {
         KineticTileEntity te = getSelectedTE();
         if (te == null) return;
 
-        World world = Minecraft.getMinecraft().theWorld;
+        World world = MetaworldsMod.proxy.getMainWorld();
         int toOutlineX;
         int toOutlineY;
         int toOutlineZ;
