@@ -14,8 +14,6 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import su.sergiusonesimus.recreate.compat.tebreaker.TileEntityBreakerIntegration;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorRenderBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.motor.CreativeMotorTileEntity;
@@ -49,6 +47,7 @@ import su.sergiusonesimus.recreate.content.contraptions.relays.gearbox.GearboxRe
 import su.sergiusonesimus.recreate.content.contraptions.relays.gearbox.GearboxTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.gearbox.GearboxTileEntityRenderer;
 import su.sergiusonesimus.recreate.content.contraptions.wrench.WrenchRenderItem;
+import su.sergiusonesimus.recreate.events.ClientEvents;
 import su.sergiusonesimus.recreate.events.InputEvents;
 import su.sergiusonesimus.recreate.foundation.utility.ghost.GhostBlocks;
 import su.sergiusonesimus.recreate.foundation.utility.outliner.Outliner;
@@ -78,8 +77,13 @@ public class ClientProxy extends CommonProxy {
         AllKeys.register();
 
     }
+
     public void init(FMLInitializationEvent event) {
-    	
+        final ClientEvents clientEvents = new ClientEvents();
+        MinecraftForge.EVENT_BUS.register(clientEvents);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(clientEvents);
     }
 
     public void postInit(FMLPostInitializationEvent event) {

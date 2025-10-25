@@ -17,7 +17,7 @@ import su.sergiusonesimus.recreate.foundation.tileentity.behaviour.ValueBoxTrans
 
 public class ScrollValueBehaviour extends TileEntityBehaviour {
 
-    public static BehaviourType<ScrollValueBehaviour> TYPE = new BehaviourType<>();
+    public static BehaviourType<ScrollValueBehaviour> TYPE = new BehaviourType<ScrollValueBehaviour>();
 
     ValueBoxTransform slotPositioning;
     Vec3 textShift;

@@ -129,7 +129,8 @@ public class CreativeMotorBlock extends DirectionalKineticBlock implements ITE<C
 
     @Override
     public Direction getPreferredFacing(World world, int x, int y, int z) {
-        return super.getPreferredFacing(world, x, y, z).getOpposite();
+        Direction result = super.getPreferredFacing(world, x, y, z);
+        return result == null ? null : result.getOpposite();
     }
 
     @Override
