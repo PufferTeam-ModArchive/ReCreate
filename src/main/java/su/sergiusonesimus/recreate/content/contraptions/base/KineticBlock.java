@@ -34,7 +34,7 @@ public abstract class KineticBlock extends Block implements IRotate {
             int meta = worldIn.getBlockMetadata(x, y, z);
 
             if (tileEntity.getBlockType() != this || tileEntity.getBlockMetadata() != meta) return;
-            if (this.hasTileEntity() != tileEntity.blockType.hasTileEntity()) return;
+            if (this.hasTileEntity(meta) != tileEntity.blockType.hasTileEntity(tileEntity.blockMetadata)) return;
             if (!areStatesKineticallyEquivalent(tileEntity.blockType, tileEntity.blockMetadata, this, meta)) return;
 
             kineticTileEntity.preventSpeedUpdate = 2;
@@ -48,6 +48,11 @@ public abstract class KineticBlock extends Block implements IRotate {
     }
 
     protected boolean areStatesKineticallyEquivalent(Block oldBlock, int oldMeta, Block newBlock, int newMeta) {
+        return areStatesKineticallyEquivalent(oldBlock, oldMeta, null, newBlock, newMeta, null);
+    }
+
+    protected boolean areStatesKineticallyEquivalent(Block oldBlock, int oldMeta, Object[] oldExtraData, Block newBlock,
+        int newMeta, Object[] newExtraData) {
         if (oldBlock != newBlock) return false;
         return getAxis(newMeta) == getAxis(oldMeta);
     }

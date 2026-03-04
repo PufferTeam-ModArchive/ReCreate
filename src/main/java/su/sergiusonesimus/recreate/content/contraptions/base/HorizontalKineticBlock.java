@@ -50,8 +50,7 @@ public abstract class HorizontalKineticBlock extends KineticBlock {
 
     @Override
     public int getMetaFromDirection(Direction direction) {
-        if (direction.ordinal() < 2) return 0;
-        return direction.ordinal() - 2;
+        return direction.get2DDataValue();
     }
 
     @Override

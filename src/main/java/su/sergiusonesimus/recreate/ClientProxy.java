@@ -36,6 +36,9 @@ import su.sergiusonesimus.recreate.content.contraptions.components.waterwheel.Wa
 import su.sergiusonesimus.recreate.content.contraptions.components.waterwheel.WaterWheelTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.components.waterwheel.WaterWheelTileEntityRenderer;
 import su.sergiusonesimus.recreate.content.contraptions.goggles.GogglesModel;
+import su.sergiusonesimus.recreate.content.contraptions.relays.belt.BeltRenderBlock;
+import su.sergiusonesimus.recreate.content.contraptions.relays.belt.BeltTileEntity;
+import su.sergiusonesimus.recreate.content.contraptions.relays.belt.BeltTileEntityRenderer;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelRenderBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelTileEntity;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelTileEntityRenderer;
@@ -67,6 +70,7 @@ public class ClientProxy extends CommonProxy {
     int mechanicalPistonHeadRenderID;
     int pistonExtensionPoleRenderID;
     int linearChassisRenderID;
+    int beltRenderID;
 
     ModelBiped gogglesArmorModel;
 
@@ -120,6 +124,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(WaterWheelTileEntity.class, new WaterWheelTileEntityRenderer());
         ClientRegistry
             .bindTileEntitySpecialRenderer(MechanicalPistonTileEntity.class, new MechanicalPistonTileEntityRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(BeltTileEntity.class, new BeltTileEntityRenderer());
 
         // block render ids
         shaftRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -148,6 +153,8 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(new PistonExtensionPoleRenderBlock(pistonExtensionPoleRenderID));
         linearChassisRenderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(new CTMRenderer(linearChassisRenderID));
+        beltRenderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(new BeltRenderBlock(beltRenderID));
 
         // armor model
         gogglesArmorModel = new GogglesModel();
@@ -255,6 +262,10 @@ public class ClientProxy extends CommonProxy {
 
     public int getLinearChassisBlockRenderID() {
         return linearChassisRenderID;
+    }
+
+    public int getBeltBlockRenderID() {
+        return beltRenderID;
     }
 
     public ModelBiped getGogglesArmorModel() {

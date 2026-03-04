@@ -15,8 +15,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
 import su.sergiusonesimus.metaworlds.util.Direction;
-import su.sergiusonesimus.metaworlds.util.Direction.Axis;
-import su.sergiusonesimus.metaworlds.util.Direction.AxisDirection;
 import su.sergiusonesimus.metaworlds.util.Rotation;
 import su.sergiusonesimus.recreate.AllItems;
 import su.sergiusonesimus.recreate.AllSounds;
@@ -179,41 +177,41 @@ public abstract class AbstractChassisBlock extends BlockRotatedPillar implements
         }
     }
 
-    @Override
-    public boolean onWrenched(World world, int x, int y, int z, int face, EntityPlayer player) {
-        int meta = world.getBlockMetadata(x, y, z);
-        Map<Direction, Boolean> oldDirections = new HashMap<Direction, Boolean>();
-        int stickySides = 0;
-        int notStickySides = 0;
-        for (Direction dir : Iterate.directions) {
-            Boolean glueableSide = getGlueableSide(world, x, y, z, dir);
-            if (glueableSide != null) {
-                oldDirections.put(dir, glueableSide);
-                if (glueableSide) stickySides++;
-                else notStickySides++;
-            }
-        }
-
-        int rotatedMeta = getRotatedBlockMeta(world, x, y, z, face);
-
-        if (meta != rotatedMeta || (stickySides != 0 && notStickySides != 0)) {
-            world.setBlockMetadataWithNotify(x, y, z, rotatedMeta, 3);
-            Direction rotationDirection = Direction.from3DDataValue(face);
-            Axis rotationAxis = rotationDirection.getAxis();
-            for (Entry<Direction, Boolean> entry : oldDirections.entrySet()) {
-                Direction dir = entry.getKey();
-                int rotCount = rotationDirection.getAxisDirection() == AxisDirection.POSITIVE ? 1 : 3;
-                Direction rotatedFacing = dir;
-                for (int i = 0; i < rotCount; i++) rotatedFacing = rotatedFacing.rotateAround(rotationAxis);
-                setGlueableSide(world, x, y, z, rotatedFacing, entry.getValue());
-            }
-            if (meta == rotatedMeta) world.markBlockForUpdate(x, y, z);
-            playRotateSound(world, x, y, z);
-            return true;
-        }
-
-        return false;
-    }
+    // @Override
+    // public boolean onWrenched(World world, int x, int y, int z, int face, EntityPlayer player) {
+    // int meta = world.getBlockMetadata(x, y, z);
+    // Map<Direction, Boolean> oldDirections = new HashMap<Direction, Boolean>();
+    // int stickySides = 0;
+    // int notStickySides = 0;
+    // for (Direction dir : Iterate.directions) {
+    // Boolean glueableSide = getGlueableSide(world, x, y, z, dir);
+    // if (glueableSide != null) {
+    // oldDirections.put(dir, glueableSide);
+    // if (glueableSide) stickySides++;
+    // else notStickySides++;
+    // }
+    // }
+    //
+    // int rotatedMeta = getRotatedBlockMeta(world, x, y, z, face);
+    //
+    // if (meta != rotatedMeta || (stickySides != 0 && notStickySides != 0)) {
+    // world.setBlockMetadataWithNotify(x, y, z, rotatedMeta, 3);
+    // Direction rotationDirection = Direction.from3DDataValue(face);
+    // Axis rotationAxis = rotationDirection.getAxis();
+    // for (Entry<Direction, Boolean> entry : oldDirections.entrySet()) {
+    // Direction dir = entry.getKey();
+    // int rotCount = rotationDirection.getAxisDirection() == AxisDirection.POSITIVE ? 1 : 3;
+    // Direction rotatedFacing = dir;
+    // for (int i = 0; i < rotCount; i++) rotatedFacing = rotatedFacing.rotateAround(rotationAxis);
+    // setGlueableSide(world, x, y, z, rotatedFacing, entry.getValue());
+    // }
+    // if (meta == rotatedMeta) world.markBlockForUpdate(x, y, z);
+    // playRotateSound(world, x, y, z);
+    // return true;
+    // }
+    //
+    // return false;
+    // }
 
     @Override
     public int getRotatedBlockMeta(World world, int x, int y, int z, int face) {

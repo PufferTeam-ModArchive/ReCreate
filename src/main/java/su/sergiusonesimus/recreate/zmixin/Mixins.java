@@ -15,7 +15,7 @@ public enum Mixins {
     VANILLA_COMMON(new Builder("").addTargetedMod(TargetedMod.VANILLA)
         .setSide(Side.BOTH)
         .setPhase(Phase.EARLY)
-        .addMixinClasses("MixinWorld", "MixinWorldServer")),
+        .addMixinClasses("MixinPotionEffect", "MixinPotionHelper", "MixinWorld", "MixinWorldServer")),
 
     VANILLA_CLIENT(new Builder("").addTargetedMod(TargetedMod.VANILLA)
         .setSide(Side.CLIENT)

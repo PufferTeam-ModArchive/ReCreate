@@ -312,7 +312,7 @@ public class RotationPropagator {
         List<ChunkCoordinates> frontier = new LinkedList<>();
         frontier.add(new ChunkCoordinates(updateTE.xCoord, updateTE.yCoord, updateTE.zCoord));
         ChunkCoordinates missingSource = updateTE.hasSource()
-            ? new ChunkCoordinates(updateTE.sourceX, updateTE.sourceZ, updateTE.sourceZ)
+            ? new ChunkCoordinates(updateTE.sourceX, updateTE.sourceY, updateTE.sourceZ)
             : null;
 
         while (!frontier.isEmpty()) {

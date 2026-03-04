@@ -80,6 +80,7 @@ public class KineticTileEntity extends SmartTileEntity implements IHaveGoggleInf
         super.initialize();
     }
 
+    @SuppressWarnings("static-access")
     @Override
     public void updateEntity() {
         if (!worldObj.isRemote && needsSpeedUpdate()) attachKinetics();
@@ -109,6 +110,12 @@ public class KineticTileEntity extends SmartTileEntity implements IHaveGoggleInf
     @Override
     public void updateContainingBlockInfo() {
         // We are not erasing containing block type
+    }
+
+    public void invalidateKinetics() {
+        if (hasNetwork()) getOrCreateNetwork().remove(this);
+        detachKinetics();
+        removeSource();
     }
 
     private void validateKinetics() {
@@ -343,6 +350,7 @@ public class KineticTileEntity extends SmartTileEntity implements IHaveGoggleInf
         RotationPropagator.handleRemoved(worldObj, this.xCoord, this.yCoord, this.zCoord, this);
     }
 
+    @SuppressWarnings("static-access")
     public boolean isSpeedRequirementFulfilled() {
         if (!(this.blockType instanceof IRotate)) return true;
         IRotate def = (IRotate) this.blockType;
@@ -355,30 +363,40 @@ public class KineticTileEntity extends SmartTileEntity implements IHaveGoggleInf
         return true;
     }
 
-    public static void switchToBlockState(World world, int x, int y, int z, Block block, int meta) {
-        if (world.isRemote) return;
+    /**
+     * 
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @param block
+     * @param meta
+     * @param updateKinetics - should be set to 'true' if something else is changed besides block and/or metadata
+     * @return
+     */
+    public static TileEntity switchToBlockState(World world, int x, int y, int z, Block block, int meta,
+        boolean updateKinetics) {
+        if (world.isRemote) return null;
 
         TileEntity tileEntityIn = world.getTileEntity(x, y, z);
         Block currentBlock = world.getBlock(x, y, z);
         int currentMeta = world.getBlockMetadata(x, y, z);
         boolean isKinetic = tileEntityIn instanceof KineticTileEntity;
 
-        if (currentBlock == block && currentMeta == meta) return;
+        if (currentBlock == block && currentMeta == meta && !updateKinetics) return tileEntityIn;
         if (tileEntityIn == null || !isKinetic) {
             world.setBlock(x, y, z, block, meta, 3);
-            return;
+            return world.getTileEntity(x, y, z);
         }
 
         KineticTileEntity tileEntity = (KineticTileEntity) tileEntityIn;
         if (block instanceof KineticBlock
             && !((KineticBlock) block).areStatesKineticallyEquivalent(currentBlock, currentMeta, block, meta)) {
-            if (tileEntity.hasNetwork()) tileEntity.getOrCreateNetwork()
-                .remove(tileEntity);
-            tileEntity.detachKinetics();
-            tileEntity.removeSource();
+            tileEntity.invalidateKinetics();
         }
 
         world.setBlock(x, y, z, block, meta, 2);
+        return world.getTileEntity(x, y, z);
     }
 
     @Override

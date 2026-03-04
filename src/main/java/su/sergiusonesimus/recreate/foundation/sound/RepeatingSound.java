@@ -29,14 +29,13 @@ public class RepeatingSound {
         WorldClient world = Minecraft.getMinecraft().theWorld;
         Vec3 meanPos = scape.getMeanPos();
 
-        world.playSound(
+        world.playSoundEffect(
             meanPos.xCoord,
             meanPos.yCoord,
             meanPos.zCoord,
             name,
             scape.getVolume() * relativeVolume,
-            sharedPitch,
-            true);
+            sharedPitch);
     }
 
 }

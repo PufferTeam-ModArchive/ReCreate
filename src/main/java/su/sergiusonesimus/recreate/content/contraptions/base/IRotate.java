@@ -34,6 +34,7 @@ public interface IRotate extends IWrenchable {
             return this == NONE ? 10 : this == MEDIUM ? 20 : 30;
         }
 
+        @SuppressWarnings("static-access")
         public static SpeedLevel of(float speed) {
             speed = Math.abs(speed);
 
@@ -45,6 +46,7 @@ public interface IRotate extends IWrenchable {
             return NONE;
         }
 
+        @SuppressWarnings("static-access")
         public float getSpeedValue() {
             switch (this) {
                 case FAST:
@@ -105,6 +107,7 @@ public interface IRotate extends IWrenchable {
             else return StressImpact.LOW;
         }
 
+        @SuppressWarnings("static-access")
         public static boolean isEnabled() {
             return !AllConfigs.SERVER.kinetics.disableStress;
         }

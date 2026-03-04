@@ -39,7 +39,7 @@ public class MixinPotionEffect implements IMixinPotionEffect {
     }
 
     @Inject(method = "readCustomPotionEffectFromNBT", at = @At("RETURN"), cancellable = true)
-    public static void readCustomPotionEffectFromNBT(NBTTagCompound nbt, CallbackInfoReturnable<PotionEffect> cir) {
+    private static void readCustomPotionEffectFromNBT(NBTTagCompound nbt, CallbackInfoReturnable<PotionEffect> cir) {
         PotionEffect result = cir.getReturnValue();
         if (result != null && nbt.hasKey("Visible")) {
             ((IMixinPotionEffect) result).setIsVisible(nbt.getBoolean("Visible"));

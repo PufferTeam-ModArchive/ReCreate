@@ -20,6 +20,8 @@ import su.sergiusonesimus.recreate.content.contraptions.components.structureMove
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.MechanicalPistonHeadBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.PistonExtensionPoleBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.waterwheel.WaterWheelBlock;
+import su.sergiusonesimus.recreate.content.contraptions.relays.belt.BeltBlock;
+import su.sergiusonesimus.recreate.content.contraptions.relays.belt.item.BeltConnectorItem;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelItemBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftBlock;
@@ -27,6 +29,7 @@ import su.sergiusonesimus.recreate.content.contraptions.relays.encased.ClutchBlo
 import su.sergiusonesimus.recreate.content.contraptions.relays.encased.GearshiftBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.gearbox.GearboxBlock;
 import su.sergiusonesimus.recreate.foundation.block.BlockStressDefaults;
+import su.sergiusonesimus.recreate.foundation.data.SharedProperties;
 
 public class AllBlocks {
 
@@ -41,6 +44,7 @@ public class AllBlocks {
     public static GearshiftBlock unpowered_gearshift;
     public static GearshiftBlock powered_gearshift;
 
+    public static Block belt;
     public static Block creative_motor;
     public static Block waterwheel;
 
@@ -102,6 +106,11 @@ public class AllBlocks {
         powered_gearshift = (GearshiftBlock) new GearshiftBlock(Material.wood, true).setBlockName("gearshift");
         GameRegistry.registerBlock(powered_gearshift, ItemBlock.class, "tile.powered_gearshift");
         BlockStressDefaults.setNoImpact(powered_gearshift);
+
+        belt = new BeltBlock(SharedProperties.beltMaterial).setBlockName("belt")
+            .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
+        registerMyBlock(belt, BeltConnectorItem.class);
+        BlockStressDefaults.setImpact(belt, 0);
 
         creative_motor = new CreativeMotorBlock(Material.rock).setBlockName("creative_motor")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);

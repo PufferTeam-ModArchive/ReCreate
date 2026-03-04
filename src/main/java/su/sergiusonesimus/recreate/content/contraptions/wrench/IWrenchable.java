@@ -24,7 +24,7 @@ public interface IWrenchable {
         int rotatedMeta = getRotatedBlockMeta(world, x, y, z, face);
         if (!block.canBlockStay(world, x, y, z)) return false;
 
-        KineticTileEntity.switchToBlockState(world, x, y, z, block, rotatedMeta);
+        KineticTileEntity.switchToBlockState(world, x, y, z, block, rotatedMeta, false);
 
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof GeneratingKineticTileEntity) {

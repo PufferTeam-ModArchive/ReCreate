@@ -219,7 +219,7 @@ public class AllSounds {
             float pitch);
 
         public void playAt(World world, int posX, int posY, int posZ, float volume, float pitch, boolean fade) {
-            playAt(world, posX + .5, posY + .5, posZ + .5, volume, pitch, fade);
+            playAt(world, posX + .5D, posY + .5D, posZ + .5D, volume, pitch, fade);
         }
 
         public void playAt(World world, Vec3 pos, float volume, float pitch, boolean fade) {
@@ -249,14 +249,13 @@ public class AllSounds {
         public void play(World world, EntityPlayer entity, double x, double y, double z, float volume, float pitch) {
             for (Pair<String, Couple<Float>> pair : wrappedEvents) {
                 Couple<Float> volPitch = pair.getSecond();
-                world.playSound(
+                world.playSoundEffect(
                     x,
                     y,
                     z,
                     pair.getFirst(),
                     volPitch.getFirst() * volume,
-                    volPitch.getSecond() * pitch,
-                    false);
+                    volPitch.getSecond() * pitch);
             }
         }
 

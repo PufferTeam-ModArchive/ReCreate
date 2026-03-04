@@ -33,6 +33,7 @@ import su.sergiusonesimus.recreate.content.contraptions.KineticDebugger;
 import su.sergiusonesimus.recreate.content.contraptions.base.IRotate;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.chassis.ChassisRangeDisplay;
 import su.sergiusonesimus.recreate.content.contraptions.goggles.GoggleOverlayRenderer;
+import su.sergiusonesimus.recreate.content.contraptions.relays.belt.item.BeltConnectorHandler;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
 import su.sergiusonesimus.recreate.foundation.item.ItemDescription;
 import su.sergiusonesimus.recreate.foundation.item.TooltipHelper;
@@ -73,7 +74,7 @@ public class ClientEvents {
         //
         // PonderTooltipHandler.tick();
         ServerSpeedProvider.clientTick();
-        // BeltConnectorHandler.tick();
+        BeltConnectorHandler.tick();
         // FilteringRenderer.tick();
         // LinkRenderer.tick();
         ScrollValueRenderer.tick();
@@ -119,6 +120,7 @@ public class ClientEvents {
         }
     }
 
+    @SuppressWarnings("unused")
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent event) {
         EntityLivingBase camera = Minecraft.getMinecraft().renderViewEntity;
