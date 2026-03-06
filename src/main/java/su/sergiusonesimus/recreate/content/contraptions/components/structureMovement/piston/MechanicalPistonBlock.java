@@ -35,7 +35,6 @@ import su.sergiusonesimus.recreate.foundation.block.ITE;
 import su.sergiusonesimus.recreate.foundation.config.AllConfigs;
 import su.sergiusonesimus.recreate.foundation.utility.Lang;
 import su.sergiusonesimus.recreate.util.BlockHelper;
-import su.sergiusonesimus.recreate.util.OreDictHelper;
 
 public class MechanicalPistonBlock extends DirectionalAxisKineticBlock implements ITE<MechanicalPistonTileEntity> {
 
@@ -133,7 +132,7 @@ public class MechanicalPistonBlock extends DirectionalAxisKineticBlock implement
         float subY, float subZ) {
         if (player.isPlayerSleeping() || player.isRiding() || player.isSneaking()) return false;
         ItemStack heldItem = player.getHeldItem();
-        if (!OreDictHelper.containsMatch(false, OreDictionary.getOres("slimeball"), heldItem)) {
+        if (!OreDictionary.containsMatch(false, OreDictionary.getOres("slimeball"), heldItem)) {
             if (heldItem == null) {
                 withTileEntityDo(worldIn, x, y, z, te -> te.assembleNextTick = true);
                 return true;
@@ -299,6 +298,21 @@ public class MechanicalPistonBlock extends DirectionalAxisKineticBlock implement
     @SuppressWarnings("static-access")
     public static int maxAllowedPistonPoles() {
         return AllConfigs.SERVER.kinetics.maxPistonPoles;
+    }
+
+    /**
+     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
+     * cleared to be reused)
+     */
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World worldIn, int x, int y, int z) {
+        this.setBlockBoundsBasedOnState(worldIn, x, y, z);
+        return AxisAlignedBB.getBoundingBox(
+            (double) x + this.minX,
+            (double) y + this.minY,
+            (double) z + this.minZ,
+            (double) x + this.maxX,
+            (double) y + this.maxY,
+            (double) z + this.maxZ);
     }
 
     @Override

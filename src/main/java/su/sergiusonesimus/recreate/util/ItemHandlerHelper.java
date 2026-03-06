@@ -52,4 +52,9 @@ public class ItemHandlerHelper {
         return remaining.stackSize > 0 ? remaining : null;
     }
 
+    public static boolean canItemStacksStack(ItemStack a, ItemStack b) {
+        if (a == null || b == null || a.getItem() != b.getItem()) return false;
+        return ItemStack.areItemStackTagsEqual(a, b);
+    }
+
 }

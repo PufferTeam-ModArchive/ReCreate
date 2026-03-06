@@ -227,15 +227,13 @@ public class CogWheelBlock extends AbstractShaftBlock implements ITE<CogWheelTil
     @Override
     public MovingObjectPosition collisionRayTrace(World worldIn, int x, int y, int z, Vec3 startVec, Vec3 endVec) {
         this.setBlockBoundsBasedOnState(worldIn, x, y, z);
-        startVec = startVec.addVector((double) (-x), (double) (-y), (double) (-z));
-        endVec = endVec.addVector((double) (-x), (double) (-y), (double) (-z));
         List<AxisAlignedBB> collisionList = new ArrayList<AxisAlignedBB>();
         this.addCollisionBoxesToList(
             worldIn,
-            0,
-            0,
-            0,
-            AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, 1),
+            x,
+            y,
+            z,
+            AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1),
             collisionList,
             null);
         for (AxisAlignedBB aabb : collisionList) {
@@ -341,7 +339,7 @@ public class CogWheelBlock extends AbstractShaftBlock implements ITE<CogWheelTil
                     b0 = 3;
                 }
 
-                return new MovingObjectPosition(x, y, z, b0, resultVec.addVector((double) x, (double) y, (double) z));
+                return new MovingObjectPosition(x, y, z, b0, resultVec);
             }
         }
         return null;

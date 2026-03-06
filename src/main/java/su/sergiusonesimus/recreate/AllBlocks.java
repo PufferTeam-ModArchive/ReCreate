@@ -13,10 +13,15 @@ import su.sergiusonesimus.recreate.content.contraptions.components.motor.Creativ
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.MechanicalBearingBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.SailBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.bearing.WindmillBearingBlock;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.chassis.LinearChassisBlock;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.chassis.LinearChassisItemBlock;
+import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.chassis.RadialChassisBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.MechanicalPistonBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.MechanicalPistonHeadBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.piston.PistonExtensionPoleBlock;
 import su.sergiusonesimus.recreate.content.contraptions.components.waterwheel.WaterWheelBlock;
+import su.sergiusonesimus.recreate.content.contraptions.relays.belt.BeltBlock;
+import su.sergiusonesimus.recreate.content.contraptions.relays.belt.item.BeltConnectorItem;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.cogwheel.CogWheelItemBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.elementary.shaft.ShaftBlock;
@@ -24,6 +29,7 @@ import su.sergiusonesimus.recreate.content.contraptions.relays.encased.ClutchBlo
 import su.sergiusonesimus.recreate.content.contraptions.relays.encased.GearshiftBlock;
 import su.sergiusonesimus.recreate.content.contraptions.relays.gearbox.GearboxBlock;
 import su.sergiusonesimus.recreate.foundation.block.BlockStressDefaults;
+import su.sergiusonesimus.recreate.foundation.data.SharedProperties;
 
 public class AllBlocks {
 
@@ -38,6 +44,7 @@ public class AllBlocks {
     public static GearshiftBlock unpowered_gearshift;
     public static GearshiftBlock powered_gearshift;
 
+    public static Block belt;
     public static Block creative_motor;
     public static Block waterwheel;
 
@@ -51,6 +58,9 @@ public class AllBlocks {
 
     public static Block windmill_bearing;
     public static Block mechanical_bearing;
+
+    public static Block linear_chassis;
+    public static Block radial_chassis;
 
     public static Block sail_frame;
     public static Block[] sails = new Block[16];
@@ -97,6 +107,11 @@ public class AllBlocks {
         GameRegistry.registerBlock(powered_gearshift, ItemBlock.class, "tile.powered_gearshift");
         BlockStressDefaults.setNoImpact(powered_gearshift);
 
+        belt = new BeltBlock(SharedProperties.beltMaterial).setBlockName("belt")
+            .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
+        registerMyBlock(belt, BeltConnectorItem.class);
+        BlockStressDefaults.setImpact(belt, 0);
+
         creative_motor = new CreativeMotorBlock(Material.rock).setBlockName("creative_motor")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
         registerMyBlock(creative_motor, CreativeMotorItemBlock.class);
@@ -139,6 +154,14 @@ public class AllBlocks {
         registerMyBlock(mechanical_bearing);
         BlockStressDefaults.setImpact(mechanical_bearing, 4.0);
 
+        linear_chassis = new LinearChassisBlock(Material.wood).setBlockName("linear_chassis")
+            .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
+        registerMyBlock(linear_chassis, LinearChassisItemBlock.class);
+
+        radial_chassis = new RadialChassisBlock(Material.wood).setBlockName("radial_chassis")
+            .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
+        registerMyBlock(radial_chassis);
+
         sail_frame = SailBlock.frame()
             .setBlockName("sail_frame")
             .setCreativeTab(AllItems.BASE_CREATIVE_TAB);
@@ -156,12 +179,14 @@ public class AllBlocks {
         }
     }
 
+    @SuppressWarnings("unused")
     private static void registerMyBlock(Block block, Class<? extends ItemBlock> pickup, BlockSlab singleSlab,
         BlockSlab doubleSlab, boolean isDouble) {
         GameRegistry.registerBlock(block, pickup, block.getUnlocalizedName(), singleSlab, doubleSlab, isDouble);
 
     }
 
+    @SuppressWarnings("unused")
     private static void registerMyBlock(Block block, Class<? extends ItemBlock> pickup, Block blockAgain,
         String[] names) {
         GameRegistry.registerBlock(block, pickup, block.getUnlocalizedName(), blockAgain, names);

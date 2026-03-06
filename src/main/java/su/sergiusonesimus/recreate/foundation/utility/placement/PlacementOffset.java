@@ -131,12 +131,11 @@ public class PlacementOffset {
         }
 
         Block newBlock = world.getBlock(newX, newY, newZ);
-        int newMeta = world.getBlockMetadata(newX, newY, newZ);
         SoundType soundtype = newBlock.stepSound;
         world.playSoundEffect(
-            newX,
-            newY,
-            newZ,
+            newX + 0.5D,
+            newY + 0.5D,
+            newZ + 0.5D,
             soundtype.getBreakSound(),
             (soundtype.getVolume() + 1.0F) / 2.0F,
             soundtype.getPitch() * 0.8F);

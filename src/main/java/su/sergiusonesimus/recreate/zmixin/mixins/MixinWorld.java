@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 import su.sergiusonesimus.metaworlds.zmixin.interfaces.minecraft.world.IMixinWorld;
+import su.sergiusonesimus.recreate.ReCreate;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.Contraption;
 import su.sergiusonesimus.recreate.content.contraptions.components.structureMovement.ContraptionWorld;
 import su.sergiusonesimus.recreate.zmixin.interfaces.IMixinWorldReCreate;
@@ -29,6 +30,15 @@ public abstract class MixinWorld implements IMixinWorldReCreate {
 
     @Shadow(remap = true)
     public WorldInfo worldInfo;
+
+    @Shadow(remap = false)
+    protected void registerSubWorld(World newSubWorld) {}
+
+    protected World generateContraptionWorld(int newSubWorldID, Contraption contraption) {
+        World newSubWorld = ReCreate.proxy.createContraptionWorld((World) (Object) this, newSubWorldID, contraption);
+        registerSubWorld(newSubWorld);
+        return newSubWorld;
+    }
 
     @Override
     public List<Contraption> getContraptionsWithinAABBExcludingContraption(Contraption contraption, AxisAlignedBB bb) {

@@ -144,8 +144,10 @@ public abstract class ControlledContraption extends Contraption {
         super.tick();
         tickActors();
 
-        if (controllerX == null || controllerY == null || controllerZ == null) return;
-        if (!parentWorld.blockExists(controllerX, controllerY, controllerZ)) return;
+        if (controllerX == null || controllerY == null
+            || controllerZ == null
+            || parentWorld == null
+            || !parentWorld.getChunkFromBlockCoords(controllerX, controllerZ).isChunkLoaded) return;
         IControlContraption controller = getController();
         if (controller == null) {
             this.disassemble();

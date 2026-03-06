@@ -9,12 +9,7 @@ public enum AllModelTextures {
     SHAFT("axis.png"),
     COGWHEEL("cogwheel.png"),
     LARGE_COGWHEEL("large_cogwheel.png"),
-
-    GEARBOX("gearbox.png"),
-    CLUTCH("clutch.png"),
-    LIT_CLUTCH("lit_clutch.png"),
-    GEARSHIFT("gearshift.png"),
-    LIT_GEARSHIFT("lit_gearshift.png"),
+    BELT_PULLEY("belt_pulley.png"),
 
     CREATIVE_MOTOR("creative_motor.png"),
     WATER_WHEEL("water_wheel.png"),

@@ -49,6 +49,7 @@ public class ContraptionInvWrapper implements IInventory {
         return inventorySize;
     }
 
+    @SuppressWarnings("unused")
     private int getLocalSlot(int slotIn) {
         return getLocalSlot(slotIn, getIndexForSlot(slotIn));
     }
